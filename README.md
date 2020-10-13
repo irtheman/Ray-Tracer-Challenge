@@ -240,7 +240,34 @@ sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get install -y python3.9
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
 ```
-The last 2 lines above make Python 3.9 the default for the python3 command.
+
+## Installing PyTest
+To install PyTest we need Pip installed first:
+```
+sudo apt-get install python3-pip
+pip3 --version
+pip3 install --user pipenv
+pip3 install -U pytest
+pytest --version
+```
+## Using PyTest
+PyTest can get much more complicated and making use of fixtures is recommended. PyTest always looks for file names that start with "test_*.py" or "*_test.py". These are the test code to be evaluated. Inside these test files are test methods that start with "test".
+
+The recommended structure is to put your source code in the src/package folder and put your tests in a tests folder. The test folder needs to have an "\_\_init\_\_.py" file so the test files don't get added with the source code; they are their own package. Each test file is named after the source file being tested.
+
+To use PyTest simply import pytest and the python class that is going to be tested:
+```
+# test_class.py
+import pytest
+from class import TestClass
+
+def test_add():
+    tc = TestClass()
+    assert tc.Add(1, 2) == 3
+```
+Simply running pytest, there are multiple ways, in the same folder will return the results of all the tests that were evaluated.
+```
+pytest --pyargs <package>
+python3 -m pytest --pyargs <package>
+```
