@@ -22,16 +22,6 @@ namespace CSharp
         public bool IsPoint => w.IsEqual(1.0);
         public bool IsVector => w.IsEqual(0.0);
 
-        public static Tuple Point(double x, double y, double z)
-        {
-            return new Tuple(x, y, z, 1.0);
-        }
-
-        public static Tuple Vector(double x, double y, double z)
-        {
-            return new Tuple(x, y, z, 0.0);
-        }
-
         public override bool Equals(object obj)
         {
             var other = obj as Tuple;
@@ -50,6 +40,22 @@ namespace CSharp
         public override string ToString()
         {
             return $"({x},{y},{z},{w})";
+        }
+    }
+
+    public class Point : Tuple
+    {
+        public Point(double x, double y, double z) : base(x, y, z, 1.0)
+        {
+            // Nothing else to do
+        }
+    }
+
+    public class Vector : Tuple
+    {
+        public Vector(double x, double y, double z) : base(x, y, z, 0.0)
+        {
+            // Nothing else to do
         }
     }
 }

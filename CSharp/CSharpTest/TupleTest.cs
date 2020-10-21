@@ -35,14 +35,14 @@ namespace CSharpTest
         [TestMethod]
         public void TestCreatePoint()
         {
-            var p = Tuple.Point(4, -4, 3);
+            var p = new Point(4, -4, 3);
             Assert.AreEqual(p, new Tuple(4, -4, 3, 1));
         }
 
         [TestMethod]
         public void TestCreateVector()
         {
-            var v = Tuple.Vector(4, -4, 3);
+            var v = new Vector(4, -4, 3);
             Assert.AreEqual(v, new Tuple(4, -4, 3, 0));
         }
     }

@@ -1,0 +1,4 @@
+# VSCode and PyTest
+.vscode
+.pytest_cache
+.git
