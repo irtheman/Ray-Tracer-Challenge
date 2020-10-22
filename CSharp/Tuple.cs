@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CSharp
 {
@@ -14,13 +12,53 @@ namespace CSharp
             this.w = w;
         }
 
-        public double x { get; set; }
-        public double y { get; set; }
-        public double z { get; set; }
-        public double w { get; set; }
+        public double x { get; protected set; }
+        public double y { get; protected set; }
+        public double z { get; protected set; }
+        public double w { get; protected set; }
 
         public bool IsPoint => w.IsEqual(1.0);
         public bool IsVector => w.IsEqual(0.0);
+
+        public static Tuple operator+(Tuple lhs, Tuple rhs)
+        {
+            return new Tuple(lhs.x + rhs.x,
+                             lhs.y + rhs.y,
+                             lhs.z + rhs.z,
+                             lhs.w + rhs.w);
+        }
+
+        public static Tuple operator-(Tuple lhs, Tuple rhs)
+        {
+            return new Tuple(lhs.x - rhs.x,
+                             lhs.y - rhs.y,
+                             lhs.z - rhs.z,
+                             lhs.w - rhs.w);
+        }
+
+        public static Tuple operator-(Tuple tuple)
+        {
+            return new Tuple(-tuple.x,
+                             -tuple.y,
+                             -tuple.z,
+                             -tuple.w);
+        }
+
+        public static Tuple operator *(Tuple lhs, double rhs)
+        {
+            return new Tuple(lhs.x * rhs,
+                             lhs.y * rhs,
+                             lhs.z * rhs,
+                             lhs.w * rhs);
+        }
+
+        public static Tuple operator/(Tuple lhs, double rhs)
+        {
+            return new Tuple(lhs.x / rhs,
+                             lhs.y / rhs,
+                             lhs.z / rhs,
+                             lhs.w / rhs);
+        }
 
         public override bool Equals(object obj)
         {
@@ -40,22 +78,6 @@ namespace CSharp
         public override string ToString()
         {
             return $"({x},{y},{z},{w})";
-        }
-    }
-
-    public class Point : Tuple
-    {
-        public Point(double x, double y, double z) : base(x, y, z, 1.0)
-        {
-            // Nothing else to do
-        }
-    }
-
-    public class Vector : Tuple
-    {
-        public Vector(double x, double y, double z) : base(x, y, z, 0.0)
-        {
-            // Nothing else to do
         }
     }
 }
