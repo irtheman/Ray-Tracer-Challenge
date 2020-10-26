@@ -1,26 +1,32 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "tuple.h"
 
-struct Projectile {
-    struct Tuple Position;
-    struct Tuple Velocity;
-};
+/***********************************************
+ * A project that uses the ray tracer challenge
+ * library to simulate a projectile.
+ ***********************************************/
 
-struct Environment
+typedef struct {
+    Tuple Position;
+    Tuple Velocity;
+} Projectile;
+
+typedef struct
 {
-    struct Tuple Gravity;
-    struct Tuple Wind;
-};
+    Tuple Gravity;
+    Tuple Wind;
+} Environment;
 
-struct Projectile Tick(struct Environment env, struct Projectile proj)
+Projectile Tick(Environment env, Projectile proj)
 {
-    struct Tuple position = tadd(proj.Position, proj.Velocity);
-    struct Tuple velocity = tadd(proj.Velocity, tadd(env.Gravity, env.Wind));
+    Tuple position = addt(proj.Position, proj.Velocity);
+    Tuple velocity = addt(proj.Velocity, addt(env.Gravity, env.Wind));
 
-    struct Projectile a = {
-                            { position.x, position.y, position.z },
-                            { velocity.x, velocity.y, velocity.z }
-                          };
+    Projectile a = {
+                        { position.x, position.y, position.z },
+                        { velocity.x, velocity.y, velocity.z }
+                    };
     return a;
 }
 
@@ -28,18 +34,21 @@ int main (int argc, char *argv[]) {
 
     printf("Fire the cannon!\r\n");
  
-    struct Tuple v = {1, 1, 0};
-    struct Projectile p = { {0, 1, 0}, tnorm(v) };
-    struct Environment e = { {0, -0.1, 0}, { -0.01, 0, 0} };
+    Tuple v = {1, 1, 0};
+    Projectile p = { {0, 1, 0}, normv(v) };
+    Environment e = { {0, -0.1, 0}, { -0.01, 0, 0} };
     int ticks = 0;
 
     do
     {
-        printf("Tick %i: %s\r\n", ticks++, tuple_string(p.Position));
+        char *tuple = tuple_string(p.Position);
+        printf("Tick %i: %s\r\n", ticks++, tuple);
+        free(tuple);
+        
         p = Tick(e, p);
     } while (p.Position.y >= 0);
 
-    printf("Done!");
+    printf("Done!\r\n\r\n");
 
     return 0;
 }

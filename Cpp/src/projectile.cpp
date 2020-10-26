@@ -1,6 +1,10 @@
 #include <iostream>
 #include "tuple.h"
 
+/**************************************************************
+ * Using the raytracer library for creating a projectile test.
+ **************************************************************/
+
 class Projectile
 {
 public:

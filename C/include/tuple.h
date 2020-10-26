@@ -3,25 +3,34 @@
 
 #include <stdbool.h>
 
-struct Tuple {
+typedef struct {
     double x, y, z, w;
-};
+} Tuple;
 
-struct Tuple create_tuple(double X, double Y, double Z, double W);
-struct Tuple create_point(double X, double Y, double Z);
-struct Tuple create_vector(double X, double Y, double Z);
-bool is_point(struct Tuple t);
-bool is_vector(struct Tuple t);
-struct Tuple tadd(struct Tuple a, struct Tuple b);
-struct Tuple tsub(struct Tuple a, struct Tuple b);
-struct Tuple tmul(struct Tuple a, double b);
-struct Tuple tdiv(struct Tuple a, double b);
-struct Tuple tneg(struct Tuple t);
-double tmag(struct Tuple t);
-struct Tuple tnorm(struct Tuple t);
-double vdot(struct Tuple a, struct Tuple b);
-struct Tuple vcross(struct Tuple a, struct Tuple b);
-bool is_equal(struct Tuple a, struct Tuple b);
-char* tuple_string(struct Tuple t);
+// Create tuples, points and vectors
+Tuple create_tuple(double X, double Y, double Z, double W);
+Tuple create_point(double X, double Y, double Z);
+Tuple create_vector(double X, double Y, double Z);
+bool is_point(Tuple t);
+bool is_vector(Tuple t);
+
+// Tuple basic math
+Tuple addt(Tuple a, Tuple b);
+Tuple subt(Tuple a, Tuple b);
+Tuple mult(Tuple a, double b);
+Tuple divt(Tuple a, double b);
+Tuple tneg(Tuple t);
+
+// Vector basic math
+double magv(Tuple t);
+Tuple normv(Tuple t);
+double dotv(Tuple a, Tuple b);
+Tuple crossv(Tuple a, Tuple b);
+
+// Tuple equality test
+bool is_equal(Tuple a, Tuple b);
+
+// Tuple string conversion
+char* tuple_string(Tuple t);
 
 #endif

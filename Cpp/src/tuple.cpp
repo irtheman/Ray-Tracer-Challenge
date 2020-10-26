@@ -2,6 +2,11 @@
 #include "tuple.h"
 #include "rtmath.h"
 
+/***********************************************
+ *               Tuple members
+************************************************/
+
+
 Tuple::Tuple(double X, double Y, double Z, double W) : x(X), y(Y), z(Z), w(W)
 {
     // Nothing to do here
@@ -79,6 +84,9 @@ std::ostream& operator<<(std::ostream& os, const Tuple& p)
     return os << "(" << p.x << "," << p.y << "," << p.z << "," << p.w << ")"; 
 }
 
+/***********************************************
+ *               Vector members
+************************************************/
 
 double Vector::Magnitude()
 {

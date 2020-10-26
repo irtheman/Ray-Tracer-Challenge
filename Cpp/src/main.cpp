@@ -1,6 +1,10 @@
 #include <iostream>
 #include "tuple.h"
 
+/************************************************
+ * Main application for the ray tracer challenge
+ ************************************************/
+ 
 int main (int argc, char *argv[]) {
 
     std::cout << "Hello World!" << std::endl;
