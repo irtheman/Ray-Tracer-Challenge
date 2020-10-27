@@ -1,6 +1,7 @@
 ﻿using System;
+using CSharp;
 
-namespace CSharp
+namespace Projectile
 {
     #region Projectile Test
 
@@ -34,12 +35,9 @@ namespace CSharp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine();
-
             #region Projectile Test
 
-            Console.WriteLine("Fire the cannon!"); 
+            Console.WriteLine("Fire the cannon!");
             var p = new Projectile(new Point(0, 1, 0), (new Vector(1, 1, 0)).Normalize);
             var e = new Environment(new Vector(0, -0.1, 0), new Vector(-0.01, 0, 0));
             int ticks = 0;

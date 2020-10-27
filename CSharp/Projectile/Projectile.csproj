@@ -1,20 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CSharpTest\**" />
     <Compile Remove="Projectile\**" />
-    <Compile Remove="Rtc\**" />
-    <EmbeddedResource Remove="CSharpTest\**" />
     <EmbeddedResource Remove="Projectile\**" />
-    <EmbeddedResource Remove="Rtc\**" />
-    <None Remove="CSharpTest\**" />
     <None Remove="Projectile\**" />
-    <None Remove="Rtc\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSharp.csproj" />
   </ItemGroup>
 
 </Project>
