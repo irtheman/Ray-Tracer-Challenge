@@ -9,6 +9,16 @@ namespace CSharp
             // Nothing else to do
         }
 
+        public static Vector operator *(Vector lhs, double rhs)
+        {
+            var ret = new Vector(lhs.x * rhs,
+                             lhs.y * rhs,
+                             lhs.z * rhs);
+            ret.w = lhs.w * rhs;
+
+            return ret;
+        }
+
         public double Magnitude
         {
             get

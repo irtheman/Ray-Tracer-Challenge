@@ -38,15 +38,31 @@ namespace Projectile
             #region Projectile Test
 
             Console.WriteLine("Fire the cannon!");
-            var p = new Projectile(new Point(0, 1, 0), (new Vector(1, 1, 0)).Normalize);
-            var e = new Environment(new Vector(0, -0.1, 0), new Vector(-0.01, 0, 0));
+            
+            var start = new Point(0, 1, 0);
+            var velocity = (new Vector(1, 1.8, 0)).Normalize * 14.5;
+            var p = new Projectile(start, velocity);
+            
+            var gravity = new Vector(0, -0.1, 0);
+            var wind = new Vector(0, -0.1, 0);
+            var e = new Environment(gravity, wind);
+
+            var c = new Canvas(900, 550);
+            var color = new Color(1, 0, 0);
             int ticks = 0;
 
             do
             {
                 Console.WriteLine($"Tick {ticks++}:  {p.Position}");
+
+                var y = c.Height - (int)Math.Round(p.Position.y);
+                var x = (int)Math.Round(p.Position.x);
+                c[x, y] = color;
+
                 p = Tick(e, p);
             } while (p.Position.y >= 0);
+
+            System.IO.File.WriteAllText("projectile.ppm", c.GetPPM());
 
             Console.WriteLine("Done!");
 
