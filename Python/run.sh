@@ -12,3 +12,4 @@ python -m rt
 echo
 echo Projectile test...
 python -m rt.projectile
+gimp projectile.ppm

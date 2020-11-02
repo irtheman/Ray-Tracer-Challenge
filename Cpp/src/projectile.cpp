@@ -1,5 +1,9 @@
+#include <fstream>
 #include <iostream>
+#include <cmath>
 #include "tuple.h"
+#include "color.h"
+#include "canvas.h"
 
 /**************************************************************
  * Using the raytracer library for creating a projectile test.
@@ -45,15 +49,33 @@ int main (int argc, char *argv[]) {
     Tuple t = Tuple(1,2,3,4);
     std::cout << "Tuple: " << t << std::endl;
 
-    Projectile p = Projectile(Point(0, 1, 0), Vector(1, 1, 0).Normalize());
-    Environment e = Environment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0));
+    Point start = Point(0, 1, 0);
+    Vector velocity = Vector(1, 1, 0).Normalize() * 10;
+    Projectile p = Projectile(start, velocity);
+
+    Vector gravity = Vector(0, -0.1, 0);
+    Vector wind = Vector(-0.01, 0, 0);
+    Environment e = Environment(gravity, wind);
+
     int ticks = 0;
+
+    Canvas c = Canvas(900, 550);
+    Color color = Color(1, 0, 0);
 
     do
     {
         std::cout << "Tick " << ticks++ << ": " << p.Position << std::endl;
+
+        int y = c.Height() - round(p.Position.y);
+        int x = round(p.Position.x);
+        c(x, y) = color;
+
         p = Tick(e, p);
     } while (p.Position.y >= 0);
+
+    std::ofstream out("projectile.ppm");
+    out << c.GetPPM();
+    out.close();
 
     std::cout << "Done!" << std::endl;
 

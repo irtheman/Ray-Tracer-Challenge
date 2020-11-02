@@ -1,4 +1,6 @@
 from rt.tuple import *
+from rt.color import *
+from rt.canvas import *
 
 class Projectile(object):
     def __init__(self, pos, vel):
@@ -19,13 +21,30 @@ def Tick(env, proj):
 if __name__ == '__main__':
     print('Fire the cannon!')
 
-    p = Projectile(Point(0, 1, 0), Vector(1, 1, 0).normalize)
-    e = Environment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
+    start = Point(0, 1, 0)
+    velocity = Vector(1, 1, 0).normalize * 10
+    p = Projectile(start, velocity)
+
+    gravity = Vector(0, -0.1, 0)
+    wind = Vector(-0.01, 0, 0)
+    e = Environment(gravity, wind)
+
+    c = Canvas(900, 550)
+    color = Color(1, 0, 0)
     ticks = 0
 
     while (p.Position.y >= 0):
         print(f'Tick {ticks}:  {p.Position}')
+
+        y = c.Height - int(round(p.Position.y))
+        x = int(round(p.Position.x))
+        c[[x, y]] = color
+
         ticks += 1
         p = Tick(e, p)
+
+    file = open(r'projectile.ppm', 'w')
+    file.write(c.GetPPM())
+    file.close()
 
     print('Done!')
