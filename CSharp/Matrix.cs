@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace CSharp
@@ -52,7 +53,7 @@ namespace CSharp
 
         public int Rows => m.GetUpperBound(0) + 1;
         public int Columns => m.GetUpperBound(1) + 1;
-        
+
         public double this[int row, int column]
         {
             get
@@ -66,18 +67,7 @@ namespace CSharp
             }
         }
 
-        public static Matrix operator*(Matrix lhs, double rhs)
-        {
-            Matrix ret = new Matrix(lhs);
-
-            for (int i = 0; i < lhs.Rows; i++)
-                for (int j = 0; j < lhs.Columns; j++)
-                    ret[i, j] *= rhs;
-
-            return ret;
-        }
-
-        public static Matrix operator*(Matrix lhs, Matrix rhs)
+        public static Matrix operator *(Matrix lhs, Matrix rhs)
         {
             if (lhs.Columns != rhs.Rows)
                 throw new Exception("Matrix Cannot Be Multiplied.");
@@ -99,12 +89,129 @@ namespace CSharp
             return ret;
         }
 
-        public static Matrix operator *(Matrix lhs, Tuple rhs)
+        public static Tuple operator *(Matrix lhs, Tuple rhs)
         {
             if ((lhs.Rows != 4) || (lhs.Columns != 4))
                 throw new Exception("Matrix must be Nx4 or 4xM.");
 
-            return lhs * new Matrix(rhs, lhs.Rows == 4);
+            Matrix value = lhs * new Matrix(rhs, lhs.Rows == 4);
+
+            double x, y, z, w;
+            if (value.Rows == 4)
+            {
+                x = value[0, 0];
+                y = value[1, 0];
+                z = value[2, 0];
+                w = value[3, 0];
+            }
+            else
+            {
+                x = value[0, 0];
+                y = value[0, 1];
+                z = value[0, 2];
+                w = value[0, 3];
+            }
+
+            return new Tuple(x, y, z, w);
+        }
+
+        public Matrix Transpose
+        {
+            get
+            {
+                Matrix m = new Matrix(Columns, Rows);
+
+                for (int i = 0; i < Rows; i++)
+                    for (int j = 0; j < Columns; j++)
+                        m[j, i] = this[i, j];
+
+                return m;
+            }
+        }
+
+        public double Determinant
+        {
+            get
+            {
+                double det = 0;
+                int size = Math.Max(Rows, Columns);
+                if (size == 2)
+                {
+                    det = this[0, 0] * this[1, 1] - this[0, 1] * this[1, 0];
+                }
+                else
+                {
+                    for (var c = 0; c < size; c++)
+                    {
+                        det += this[0, c] * Cofactor(0, c);
+                    }
+                }
+
+                return det;
+            }
+        }
+
+        public Matrix Submatrix(int deleteRow, int deleteColumn)
+        {
+            Matrix m = new Matrix(Rows - 1, Columns - 1);
+            int r = 0;
+            int c = 0;
+
+            for (int i = 0; i < Rows; i++)
+            {
+                if (i == deleteRow) continue;
+
+                c = 0;
+                for (int j = 0; j < Columns; j++)
+                {
+                    if (j == deleteColumn) continue;
+
+                    m[r, c] = this[i, j];
+                    c += 1;
+                }
+
+                r += 1;
+            }
+
+            return m;
+        }
+
+        public double Minor(int deleteRow, int deleteColumn)
+        {
+            Matrix m = Submatrix(deleteRow, deleteColumn);
+            return m.Determinant;
+        }
+
+        public double Cofactor(int deleteRow, int deleteColumn)
+        {
+            Matrix m = Submatrix(deleteRow, deleteColumn);
+            var det = m.Determinant;
+            return (deleteRow + deleteColumn) % 2 == 0 ? det : -det;
+        }
+
+        public bool IsInvertible => !Determinant.IsEqual(0);
+
+        public Matrix Inverse
+        {
+            get
+            {
+                if (!IsInvertible) throw new Exception("Matrix cannot be inverted.");
+
+                Matrix m = new Matrix(Rows, Columns);
+                var size = Math.Max(Rows, Columns);
+                var det = Determinant;
+
+                for (var row = 0; row < size; row++)
+                {
+                    for (var col = 0; col < size; col++)
+                    {
+                        var c = Cofactor(row, col);
+                        m[col, row] = c / det;
+                    }
+                }
+
+                return m;
+            }
         }
 
         public override bool Equals(object obj)
@@ -117,7 +224,7 @@ namespace CSharp
 
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)
-                    if (m[i, j] != other[i, j])
+                    if (!m[i, j].IsEqual(other[i, j]))
                         return false;
 
             return true;
@@ -148,6 +255,11 @@ namespace CSharp
 
             return sb.ToString();
         }
+
+        public static Matrix Identity => new Matrix(4, 4, new double[] { 1, 0, 0, 0,
+                                                                         0, 1, 0, 0,
+                                                                         0, 0, 1, 0,
+                                                                         0, 0, 0, 1});
 
         private void LoadMatrix(int rows, int columns, double[] data)
         {
