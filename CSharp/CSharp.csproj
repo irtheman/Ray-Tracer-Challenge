@@ -6,15 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="clock\**" />
     <Compile Remove="CSharpTest\**" />
     <Compile Remove="Projectile\**" />
     <Compile Remove="Rtc\**" />
+    <EmbeddedResource Remove="clock\**" />
     <EmbeddedResource Remove="CSharpTest\**" />
     <EmbeddedResource Remove="Projectile\**" />
     <EmbeddedResource Remove="Rtc\**" />
+    <None Remove="clock\**" />
     <None Remove="CSharpTest\**" />
     <None Remove="Projectile\**" />
     <None Remove="Rtc\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
   </ItemGroup>
 
 </Project>

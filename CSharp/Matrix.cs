@@ -115,6 +115,22 @@ namespace CSharp
             return new Tuple(x, y, z, w);
         }
 
+        public static Point operator *(Matrix lhs, Point rhs)
+        {
+            Tuple other = (Tuple)rhs;
+            Tuple t = lhs * other;
+
+            return new Point(t.x, t.y, t.z);
+        }
+
+        public static Vector operator *(Matrix lhs, Vector rhs)
+        {
+            Tuple other = (Tuple)rhs;
+            Tuple t = lhs * other;
+
+            return new Vector(t.x, t.y, t.z);
+        }
+
         public Matrix Transpose
         {
             get
@@ -212,6 +228,82 @@ namespace CSharp
 
                 return m;
             }
+        }
+
+        public static Matrix Translation(double x, double y, double z)
+        {
+            var id = Identity;
+            id[0, 3] = x;
+            id[1, 3] = y;
+            id[2, 3] = z;
+
+            return id;
+        }
+
+        public static Matrix Scaling(double x, double y, double z)
+        {
+            var id = Identity;
+            id[0, 0] = x;
+            id[1, 1] = y;
+            id[2, 2] = z;
+
+            return id;
+        }
+
+        public static Matrix RotationX(double angle)
+        {
+            var id = Identity;
+            var sine = Math.Sin(angle);
+            var cose = Math.Cos(angle);
+
+            id[1, 1] = cose;
+            id[1, 2] = -sine;
+            id[2, 1] = sine;
+            id[2, 2] = cose;
+
+            return id;
+        }
+
+        public static Matrix RotationY(double angle)
+        {
+            var id = Identity;
+            var sine = Math.Sin(angle);
+            var cose = Math.Cos(angle);
+
+            id[0, 0] = cose;
+            id[0, 2] = sine;
+            id[2, 0] = -sine;
+            id[2, 2] = cose;
+
+            return id;
+        }
+
+        public static Matrix RotationZ(double angle)
+        {
+            var id = Identity;
+            var sine = Math.Sin(angle);
+            var cose = Math.Cos(angle);
+
+            id[0, 0] = cose;
+            id[0, 1] = -sine;
+            id[1, 0] = sine;
+            id[1, 1] = cose;
+
+            return id;
+        }
+
+        public static Matrix Shearing(double xy, double xz, double yx, double yz, double zx, double zy)
+        {
+            var id = Identity;
+
+            id[0, 1] = xy;
+            id[0, 2] = xz;
+            id[1, 0] = yx;
+            id[1, 2] = yz;
+            id[2, 0] = zx;
+            id[2, 1] = zy;
+
+            return id;
         }
 
         public override bool Equals(object obj)
