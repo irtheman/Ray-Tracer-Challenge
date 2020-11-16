@@ -6,5 +6,10 @@
         {
             // Nothing else to do
         }
+
+        public Point(Tuple t) : base(t.x, t.y, t.z, 1.0)
+        {
+            // Nothing else to do
+        }
     }
 }

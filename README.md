@@ -1,7 +1,16 @@
 # Ray-Tracer-Challenge
 My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to follow up with versions of python, C and C++. More may follow over time.  
 
-All of this is for Ubuntu 20.04.
+# Images Created With C#
+![Chapter 2 Projectile](Images/cs_projectile.png "Projectile")
+![Chapter 4 Clock](Images/cs_clock.png "Clock")
+![Chapter 5 Circle](Images/cs_circle.png "Circle")
+![Chapter 5 Circle Mod 1](Images/cs_circle_shrinky.png "Circle Shrink Y")
+![Chapter 5 Circle Mod 2](Images/cs_circle_shrinkx.png "Circle Shrink X")
+![Chapter 5 Circle Mod 3](Images/cs_circle_shrinkrotate.png "Circle Shrink & Rotate")
+![Chapter 5 Circle Mod 4](Images/cs_circle_shrinkskew.png "Circle Shrink & Skew")
+
+All of the following is for Ubuntu 20.04.
 
 # .NET Core
 ## Installing .NET Core

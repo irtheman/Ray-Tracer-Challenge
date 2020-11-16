@@ -6,14 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Circle\**" />
     <Compile Remove="clock\**" />
     <Compile Remove="CSharpTest\**" />
     <Compile Remove="Projectile\**" />
     <Compile Remove="Rtc\**" />
+    <EmbeddedResource Remove="Circle\**" />
     <EmbeddedResource Remove="clock\**" />
     <EmbeddedResource Remove="CSharpTest\**" />
     <EmbeddedResource Remove="Projectile\**" />
     <EmbeddedResource Remove="Rtc\**" />
+    <None Remove="Circle\**" />
     <None Remove="clock\**" />
     <None Remove="CSharpTest\**" />
     <None Remove="Projectile\**" />

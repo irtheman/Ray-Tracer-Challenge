@@ -9,6 +9,11 @@ namespace CSharp
             // Nothing else to do
         }
 
+        public Vector(Tuple t) : base(t.x, t.y, t.z, 0.0)
+        {
+            // Nothing else to do
+        }
+
         public static Vector operator *(Vector lhs, double rhs)
         {
             var ret = new Vector(lhs.x * rhs,
