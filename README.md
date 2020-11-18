@@ -9,6 +9,11 @@ My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to fo
 ![Chapter 5 Circle Mod 2](Images/cs_circle_shrinkx.png "Circle Shrink X")
 ![Chapter 5 Circle Mod 3](Images/cs_circle_shrinkrotate.png "Circle Shrink & Rotate")
 ![Chapter 5 Circle Mod 4](Images/cs_circle_shrinkskew.png "Circle Shrink & Skew")
+![Chapter 6 Circle](Images/cs_sphere.png "Sphere")
+![Chapter 6 Circle Mod 1](Images/cs_sphere_shrinky.png "Sphere Shrink Y")
+![Chapter 6 Circle Mod 2](Images/cs_sphere_shrinkx.png "Sphere Shrink X")
+![Chapter 6 Circle Mod 3](Images/cs_sphere_shrinkrotate.png "Sphere Shrink & Rotate")
+![Chapter 6 Circle Mod 4](Images/cs_sphere_shrinkskew.png "Sphere Shrink & Skew")
 
 All of the following is for Ubuntu 20.04.
 

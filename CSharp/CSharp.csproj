@@ -11,16 +11,19 @@
     <Compile Remove="CSharpTest\**" />
     <Compile Remove="Projectile\**" />
     <Compile Remove="Rtc\**" />
+    <Compile Remove="Sphere\**" />
     <EmbeddedResource Remove="Circle\**" />
     <EmbeddedResource Remove="clock\**" />
     <EmbeddedResource Remove="CSharpTest\**" />
     <EmbeddedResource Remove="Projectile\**" />
     <EmbeddedResource Remove="Rtc\**" />
+    <EmbeddedResource Remove="Sphere\**" />
     <None Remove="Circle\**" />
     <None Remove="clock\**" />
     <None Remove="CSharpTest\**" />
     <None Remove="Projectile\**" />
     <None Remove="Rtc\**" />
+    <None Remove="Sphere\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -188,5 +188,26 @@ namespace CSharpTest
             Assert.AreEqual(a.Cross(b), new Vector(-1, 2, -1));
             Assert.AreEqual(b.Cross(a), new Vector(1, -2, 1));
         }
+
+        [TestMethod]
+        public void TestVectorReflect45()
+        {
+            var v = new Vector(1, -1, 0);
+            var n = new Vector(0, 1, 0);
+            var r = v.Reflect(n);
+
+            Assert.AreEqual(r, new Vector(1, 1, 0));
+        }
+
+        [TestMethod]
+        public void TestVectorReflectOther()
+        {
+            var value = Sqrt(2) / 2.0;
+            var v = new Vector(0, -1, 0);
+            var n = new Vector(value, value, 0);
+            var r = v.Reflect(n);
+
+            Assert.AreEqual(r, new Vector(1, 0, 0));
+        }
     }
 }

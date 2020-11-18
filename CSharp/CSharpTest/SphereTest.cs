@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CSharp;
+using System;
 
 namespace CSharpTest
 {
@@ -114,6 +115,97 @@ namespace CSharpTest
             var xs = s.Intersect(r);
 
             Assert.AreEqual(xs.Count, 0);
+        }
+
+        [TestMethod]
+        public void TestSphereNormalX()
+        {
+            var s = new Sphere();
+            var n = s.Normal(new Point(1, 0, 0));
+
+            Assert.AreEqual(n, new Vector(1, 0, 0));
+        }
+
+        [TestMethod]
+        public void TestSphereNormalY()
+        {
+            var s = new Sphere();
+            var n = s.Normal(new Point(0, 1, 0));
+
+            Assert.AreEqual(n, new Vector(0, 1, 0));
+        }
+
+        [TestMethod]
+        public void TestSphereNormalZ()
+        {
+            var s = new Sphere();
+            var n = s.Normal(new Point(0, 0, 1));
+
+            Assert.AreEqual(n, new Vector(0, 0, 1));
+        }
+
+        [TestMethod]
+        public void TestSphereNormalOther()
+        {
+            var s = new Sphere();
+            var value = Math.Sqrt(3) / 3.0;
+            var n = s.Normal(new Point(value, value, value));
+
+            Assert.AreEqual(n, new Vector(value, value, value));
+        }
+
+        [TestMethod]
+        public void TestSphereNormalNormalized()
+        {
+            var s = new Sphere();
+            var value = Math.Sqrt(3) / 3.0;
+            var n = s.Normal(new Point(value, value, value));
+
+            Assert.AreEqual(n, n.Normalize);
+        }
+
+        [TestMethod]
+        public void TestSphereTranslatedNormal()
+        {
+            var s = new Sphere();
+            s.Transform = Matrix.Translation(0, 1, 0);
+
+            var n = s.Normal(new Point(0, 1.70711, -0.70711));
+
+            Assert.AreEqual(n, new Vector(0, 0.70711, -0.70711));
+        }
+
+        [TestMethod]
+        public void TestSphereTransformedNormal()
+        {
+            var s = new Sphere();
+            var m = Matrix.Scaling(1, 0.5, 1) * Matrix.RotationZ(Math.PI / 5);
+            s.Transform = m;
+
+            var value = Math.Sqrt(2) / 2.0;
+            var n = s.Normal(new Point(0, value, -value));
+
+            Assert.AreEqual(n, new Vector(0, 0.97014, -0.24254));
+        }
+
+        [TestMethod]
+        public void TestSphereDefaultMaterial()
+        {
+            var s = new Sphere();
+            var m = s.Material;
+
+            Assert.AreEqual(m, new Material());
+        }
+
+        [TestMethod]
+        public void TestSphereCustomMaterial()
+        {
+            var s = new Sphere();
+            var m = new Material();
+            m.Ambient = 1;
+            s.Material = m;
+
+            Assert.AreEqual(s.Material, m);
         }
     }
 }

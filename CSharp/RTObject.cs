@@ -10,9 +10,12 @@ namespace CSharp
         protected RTObject()
         {
             Transform = Matrix.Identity;
+            Material = new Material();
         }
 
+        public Material Material { get; set; }
         public Matrix Transform { get; set; }
         public abstract Intersections Intersect(Ray r);
+        public abstract Vector Normal(Point p);
     }
 }

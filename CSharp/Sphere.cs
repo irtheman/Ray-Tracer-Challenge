@@ -29,5 +29,14 @@ namespace CSharp
 
             return result;
         }
+
+        public override Vector Normal(Point p)
+        {
+            var objectPoint = Transform.Inverse * p;
+            var objectNormal = objectPoint - new Point(0, 0, 0);
+            var worldNormal = new Vector(Transform.Inverse.Transpose * objectNormal);
+
+            return worldNormal.Normalize;
+        }
     }
 }

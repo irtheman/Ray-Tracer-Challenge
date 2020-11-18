@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projectile", "Projectile\Pr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "clock", "clock\clock.csproj", "{0571387D-2AA6-4271-B925-FEDA67509AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Circle", "Circle\Circle.csproj", "{BEF2D3F4-C54B-461A-A0A3-62FCED3FC1B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Circle", "Circle\Circle.csproj", "{BEF2D3F4-C54B-461A-A0A3-62FCED3FC1B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sphere", "Sphere\Sphere.csproj", "{EEDC7E0D-8824-470C-8D5C-DBF02529C168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{BEF2D3F4-C54B-461A-A0A3-62FCED3FC1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEF2D3F4-C54B-461A-A0A3-62FCED3FC1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEF2D3F4-C54B-461A-A0A3-62FCED3FC1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEDC7E0D-8824-470C-8D5C-DBF02529C168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEDC7E0D-8824-470C-8D5C-DBF02529C168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEDC7E0D-8824-470C-8D5C-DBF02529C168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEDC7E0D-8824-470C-8D5C-DBF02529C168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

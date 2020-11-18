@@ -23,6 +23,12 @@ namespace CSharp
 
             return ret;
         }
+        public static Vector operator -(Vector rhs)
+        {
+            return new Vector(-rhs.x,
+                             -rhs.y,
+                             -rhs.z);
+        }
 
         public double Magnitude
         {
@@ -64,6 +70,11 @@ namespace CSharp
                               this.z * rhs.x - this.x * rhs.z,
                               this.x * rhs.y - this.y * rhs.x
                              );
+        }
+
+        public Vector Reflect(Vector normal)
+        {
+            return new Vector(this - normal * 2 * Dot(normal));
         }
     }
 }
