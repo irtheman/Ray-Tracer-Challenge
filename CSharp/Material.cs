@@ -19,7 +19,7 @@ namespace CSharp
         public double Specular { get; set; }
         public double Shininess { get; set; }
 
-        public Color Lighting(PointLight light, Point position, Vector eyev, Vector normalv)
+        public Color Lighting(PointLight light, Point position, Vector eyev, Vector normalv, bool inShadow)
         {
             var effectiveColor = Color * light.Intensity;
             var lightV = (new Vector(light.Position - position)).Normalize;
@@ -28,7 +28,7 @@ namespace CSharp
             Color diffuse;
             Color specular;
 
-            if (lightDotNormal < 0)
+            if ((lightDotNormal < 0) || inShadow)
             {
                 diffuse = new Color(0, 0, 0);
                 specular = new Color(0, 0, 0);

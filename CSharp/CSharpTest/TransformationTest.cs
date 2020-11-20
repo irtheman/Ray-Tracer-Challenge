@@ -198,5 +198,54 @@ namespace CSharpTest
 
             Assert.AreEqual(new Point(15, 0, 7), t * p);
         }
+
+        [TestMethod]
+        public void TestViewTransform()
+        {
+            var from = new Point(0, 0, 0);
+            var to = new Point(0, 0, -1);
+            var up = new Vector(0, 1, 0);
+            var t = Matrix.ViewTransform(from, to, up);
+
+            Assert.AreEqual(t, Matrix.Identity);
+        }
+
+        [TestMethod]
+        public void TestViewTransformPositiveZ()
+        {
+            var from = new Point(0, 0, 0);
+            var to = new Point(0, 0, 1);
+            var up = new Vector(0, 1, 0);
+            var t = Matrix.ViewTransform(from, to, up);
+
+            Assert.AreEqual(t, Matrix.Scaling(-1, 1, -1));
+        }
+
+        [TestMethod]
+        public void TestViewTransformMoveWorld()
+        {
+            var from = new Point(0, 0, 8);
+            var to = new Point(0, 0, 0);
+            var up = new Vector(0, 1, 0);
+            var t = Matrix.ViewTransform(from, to, up);
+
+            Assert.AreEqual(t, Matrix.Translation(0, 0, -8));
+        }
+
+        [TestMethod]
+        public void TestViewTransformArbitrary()
+        {
+            var from = new Point(1, 3, 2);
+            var to = new Point(4, -2, 8);
+            var up = new Vector(1, 1, 0);
+            var t = Matrix.ViewTransform(from, to, up);
+
+            var expected = new Matrix(4, 4, new double[] { -0.50709, 0.50709, 0.67612, -2.36643,
+                                                            0.76772, 0.60609, 0.12122, -2.82843,
+                                                           -0.35857, 0.59761, -0.71714, 0.00000,
+                                                            0.00000, 0.00000, 0.00000, 1.00000});
+            
+            Assert.AreEqual(t, expected);
+        }
     }
 }

@@ -306,6 +306,24 @@ namespace CSharp
             return id;
         }
 
+        public static Matrix ViewTransform(Point from, Point to, Vector up)
+        {
+            var forward = (new Vector(to - from)).Normalize;
+            var upn = up.Normalize;
+            var left = forward.Cross(upn);
+            var trueUp = left.Cross(forward);
+            var orientation = new Matrix(4, 4,
+                                         new double[]
+                                         {
+                                             left.x,      left.y,     left.z,    0,
+                                             trueUp.x,    trueUp.y,   trueUp.z,  0,
+                                            -forward.x,  -forward.y, -forward.z, 0,
+                                             0,           0,          0,         1
+                                         });
+
+            return orientation * Matrix.Translation(-from.x, -from.y, -from.z);
+        }
+
         public override bool Equals(object obj)
         {
             var other = obj as Matrix;

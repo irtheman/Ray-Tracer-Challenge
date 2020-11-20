@@ -32,11 +32,30 @@ namespace CSharp
 
         public override Vector Normal(Point p)
         {
-            var objectPoint = Transform.Inverse * p;
+            var inverse = Transform.Inverse;
+            var objectPoint = inverse * p;
             var objectNormal = objectPoint - new Point(0, 0, 0);
-            var worldNormal = new Vector(Transform.Inverse.Transpose * objectNormal);
+            var worldNormal = new Vector(inverse.Transpose * objectNormal);
 
             return worldNormal.Normalize;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Sphere;
+            return ((other != null) &&
+                    (Material.Equals(other.Material)) &&
+                    (Transform.Equals(other.Transform)));
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Material, Transform);
+        }
+
+        public override string ToString()
+        {
+            return $"Sphere(0, 0): {Material} {Transform}";
         }
     }
 }

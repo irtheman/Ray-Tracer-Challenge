@@ -80,5 +80,58 @@ namespace CSharpTest
 
             Assert.AreEqual(i, i4);
         }
+
+        [TestMethod]
+        public void TestPrepareComputation()
+        {
+            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var shape = new Sphere();
+            var i = new Intersection(4, shape);
+            var comps = i.PrepareComputations(r);
+
+            Assert.AreEqual(comps.t, i.t);
+            Assert.AreEqual(comps.Object, i.Object);
+            Assert.AreEqual(comps.Point, new Point(0, 0, -1));
+            Assert.AreEqual(comps.EyeVector, new Vector(0, 0, -1));
+            Assert.AreEqual(comps.NormalVector, new Vector(0, 0, -1));
+        }
+
+        [TestMethod]
+        public void TestPrepareComputationInside()
+        {
+            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var shape = new Sphere();
+            var i = new Intersection(4, shape);
+            var comps = i.PrepareComputations(r);
+
+            Assert.IsFalse(comps.Inside);
+        }
+
+        [TestMethod]
+        public void TestPrepareComputationInsideHit()
+        {
+            var r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+            var shape = new Sphere();
+            var i = new Intersection(1, shape);
+            var comps = i.PrepareComputations(r);
+
+            Assert.AreEqual(comps.Point, new Point(0, 0, 1));
+            Assert.AreEqual(comps.EyeVector, new Vector(0, 0, -1));
+            Assert.AreEqual(comps.NormalVector, new Vector(0, 0, -1));
+            Assert.IsTrue(comps.Inside);
+        }
+
+        [TestMethod]
+        public void TestHitOffsetsPoint()
+        {
+            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var shape = new Sphere();
+            shape.Transform = Matrix.Translation(0, 0, 1);
+            var i = new Intersection(5, shape);
+            var comps = i.PrepareComputations(r);
+
+            Assert.IsTrue(comps.OverPoint.z < -epsilon / 2);
+            Assert.IsTrue(comps.Point.z > comps.OverPoint.z);
+        }
     }
 }
