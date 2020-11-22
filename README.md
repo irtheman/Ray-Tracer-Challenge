@@ -2,21 +2,37 @@
 My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to follow up with versions of python, C and C++. More may follow over time.  
 
 # Images Created With C#
+### Chapter 2
 ![Chapter 2 Projectile](Images/cs_projectile.png "Projectile")
+
+### Chapter 4
 ![Chapter 4 Clock](Images/cs_clock.png "Clock")
+
+### Chapter 5
 ![Chapter 5 Circle](Images/cs_circle.png "Circle")
 ![Chapter 5 Circle Mod 1](Images/cs_circle_shrinky.png "Circle Shrink Y")
 ![Chapter 5 Circle Mod 2](Images/cs_circle_shrinkx.png "Circle Shrink X")
 ![Chapter 5 Circle Mod 3](Images/cs_circle_shrinkrotate.png "Circle Shrink & Rotate")
 ![Chapter 5 Circle Mod 4](Images/cs_circle_shrinkskew.png "Circle Shrink & Skew")
+
+### Chapter 6
 ![Chapter 6 Circle](Images/cs_sphere.png "Sphere")
 ![Chapter 6 Circle Mod 1](Images/cs_sphere_shrinky.png "Sphere Shrink Y")
 ![Chapter 6 Circle Mod 2](Images/cs_sphere_shrinkx.png "Sphere Shrink X")
 ![Chapter 6 Circle Mod 3](Images/cs_sphere_shrinkrotate.png "Sphere Shrink & Rotate")
 ![Chapter 6 Circle Mod 4](Images/cs_sphere_shrinkskew.png "Sphere Shrink & Skew")
 
+### Chapter 7
+![Chapter 7 Scene](Images/cs_scene.png "Scene")
+
+### Chapter 8
+![Chapter 8 Scene Shadows](Images/cs_scene_shadows.png "Scene With Shadows")
+![Chapter 8 Scene Shadows](Images/cs_scene_shadow_puppet.png "Shadow Puppet")
+
 ### Chapter 9
 ![Chapter 9 Plane](Images/cs_plane.png "Plane")
+![Chapter 9 Plane With Ceiling](Images/cs_plane_ceiling.png "Plane With Ceiling")
+![Chapter 9 Plane Hex Room](Images/cs_plane_hexroom.png "Plane Hex Room")
 
 All of the following is for Ubuntu 20.04.
 
