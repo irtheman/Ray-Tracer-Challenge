@@ -6,10 +6,8 @@ namespace CSharp
 {
     public class Sphere : RTObject
     {
-        public override Intersections Intersect(Ray r)
+        protected override Intersections LocalIntersect(Ray ray)
         {
-            var ray = r.Transform(Transform.Inverse);
-
             var result = new Intersections();
             var sphereToRay = new Vector(ray.Origin - new Point(0, 0, 0));
             var a = ray.Direction.Dot(ray.Direction);
@@ -30,14 +28,9 @@ namespace CSharp
             return result;
         }
 
-        public override Vector Normal(Point p)
+        protected override Vector LocalNormal(Point p)
         {
-            var inverse = Transform.Inverse;
-            var objectPoint = inverse * p;
-            var objectNormal = objectPoint - new Point(0, 0, 0);
-            var worldNormal = new Vector(inverse.Transpose * objectNormal);
-
-            return worldNormal.Normalize;
+            return new Vector(p.x, p.y, p.z);
         }
 
         public override bool Equals(object obj)

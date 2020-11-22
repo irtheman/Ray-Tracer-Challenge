@@ -15,6 +15,9 @@ My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to fo
 ![Chapter 6 Circle Mod 3](Images/cs_sphere_shrinkrotate.png "Sphere Shrink & Rotate")
 ![Chapter 6 Circle Mod 4](Images/cs_sphere_shrinkskew.png "Sphere Shrink & Skew")
 
+### Chapter 9
+![Chapter 9 Plane](Images/cs_plane.png "Plane")
+
 All of the following is for Ubuntu 20.04.
 
 # .NET Core

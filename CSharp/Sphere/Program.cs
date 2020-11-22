@@ -78,7 +78,7 @@ namespace Sphere
                         var normal = xs.Hit.Object.Normal(point);
                         var eye = -r.Direction;
 
-                        color = xs.Hit.Object.Material.Lighting(light, point, eye, normal);
+                        color = xs.Hit.Object.Material.Lighting(light, point, eye, normal, false);
                         c[x, y] = color;
                     }
                 }

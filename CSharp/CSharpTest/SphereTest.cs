@@ -10,6 +10,13 @@ namespace CSharpTest
         private const double epsilon = 0.00001d;
 
         [TestMethod]
+        public void TestSphereIsRTObject()
+        {
+            var s = new Sphere();
+            Assert.IsTrue(s is RTObject);
+        }
+
+        [TestMethod]
         public void TestRayIntersectsSphereTwoPoints()
         {
             var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
@@ -72,23 +79,6 @@ namespace CSharpTest
             Assert.AreEqual(xs.Count, 2);
             Assert.AreEqual(xs[0].Object, s);
             Assert.AreEqual(xs[1].Object, s);
-        }
-
-        [TestMethod]
-        public void TestSphereDefaultTransformation()
-        {
-            var s = new Sphere();
-            Assert.AreEqual(s.Transform, Matrix.Identity);
-        }
-
-        [TestMethod]
-        public void TestSphereTransformationChanged()
-        {
-            var s = new Sphere();
-            var t = Matrix.Translation(2, 3, 4);
-
-            s.Transform = t;
-            Assert.AreEqual(s.Transform, t);
         }
 
         [TestMethod]
@@ -162,50 +152,6 @@ namespace CSharpTest
             var n = s.Normal(new Point(value, value, value));
 
             Assert.AreEqual(n, n.Normalize);
-        }
-
-        [TestMethod]
-        public void TestSphereTranslatedNormal()
-        {
-            var s = new Sphere();
-            s.Transform = Matrix.Translation(0, 1, 0);
-
-            var n = s.Normal(new Point(0, 1.70711, -0.70711));
-
-            Assert.AreEqual(n, new Vector(0, 0.70711, -0.70711));
-        }
-
-        [TestMethod]
-        public void TestSphereTransformedNormal()
-        {
-            var s = new Sphere();
-            var m = Matrix.Scaling(1, 0.5, 1) * Matrix.RotationZ(Math.PI / 5);
-            s.Transform = m;
-
-            var value = Math.Sqrt(2) / 2.0;
-            var n = s.Normal(new Point(0, value, -value));
-
-            Assert.AreEqual(n, new Vector(0, 0.97014, -0.24254));
-        }
-
-        [TestMethod]
-        public void TestSphereDefaultMaterial()
-        {
-            var s = new Sphere();
-            var m = s.Material;
-
-            Assert.AreEqual(m, new Material());
-        }
-
-        [TestMethod]
-        public void TestSphereCustomMaterial()
-        {
-            var s = new Sphere();
-            var m = new Material();
-            m.Ambient = 1;
-            s.Material = m;
-
-            Assert.AreEqual(s.Material, m);
         }
     }
 }

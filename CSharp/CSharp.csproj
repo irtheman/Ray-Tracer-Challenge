@@ -9,6 +9,7 @@
     <Compile Remove="Circle\**" />
     <Compile Remove="clock\**" />
     <Compile Remove="CSharpTest\**" />
+    <Compile Remove="Plane\**" />
     <Compile Remove="Projectile\**" />
     <Compile Remove="Rtc\**" />
     <Compile Remove="Scene\**" />
@@ -17,6 +18,7 @@
     <EmbeddedResource Remove="Circle\**" />
     <EmbeddedResource Remove="clock\**" />
     <EmbeddedResource Remove="CSharpTest\**" />
+    <EmbeddedResource Remove="Plane\**" />
     <EmbeddedResource Remove="Projectile\**" />
     <EmbeddedResource Remove="Rtc\**" />
     <EmbeddedResource Remove="Scene\**" />
@@ -25,6 +27,7 @@
     <None Remove="Circle\**" />
     <None Remove="clock\**" />
     <None Remove="CSharpTest\**" />
+    <None Remove="Plane\**" />
     <None Remove="Projectile\**" />
     <None Remove="Rtc\**" />
     <None Remove="Scene\**" />
