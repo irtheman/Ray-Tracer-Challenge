@@ -84,8 +84,8 @@ namespace Plane
 
             var world = new World();
             // Ceiling
-            //world.Lights.Add(new PointLight(new Point(-10, 1.5, -10), new Color(1, 1, 1)));
-            world.Lights.Add(new PointLight(new Point(0, 10, 0), new Color(1, 1, 1)));
+            //world.Lights.Add(new PointLight(new Point(-10, 1.5, -10), Color.White));
+            world.Lights.Add(new PointLight(new Point(0, 10, 0), Color.White));
             world.Objects.Add(floor);
             //world.Objects.Add(wall);
             //world.Objects.Add(ceiling);
@@ -101,8 +101,8 @@ namespace Plane
 
             var camera = new Camera(400, 200, Math.PI / 3);
             camera.Transform = Matrix.ViewTransform(new Point(0, 15, 0),
-                                                    new Point(0, 0, 0),
-                                                    new Vector(1, 0, 0));
+                                                    Point.Zero,
+                                                    Vector.VectorX);
 
             var c = camera.Render(world);
 

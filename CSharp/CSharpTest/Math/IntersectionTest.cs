@@ -84,7 +84,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestPrepareComputation()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(4, shape);
             var comps = i.PrepareComputations(r);
@@ -99,7 +99,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestPrepareComputationInside()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(4, shape);
             var comps = i.PrepareComputations(r);
@@ -110,12 +110,12 @@ namespace CSharpTest
         [TestMethod]
         public void TestPrepareComputationInsideHit()
         {
-            var r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+            var r = new Ray(Point.Zero, Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(1, shape);
             var comps = i.PrepareComputations(r);
 
-            Assert.AreEqual(comps.Point, new Point(0, 0, 1));
+            Assert.AreEqual(comps.Point, Point.PointZ);
             Assert.AreEqual(comps.EyeVector, new Vector(0, 0, -1));
             Assert.AreEqual(comps.NormalVector, new Vector(0, 0, -1));
             Assert.IsTrue(comps.Inside);
@@ -124,7 +124,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestHitOffsetsPoint()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             shape.Transform = Matrix.Translation(0, 0, 1);
             var i = new Intersection(5, shape);

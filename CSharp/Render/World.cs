@@ -5,14 +5,19 @@ namespace CSharp
 {
     public class World
     {
-        public World(bool isTest = false)
+        public World()
         {
             Objects = new List<RTObject>();
             Lights = new List<PointLight>();
+        }
 
-            if (isTest)
+        public static World Default
+        {
+            get
             {
-                var light = new PointLight(new Point(-10, 10, -10), new Color(1, 1, 1));
+                var w = new World();
+
+                var light = new PointLight(new Point(-10, 10, -10), Color.White);
 
                 var s1 = new Sphere();
                 s1.Material.Color = new Color(0.8, 1, 0.6);
@@ -22,9 +27,11 @@ namespace CSharp
                 var s2 = new Sphere();
                 s2.Transform = Matrix.Scaling(0.5, 0.5, 0.5);
 
-                Lights.Add(light);
-                Objects.Add(s1);
-                Objects.Add(s2);
+                w.Lights.Add(light);
+                w.Objects.Add(s1);
+                w.Objects.Add(s2);
+
+                return w;
             }
         }
 
@@ -46,7 +53,7 @@ namespace CSharp
 
         public Color ShadeHit(Computations comps)
         {
-            var totalColor = new Color(0, 0, 0);
+            var totalColor = Color.Black;
             var shadowed = IsShadowed(comps.OverPoint);
 
             totalColor = totalColor +
@@ -67,7 +74,7 @@ namespace CSharp
 
             if (hit == null)
             {
-                result = new Color(0, 0, 0);
+                result = Color.Black;
             }
             else
             {

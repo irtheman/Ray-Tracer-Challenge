@@ -9,7 +9,7 @@ namespace CSharp
         protected override Intersections LocalIntersect(Ray ray)
         {
             var result = new Intersections();
-            var sphereToRay = new Vector(ray.Origin - new Point(0, 0, 0));
+            var sphereToRay = new Vector(ray.Origin - Point.Zero);
             var a = ray.Direction.Dot(ray.Direction);
             var b = 2.0 * ray.Direction.Dot(sphereToRay);
             var c = sphereToRay.Dot(sphereToRay) - 1;

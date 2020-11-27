@@ -69,7 +69,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestShapeScaled()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var s = new TestShape();
 
             s.Transform = Matrix.Scaling(2, 2, 2);
@@ -82,14 +82,14 @@ namespace CSharpTest
         [TestMethod]
         public void TestShapeTranslated()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var s = new TestShape();
 
             s.Transform = Matrix.Translation(5, 0, 0);
             var xs = s.Intersect(r);
 
             Assert.AreEqual(s.SavedRay.Origin, new Point(-5, 0, -5));
-            Assert.AreEqual(s.SavedRay.Direction, new Vector(0, 0, 1));
+            Assert.AreEqual(s.SavedRay.Direction, Vector.VectorZ);
         }
 
         [TestMethod]

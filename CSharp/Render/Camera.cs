@@ -45,7 +45,7 @@ namespace CSharp
             var worldY = HalfHeight - yOffset;
             var inverse = Transform.Inverse;
             var pixel = inverse * new Point(worldX, worldY, -1);
-            var origin = inverse * new Point(0, 0, 0);
+            var origin = inverse * Point.Zero;
             var direction = (new Vector(pixel - origin)).Normalize;
 
             return new Ray(origin, direction);

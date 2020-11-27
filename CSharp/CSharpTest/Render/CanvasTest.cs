@@ -10,7 +10,7 @@ namespace CSharpTest
         public void TestCanvasCreate()
         {
             var c = new Canvas(10, 20);
-            var black = new Color(0, 0, 0);
+            var black = Color.Black;
 
             Assert.AreEqual(c.Width, 10);
             Assert.AreEqual(c.Height, 20);
@@ -28,7 +28,7 @@ namespace CSharpTest
         public void TestCanvasWrite()
         {
             var c = new Canvas(10, 20);
-            var red = new Color(1, 0, 0);
+            var red = Color.Red;
             c[2, 3] = red;
 
             Assert.AreEqual(c[2, 3], red);

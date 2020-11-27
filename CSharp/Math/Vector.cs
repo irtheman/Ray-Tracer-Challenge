@@ -4,6 +4,12 @@ namespace CSharp
 {
     public class Vector : Tuple
     {
+        public static readonly Vector Zero = new Vector(0, 0, 0);
+        public static readonly Vector Ones = new Vector(1, 1, 1);
+        public static readonly Vector VectorX = new Vector(1, 0, 0);
+        public static readonly Vector VectorY = new Vector(0, 1, 0);
+        public static readonly Vector VectorZ = new Vector(0, 0, 1);
+
         public Vector(double x, double y, double z) : base(x, y, z, 0.0)
         {
             // Nothing else to do

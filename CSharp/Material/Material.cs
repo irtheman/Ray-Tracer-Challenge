@@ -6,7 +6,7 @@ namespace CSharp
     {
         public Material()
         {
-            Color = new Color(1, 1, 1);
+            Color = Color.White;
             Ambient = 0.1;
             Diffuse = 0.9;
             Specular = 0.9;
@@ -30,8 +30,8 @@ namespace CSharp
 
             if ((lightDotNormal < 0) || inShadow)
             {
-                diffuse = new Color(0, 0, 0);
-                specular = new Color(0, 0, 0);
+                diffuse = Color.Black;
+                specular = Color.Black;
             }
             else
             {
@@ -41,7 +41,7 @@ namespace CSharp
 
                 if (reflectDotEye <= 0)
                 {
-                    specular = new Color(0, 0, 0);
+                    specular = Color.Black;
                 }
                 else
                 {

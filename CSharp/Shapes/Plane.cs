@@ -21,7 +21,7 @@ namespace CSharp
 
         protected override Vector LocalNormal(Point p)
         {
-            return new Vector(0, 1, 0);
+            return Vector.VectorY;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Projectile
 
             Console.WriteLine("Fire the cannon!");
             
-            var start = new Point(0, 1, 0);
+            var start = Point.PointY;
             var velocity = (new Vector(1, 1.8, 0)).Normalize * 14.5;
             var p = new Projectile(start, velocity);
             
@@ -48,7 +48,7 @@ namespace Projectile
             var e = new Environment(gravity, wind);
 
             var c = new Canvas(900, 550);
-            var color = new Color(1, 0, 0);
+            var color = Color.Red;
             int ticks = 0;
 
             do

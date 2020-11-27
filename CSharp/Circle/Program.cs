@@ -17,7 +17,7 @@ namespace Circle
             var half = wallSize / 2;
 
             var c = new Canvas(canvasPixels, canvasPixels);
-            var color = new Color(1, 0, 0);
+            var color = Color.Red;
             
             // Normal sphere
             var shape = new Sphere();

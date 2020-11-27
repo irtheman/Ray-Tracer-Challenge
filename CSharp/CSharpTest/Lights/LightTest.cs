@@ -9,8 +9,8 @@ namespace CSharpTest
         [TestMethod]
         public void TestPointLightCreate()
         {
-            var intensity = new Color(1, 1, 1);
-            var position = new Point(0, 0, 0);
+            var intensity = Color.White;
+            var position = Point.Zero;
             var light = new PointLight(position, intensity);
 
             Assert.AreEqual(light.Position, position);

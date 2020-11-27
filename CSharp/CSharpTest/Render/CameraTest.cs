@@ -45,7 +45,7 @@ namespace CSharpTest
             var c = new Camera(201, 101, Math.PI / 2);
             var r = c.RayForPixel(100, 50);
 
-            Assert.AreEqual(r.Origin, new Point(0, 0, 0));
+            Assert.AreEqual(r.Origin, Point.Zero);
             Assert.AreEqual(r.Direction, new Vector(0, 0, -1));
         }
 
@@ -55,7 +55,7 @@ namespace CSharpTest
             var c = new Camera(201, 101, Math.PI / 2);
             var r = c.RayForPixel(0, 0);
 
-            Assert.AreEqual(r.Origin, new Point(0, 0, 0));
+            Assert.AreEqual(r.Origin, Point.Zero);
             Assert.AreEqual(r.Direction, new Vector(0.66519, 0.33259, -0.66851));
         }
 
@@ -74,11 +74,11 @@ namespace CSharpTest
         [TestMethod]
         public void TestCameraRenderWorld()
         {
-            var w = new World(true);
+            var w = World.Default;
             var c = new Camera(11, 11, Math.PI / 2);
             var from = new Point(0, 0, -5);
-            var to = new Point(0, 0, 0);
-            var up = new Vector(0, 1, 0);
+            var to = Point.Zero;
+            var up = Vector.VectorY;
             c.Transform = Matrix.ViewTransform(from, to, up);
             var image = c.Render(w);
 

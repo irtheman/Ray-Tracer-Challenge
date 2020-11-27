@@ -82,7 +82,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestVectorSubtractFromZero()
         {
-            var zero = new Vector(0, 0, 0);
+            var zero = Vector.Zero;
             var v = new Vector(1, -2, 3);
             Assert.AreEqual(zero - v, new Vector(-1, 2, -3));
         }
@@ -118,21 +118,21 @@ namespace CSharpTest
         [TestMethod]
         public void TestVectorMagnitude1()
         {
-            var v = new Vector(1, 0, 0);
+            var v = Vector.VectorX;
             Assert.AreEqual(v.Magnitude, 1);
         }
 
         [TestMethod]
         public void TestVectorMagnitude2()
         {
-            var v = new Vector(0, 1, 0);
+            var v = Vector.VectorY;
             Assert.AreEqual(v.Magnitude, 1);
         }
 
         [TestMethod]
         public void TestVectorMagnitude3()
         {
-            var v = new Vector(0, 0, 1);
+            var v = Vector.VectorZ;
             Assert.AreEqual(v.Magnitude, 1);
         }
 
@@ -154,7 +154,7 @@ namespace CSharpTest
         public void TestVectorNormalize1()
         {
             var v = new Vector(4, 0, 0);
-            Assert.AreEqual(v.Normalize, new Vector(1, 0, 0));
+            Assert.AreEqual(v.Normalize, Vector.VectorX);
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace CSharpTest
         public void TestVectorReflect45()
         {
             var v = new Vector(1, -1, 0);
-            var n = new Vector(0, 1, 0);
+            var n = Vector.VectorY;
             var r = v.Reflect(n);
 
             Assert.AreEqual(r, new Vector(1, 1, 0));
@@ -207,7 +207,7 @@ namespace CSharpTest
             var n = new Vector(value, value, 0);
             var r = v.Reflect(n);
 
-            Assert.AreEqual(r, new Vector(1, 0, 0));
+            Assert.AreEqual(r, Vector.VectorX);
         }
     }
 }

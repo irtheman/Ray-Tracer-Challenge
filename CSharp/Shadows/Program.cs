@@ -50,7 +50,7 @@ namespace Shadows
             ear2.Material.Specular = 0.3;
 
             var world = new World();
-            world.Lights.Add(new PointLight(new Point(-5, 0, -10), new Color(1, 1, 1)));
+            world.Lights.Add(new PointLight(new Point(-5, 0, -10), Color.White));
             world.Objects.Add(wall);
             world.Objects.Add(middle);
             world.Objects.Add(nose);
@@ -59,8 +59,8 @@ namespace Shadows
 
             var camera = new Camera(400, 200, Math.PI / 3);
             camera.Transform = Matrix.ViewTransform(new Point(0, 1, -5),
-                                                    new Point(0, 1, 0),
-                                                    new Vector(0, 1, 0));
+                                                    Point.PointY,
+                                                    Vector.VectorY);
 
             var c = camera.Render(world);
 

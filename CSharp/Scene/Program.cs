@@ -55,7 +55,7 @@ namespace Scene
             left.Material.Specular = 0.3;
 
             var world = new World();
-            world.Lights.Add(new PointLight(new Point(-10, 10, -10), new Color(1, 1, 1)));
+            world.Lights.Add(new PointLight(new Point(-10, 10, -10), Color.White));
             world.Objects.Add(floor);
             world.Objects.Add(leftWall);
             world.Objects.Add(rightWall);
@@ -65,8 +65,8 @@ namespace Scene
 
             var camera = new Camera(100, 50, Math.PI / 3);
             camera.Transform = Matrix.ViewTransform(new Point(0, 1.5, -5),
-                                                    new Point(0, 1, 0),
-                                                    new Vector(0, 1, 0));
+                                                    Point.PointY,
+                                                    Vector.VectorY);
 
             var c = camera.Render(world);
 

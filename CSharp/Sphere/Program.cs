@@ -17,14 +17,14 @@ namespace Sphere
             var half = wallSize / 2;
 
             var c = new Canvas(canvasPixels, canvasPixels);
-            var color = new Color(1, 0, 0);
+            var color = Color.Red;
 
             var lightPosition = new Point(-10, 10, -10);
             
             // Lower light height
             //var lightPosition = new Point(-10, 0, -10);
 
-            var lightColor = new Color(1, 1, 1);
+            var lightColor = Color.White;
             
             // Yellow light
             //var lightColor = new Color(1, 1, 0);
@@ -36,7 +36,7 @@ namespace Sphere
             shape.Material.Color = new Color(1, 0.2, 1);
 
             // White sphere
-            //shape.Material.Color = new Color(1, 1, 1);
+            //shape.Material.Color = Color.White;
 
             // Make it blue-ish
             //shape.Material.Color = new Color(0.2, 1, 1);

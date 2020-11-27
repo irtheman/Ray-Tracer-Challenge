@@ -23,7 +23,10 @@ namespace CSharp
         public Matrix(int rows, int columns, double[] data)
         {
             m = new double[rows, columns];
-            LoadMatrix(rows, columns, data);
+            if (data != null)
+            {
+                LoadMatrix(rows, columns, data);
+            }
         }
 
         public Matrix(Matrix matrix)
@@ -129,6 +132,20 @@ namespace CSharp
             Tuple t = lhs * other;
 
             return new Vector(t.x, t.y, t.z);
+        }
+
+        public static Matrix Identity
+        {
+            get
+            {
+                var m = new Matrix(4, 4);
+                m[0, 0] = 1;
+                m[1, 1] = 1;
+                m[2, 2] = 1;
+                m[3, 3] = 1;
+
+                return m;
+            }
         }
 
         public Matrix Transpose
@@ -365,11 +382,6 @@ namespace CSharp
 
             return sb.ToString();
         }
-
-        public static Matrix Identity => new Matrix(4, 4, new double[] { 1, 0, 0, 0,
-                                                                         0, 1, 0, 0,
-                                                                         0, 0, 1, 0,
-                                                                         0, 0, 0, 1});
 
         private void LoadMatrix(int rows, int columns, double[] data)
         {

@@ -19,7 +19,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestRayIntersectsSphereTwoPoints()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var s = new Sphere();
             var xs = s.Intersect(r);
             Assert.AreEqual(xs.Count, 2);
@@ -30,7 +30,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestRayIntersectsSphereTangent()
         {
-            var r = new Ray(new Point(0, 1, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 1, -5), Vector.VectorZ);
             var s = new Sphere();
             var xs = s.Intersect(r);
             Assert.AreEqual(xs.Count, 2);
@@ -41,7 +41,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestRayIntersectsSphereMisses()
         {
-            var r = new Ray(new Point(0, 2, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 2, -5), Vector.VectorZ);
             var s = new Sphere();
             var xs = s.Intersect(r);
             Assert.AreEqual(xs.Count, 0);
@@ -50,7 +50,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestRayInsideSphere()
         {
-            var r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+            var r = new Ray(Point.Zero, Vector.VectorZ);
             var s = new Sphere();
             var xs = s.Intersect(r);
             Assert.AreEqual(xs.Count, 2);
@@ -61,7 +61,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestRayInFrontOfSphere()
         {
-            var r = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, 5), Vector.VectorZ);
             var s = new Sphere();
             var xs = s.Intersect(r);
             Assert.AreEqual(xs.Count, 2);
@@ -72,7 +72,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestIntersectionWithSphere()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var s = new Sphere();
             var xs = s.Intersect(r);
 
@@ -84,7 +84,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestSphereScaled()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var s = new Sphere();
 
             s.Transform = Matrix.Scaling(2, 2, 2);
@@ -98,7 +98,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestSphereTranslated()
         {
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var s = new Sphere();
 
             s.Transform = Matrix.Translation(5, 0, 0);
@@ -111,27 +111,27 @@ namespace CSharpTest
         public void TestSphereNormalX()
         {
             var s = new Sphere();
-            var n = s.Normal(new Point(1, 0, 0));
+            var n = s.Normal(Point.PointX);
 
-            Assert.AreEqual(n, new Vector(1, 0, 0));
+            Assert.AreEqual(n, Vector.VectorX);
         }
 
         [TestMethod]
         public void TestSphereNormalY()
         {
             var s = new Sphere();
-            var n = s.Normal(new Point(0, 1, 0));
+            var n = s.Normal(Point.PointY);
 
-            Assert.AreEqual(n, new Vector(0, 1, 0));
+            Assert.AreEqual(n, Vector.VectorY);
         }
 
         [TestMethod]
         public void TestSphereNormalZ()
         {
             var s = new Sphere();
-            var n = s.Normal(new Point(0, 0, 1));
+            var n = s.Normal(Point.PointZ);
 
-            Assert.AreEqual(n, new Vector(0, 0, 1));
+            Assert.AreEqual(n, Vector.VectorZ);
         }
 
         [TestMethod]

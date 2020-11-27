@@ -75,18 +75,18 @@ namespace CSharpTest
         [TestMethod]
         public void TestRotationX()
         {
-            var p = new Point(0, 1, 0);
+            var p = Point.PointY;
             var half_quarter = Matrix.RotationX(Math.PI / 4);
             var full_quarter = Matrix.RotationX(Math.PI / 2);
 
             Assert.AreEqual(new Point(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2), half_quarter * p);
-            Assert.AreEqual(new Point(0, 0, 1), full_quarter * p);
+            Assert.AreEqual(Point.PointZ, full_quarter * p);
         }
 
         [TestMethod]
         public void TestRotationXInverse()
         {
-            var p = new Point(0, 1, 0);
+            var p = Point.PointY;
             var half_quarter = Matrix.RotationX(Math.PI / 4);
             var inv = half_quarter.Inverse;
 
@@ -96,18 +96,18 @@ namespace CSharpTest
         [TestMethod]
         public void TestRotationY()
         {
-            var p = new Point(0, 0, 1);
+            var p = Point.PointZ;
             var half_quarter = Matrix.RotationY(Math.PI / 4);
             var full_quarter = Matrix.RotationY(Math.PI / 2);
 
             Assert.AreEqual(new Point(Math.Sqrt(2) / 2, 0, Math.Sqrt(2) / 2), half_quarter * p);
-            Assert.AreEqual(new Point(1, 0, 0), full_quarter * p);
+            Assert.AreEqual(Point.PointX, full_quarter * p);
         }
 
         [TestMethod]
         public void TestRotationZ()
         {
-            var p = new Point(0, 1, 0);
+            var p = Point.PointY;
             var half_quarter = Matrix.RotationZ(Math.PI / 4);
             var full_quarter = Matrix.RotationZ(Math.PI / 2);
 
@@ -202,9 +202,9 @@ namespace CSharpTest
         [TestMethod]
         public void TestViewTransform()
         {
-            var from = new Point(0, 0, 0);
+            var from = Point.Zero;
             var to = new Point(0, 0, -1);
-            var up = new Vector(0, 1, 0);
+            var up = Vector.VectorY;
             var t = Matrix.ViewTransform(from, to, up);
 
             Assert.AreEqual(t, Matrix.Identity);
@@ -213,9 +213,9 @@ namespace CSharpTest
         [TestMethod]
         public void TestViewTransformPositiveZ()
         {
-            var from = new Point(0, 0, 0);
-            var to = new Point(0, 0, 1);
-            var up = new Vector(0, 1, 0);
+            var from = Point.Zero;
+            var to = Point.PointZ;
+            var up = Vector.VectorY;
             var t = Matrix.ViewTransform(from, to, up);
 
             Assert.AreEqual(t, Matrix.Scaling(-1, 1, -1));
@@ -225,8 +225,8 @@ namespace CSharpTest
         public void TestViewTransformMoveWorld()
         {
             var from = new Point(0, 0, 8);
-            var to = new Point(0, 0, 0);
-            var up = new Vector(0, 1, 0);
+            var to = Point.Zero;
+            var up = Vector.VectorY;
             var t = Matrix.ViewTransform(from, to, up);
 
             Assert.AreEqual(t, Matrix.Translation(0, 0, -8));

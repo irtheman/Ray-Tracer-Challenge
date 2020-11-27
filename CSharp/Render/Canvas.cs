@@ -21,7 +21,7 @@ namespace CSharp
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    canvas[x, y] = new Color(0, 0, 0);
+                    canvas[x, y] = Color.Black;
                 }
             }
         }

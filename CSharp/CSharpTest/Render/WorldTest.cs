@@ -18,8 +18,8 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldDefault()
         {
-            var w = new World(true);
-            var light = new PointLight(new Point(-10, 10, -10), new Color(1, 1, 1));
+            var w = World.Default;
+            var light = new PointLight(new Point(-10, 10, -10), Color.White);
             var s1 = new Sphere();
             s1.Material.Color = new Color(0.8, 1, 0.6);
             s1.Material.Diffuse = 0.7;
@@ -35,8 +35,8 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldRayIntersect()
         {
-            var w = new World(true);
-            var ray = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var w = World.Default;
+            var ray = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var xs = w.Intersect(ray);
 
             Assert.AreEqual(xs.Count, 4);
@@ -49,8 +49,8 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldShadingIntersection()
         {
-            var w = new World(true);
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var w = World.Default;
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = w.Objects[0];
             var i = new Intersection(4, shape);
             var comps = i.PrepareComputations(r);
@@ -62,9 +62,9 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldShadingIntersectionInside()
         {
-            var w = new World(true);
-            w.Lights[0] = new PointLight(new Point(0, 0.25, 0), new Color(1, 1, 1));
-            var r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+            var w = World.Default;
+            w.Lights[0] = new PointLight(new Point(0, 0.25, 0), Color.White);
+            var r = new Ray(Point.Zero, Vector.VectorZ);
             var shape = w.Objects[1];
             var i = new Intersection(0.5, shape);
             var comps = i.PrepareComputations(r);
@@ -76,18 +76,18 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldMissesColor()
         {
-            var w = new World(true);
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 1, 0));
+            var w = World.Default;
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorY);
             var c = w.ColorAt(r);
 
-            Assert.AreEqual(c, new Color(0, 0, 0));
+            Assert.AreEqual(c, Color.Black);
         }
 
         [TestMethod]
         public void TestWorldHitsColor()
         {
-            var w = new World(true);
-            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var w = World.Default;
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var c = w.ColorAt(r);
 
             Assert.AreEqual(c, new Color(0.38066, 0.47583, 0.2855));
@@ -96,7 +96,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldHitBehindRayColor()
         {
-            var w = new World(true);
+            var w = World.Default;
             var outer = w.Objects[0];
             outer.Material.Ambient = 1;
             var inner = w.Objects[1];
@@ -111,7 +111,7 @@ namespace CSharpTest
         public void TestWorldShadeHitWithShadow()
         {
             var w = new World();
-            w.Lights.Add(new PointLight(new Point(0, 0, -10), new Color(1, 1, 1)));
+            w.Lights.Add(new PointLight(new Point(0, 0, -10), Color.White));
             
             var s1 = new Sphere();
             w.Objects.Add(s1);
@@ -120,7 +120,7 @@ namespace CSharpTest
             s2.Transform = Matrix.Translation(0, 0, 10);
             w.Objects.Add(s2);
 
-            var r = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
+            var r = new Ray(new Point(0, 0, 5), Vector.VectorZ);
             var i = new Intersection(4, s2);
             var comps = i.PrepareComputations(r);
             var c = w.ShadeHit(comps);

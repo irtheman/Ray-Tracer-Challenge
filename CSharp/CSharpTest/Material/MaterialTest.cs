@@ -15,7 +15,7 @@ namespace CSharpTest
         public void TestMaterialInitialize()
         {
             m = new Material();
-            position = new Point(0, 0, 0);
+            position = Point.Zero;
         }
 
         [TestCleanup]
@@ -39,7 +39,7 @@ namespace CSharpTest
         {
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
-            var light = new PointLight(new Point(0, 0, -10), new Color(1, 1, 1));
+            var light = new PointLight(new Point(0, 0, -10), Color.White);
             var result = m.Lighting(light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(1.9, 1.9, 1.9));
@@ -51,10 +51,10 @@ namespace CSharpTest
             var value = Math.Sqrt(2) / 2.0;
             var eyev = new Vector(0, value, -value);
             var normalv = new Vector(0, 0, -1);
-            var light = new PointLight(new Point(0, 0, -10), new Color(1, 1, 1));
+            var light = new PointLight(new Point(0, 0, -10), Color.White);
             var result = m.Lighting(light, position, eyev, normalv, false);
 
-            Assert.AreEqual(result, new Color(1, 1, 1));
+            Assert.AreEqual(result, Color.White);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace CSharpTest
         {
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
-            var light = new PointLight(new Point(0, 10, -10), new Color(1, 1, 1));
+            var light = new PointLight(new Point(0, 10, -10), Color.White);
             var result = m.Lighting(light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(0.7364, 0.7364, 0.7364));
@@ -74,7 +74,7 @@ namespace CSharpTest
             var value = Math.Sqrt(2) / 2.0;
             var eyev = new Vector(0, -value, -value);
             var normalv = new Vector(0, 0, -1);
-            var light = new PointLight(new Point(0, 10, -10), new Color(1, 1, 1));
+            var light = new PointLight(new Point(0, 10, -10), Color.White);
             var result = m.Lighting(light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(1.6364, 1.6364, 1.6364));
@@ -84,7 +84,7 @@ namespace CSharpTest
         {
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
-            var light = new PointLight(new Point(0, 0, 10), new Color(1, 1, 1));
+            var light = new PointLight(new Point(0, 0, 10), Color.White);
             var result = m.Lighting(light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(0.1, 0.1, 0.1));
@@ -95,7 +95,7 @@ namespace CSharpTest
         {
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
-            var light = new PointLight(new Point(0, 0, -10), new Color(1, 1, 1));
+            var light = new PointLight(new Point(0, 0, -10), Color.White);
             var inShadow = true;
             var result = m.Lighting(light, position, eyev, normalv, inShadow);
 
@@ -105,7 +105,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestMaterialNoShadowCollinear()
         {
-            var w = new World(true);
+            var w = World.Default;
             var p = new Point(0, 10, 0);
 
             Assert.IsFalse(w.IsShadowed(p));
@@ -114,7 +114,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestMaterialWithShadow()
         {
-            var w = new World(true);
+            var w = World.Default;
             var p = new Point(10, -10, 10);
 
             Assert.IsTrue(w.IsShadowed(p));
@@ -123,7 +123,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestMaterialNoShadowBehindLight()
         {
-            var w = new World(true);
+            var w = World.Default;
             var p = new Point(-20, 20, -20);
 
             Assert.IsFalse(w.IsShadowed(p));
@@ -132,7 +132,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestMaterialNoShadowBehindPoint()
         {
-            var w = new World(true);
+            var w = World.Default;
             var p = new Point(-2, 2, -2);
 
             Assert.IsFalse(w.IsShadowed(p));

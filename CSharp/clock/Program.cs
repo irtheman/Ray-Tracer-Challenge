@@ -10,7 +10,7 @@ namespace clock
             Console.WriteLine("Generating a clock!");
 
             var c = new Canvas(500, 500);
-            var color = new Color(1, 1, 1);
+            var color = Color.White;
             var radius = (int)(c.Width * 3.0 / 8.0);
 
             var center = Matrix.Translation(c.Height / 2, c.Width / 2, 0);
