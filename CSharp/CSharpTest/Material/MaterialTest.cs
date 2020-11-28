@@ -40,7 +40,7 @@ namespace CSharpTest
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 0, -10), Color.White);
-            var result = m.Lighting(light, position, eyev, normalv, false);
+            var result = m.Lighting(new Sphere(), light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(1.9, 1.9, 1.9));
         }
@@ -52,7 +52,7 @@ namespace CSharpTest
             var eyev = new Vector(0, value, -value);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 0, -10), Color.White);
-            var result = m.Lighting(light, position, eyev, normalv, false);
+            var result = m.Lighting(new Sphere(), light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, Color.White);
         }
@@ -63,7 +63,7 @@ namespace CSharpTest
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 10, -10), Color.White);
-            var result = m.Lighting(light, position, eyev, normalv, false);
+            var result = m.Lighting(new Sphere(), light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(0.7364, 0.7364, 0.7364));
         }
@@ -75,7 +75,7 @@ namespace CSharpTest
             var eyev = new Vector(0, -value, -value);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 10, -10), Color.White);
-            var result = m.Lighting(light, position, eyev, normalv, false);
+            var result = m.Lighting(new Sphere(), light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(1.6364, 1.6364, 1.6364));
         }
@@ -85,7 +85,7 @@ namespace CSharpTest
             var eyev = new Vector(0, 0, -1);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 0, 10), Color.White);
-            var result = m.Lighting(light, position, eyev, normalv, false);
+            var result = m.Lighting(new Sphere(), light, position, eyev, normalv, false);
 
             Assert.AreEqual(result, new Color(0.1, 0.1, 0.1));
         }
@@ -97,7 +97,7 @@ namespace CSharpTest
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 0, -10), Color.White);
             var inShadow = true;
-            var result = m.Lighting(light, position, eyev, normalv, inShadow);
+            var result = m.Lighting(new Sphere(), light, position, eyev, normalv, inShadow);
 
             Assert.AreEqual(result, new Color(0.1, 0.1, 0.1));
         }
@@ -136,6 +136,24 @@ namespace CSharpTest
             var p = new Point(-2, 2, -2);
 
             Assert.IsFalse(w.IsShadowed(p));
+        }
+
+        [TestMethod]
+        public void TestMaterialLightingWithPattern()
+        {
+            var shape = new Sphere();
+            m.Pattern = new StripePattern(Color.White, Color.Black);
+            m.Ambient = 1;
+            m.Diffuse = 0;
+            m.Specular = 0;
+            var eyev = -Vector.VectorZ;
+            var normalv = -Vector.VectorZ;
+            var light = new PointLight(new Point(0, 0, -10), Color.White);
+            var c1 = m.Lighting(shape, light, new Point(0.9, 0, 0), eyev, normalv, false);
+            var c2 = m.Lighting(shape, light, new Point(1.1, 0, 0), eyev, normalv, false);
+
+            Assert.AreEqual(c1, Color.White);
+            Assert.AreEqual(c2, Color.Black);
         }
     }
 }

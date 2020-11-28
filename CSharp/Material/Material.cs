@@ -18,10 +18,21 @@ namespace CSharp
         public double Diffuse { get; set; }
         public double Specular { get; set; }
         public double Shininess { get; set; }
+        public RTPattern Pattern { get; set; }
 
-        public Color Lighting(PointLight light, Point position, Vector eyev, Vector normalv, bool inShadow)
+        public Color Lighting(RTObject obj, PointLight light, Point position, Vector eyev, Vector normalv, bool inShadow)
         {
-            var effectiveColor = Color * light.Intensity;
+            Color color;
+            if (Pattern != null)
+            {
+                color = Pattern.PatternAtObject(obj, position);
+            }
+            else
+            {
+                color = Color;
+            }
+
+            var effectiveColor = color * light.Intensity;
             var lightV = (new Vector(light.Position - position)).Normalize;
             var lightDotNormal = lightV.Dot(normalv);
             var ambient = effectiveColor * Ambient;

@@ -54,7 +54,7 @@ namespace CSharpTest
             var shape = w.Objects[0];
             var i = new Intersection(4, shape);
             var comps = i.PrepareComputations(r);
-            var c = w.ShadeHit(comps);
+            var c = w.ShadeHit(i.Object, comps);
 
             Assert.AreEqual(c, new Color(0.38066, 0.47583, 0.2855));
         }
@@ -68,7 +68,7 @@ namespace CSharpTest
             var shape = w.Objects[1];
             var i = new Intersection(0.5, shape);
             var comps = i.PrepareComputations(r);
-            var c = w.ShadeHit(comps);
+            var c = w.ShadeHit(i.Object, comps);
 
             Assert.AreEqual(c, new Color(0.90498, 0.90498, 0.90498));
         }
@@ -123,7 +123,7 @@ namespace CSharpTest
             var r = new Ray(new Point(0, 0, 5), Vector.VectorZ);
             var i = new Intersection(4, s2);
             var comps = i.PrepareComputations(r);
-            var c = w.ShadeHit(comps);
+            var c = w.ShadeHit(i.Object, comps);
 
             Assert.AreEqual(c, new Color(0.1, 0.1, 0.1));
         }

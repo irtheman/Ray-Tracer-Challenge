@@ -51,17 +51,22 @@ namespace CSharp
             return xs;
         }
 
-        public Color ShadeHit(Computations comps)
+        public Color ShadeHit(RTObject obj, Computations comps)
         {
             var totalColor = Color.Black;
             var shadowed = IsShadowed(comps.OverPoint);
 
-            totalColor = totalColor +
-                            comps.Object.Material.Lighting(Lights[0],
-                                                        comps.Point,
-                                                        comps.EyeVector,
-                                                        comps.NormalVector,
-                                                        shadowed);
+            foreach (var light in Lights)
+            {
+                totalColor = totalColor +
+                             comps.Object.Material.Lighting(
+                                                            obj,
+                                                            light,
+                                                            comps.OverPoint,
+                                                            comps.EyeVector,
+                                                            comps.NormalVector,
+                                                            shadowed);
+            }
 
             return totalColor;
         }
@@ -79,7 +84,7 @@ namespace CSharp
             else
             {
                 var comps = hit.PrepareComputations(r);
-                result = ShadeHit(comps);
+                result = ShadeHit(hit.Object, comps);
             }
 
             return result;
@@ -87,15 +92,26 @@ namespace CSharp
 
         public bool IsShadowed(Point point)
         {
-            var v = new Vector(Lights[0].Position - point);
-            var distance = v.Magnitude;
-            var direction = v.Normalize;
+            bool isShadowed = false;
 
-            var r = new Ray(point, direction);
-            var intersections = Intersect(r);
+            foreach (var light in Lights)
+            {
+                var v = new Vector(light.Position - point);
+                var distance = v.Magnitude;
+                var direction = v.Normalize;
 
-            var h = intersections.Hit;
-            return ((h != null) && (h.t < distance));
+                var r = new Ray(point, direction);
+                var intersections = Intersect(r);
+
+                var h = intersections.Hit;
+                if ((h != null) && (h.t < distance))
+                {
+                    isShadowed = true;
+                    break;
+                }
+            }
+
+            return isShadowed;
         }
     }
 }

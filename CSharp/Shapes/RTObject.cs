@@ -31,6 +31,8 @@ namespace CSharp
             }
         }
 
+        public Matrix TransformInverse => transformInverse;
+
         public Intersections Intersect(Ray r)
         {
             var localRay = r.Transform(transformInverse);
