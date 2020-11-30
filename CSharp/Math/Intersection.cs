@@ -15,8 +15,9 @@ namespace CSharp
         public double t { get; }
         public RTObject Object { get; }
 
-        public Computations PrepareComputations(Ray r)
+        public Computations PrepareComputations(Ray r, Intersections xs)
         {
+            List<RTObject> containers = new List<RTObject>();
             var p = r.Position(t);
             var eyev = -r.Direction;
             var normv = Object.Normal(p);
@@ -28,11 +29,56 @@ namespace CSharp
                 normv = -normv;
             }
 
+            var reflv = r.Direction.Reflect(normv);
+            var n1 = 1.0;
+            var n2 = 1.0;
+
+            foreach (var i in xs)
+            {
+                if (this == i)
+                {
+                    if (containers.Count == 0)
+                    {
+                        n1 = 1.0;
+                    }
+                    else
+                    {
+                        n1 = containers[containers.Count - 1].Material.RefractiveIndex;
+                    }
+                }
+
+                if (containers.Contains(i.Object))
+                {
+                    containers.Remove(i.Object);
+                }
+                else
+                {
+                    containers.Add(i.Object);
+                }
+
+                if (this == i)
+                {
+                    if (containers.Count == 0)
+                    {
+                        n2 = 1.0;
+                    }
+                    else
+                    {
+                        n2 = containers[containers.Count - 1].Material.RefractiveIndex;
+                    }
+
+                    break;
+                }
+            }
+
             return new Computations(t,
                                     Object,
                                     p,
                                     eyev,
                                     normv,
+                                    reflv,
+                                    n1,
+                                    n2,
                                     inside);
         }
     }

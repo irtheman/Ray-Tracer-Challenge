@@ -11,6 +11,9 @@ namespace CSharp
             Diffuse = 0.9;
             Specular = 0.9;
             Shininess = 200.0;
+            Reflective = 0.0;
+            Transparency = 0.0;
+            RefractiveIndex = 1.0;
         }
 
         public Color Color { get; set; }
@@ -18,6 +21,9 @@ namespace CSharp
         public double Diffuse { get; set; }
         public double Specular { get; set; }
         public double Shininess { get; set; }
+        public double Reflective { get; set; }
+        public double Transparency { get; set; }
+        public double RefractiveIndex { get; set; }
         public RTPattern Pattern { get; set; }
 
         public Color Lighting(RTObject obj, PointLight light, Point position, Vector eyev, Vector normalv, bool inShadow)

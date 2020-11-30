@@ -87,7 +87,7 @@ namespace CSharpTest
             var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(4, shape);
-            var comps = i.PrepareComputations(r);
+            var comps = i.PrepareComputations(r, new Intersections());
 
             Assert.AreEqual(comps.t, i.t);
             Assert.AreEqual(comps.Object, i.Object);
@@ -102,7 +102,7 @@ namespace CSharpTest
             var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(4, shape);
-            var comps = i.PrepareComputations(r);
+            var comps = i.PrepareComputations(r, new Intersections());
 
             Assert.IsFalse(comps.Inside);
         }
@@ -113,7 +113,7 @@ namespace CSharpTest
             var r = new Ray(Point.Zero, Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(1, shape);
-            var comps = i.PrepareComputations(r);
+            var comps = i.PrepareComputations(r, new Intersections());
 
             Assert.AreEqual(comps.Point, Point.PointZ);
             Assert.AreEqual(comps.EyeVector, new Vector(0, 0, -1));
@@ -128,10 +128,66 @@ namespace CSharpTest
             var shape = new Sphere();
             shape.Transform = Matrix.Translation(0, 0, 1);
             var i = new Intersection(5, shape);
-            var comps = i.PrepareComputations(r);
+            var comps = i.PrepareComputations(r, new Intersections());
 
             Assert.IsTrue(comps.OverPoint.z < -epsilon / 2);
             Assert.IsTrue(comps.Point.z > comps.OverPoint.z);
+        }
+
+        [TestMethod]
+        public void TestIntersectionN1N2()
+        {
+            var a = Sphere.Glass;
+            a.Transform = Matrix.Scaling(2, 2, 2);
+            a.Material.RefractiveIndex = 1.5;
+
+            var b = Sphere.Glass;
+            b.Transform = Matrix.Translation(0, 0, -0.25);
+            b.Material.RefractiveIndex = 2.0;
+
+            var c = Sphere.Glass;
+            c.Transform = Matrix.Translation(0, 0, 0.25);
+            c.Material.RefractiveIndex = 2.5;
+
+            var r = new Ray(new Point(0, 0, -4), Vector.VectorZ);
+            var xs = new Intersections();
+            xs.Add(new Intersection(2, a));
+            xs.Add(new Intersection(2.75, b));
+            xs.Add(new Intersection(3.25, c));
+            xs.Add(new Intersection(4.75, b));
+            xs.Add(new Intersection(5.25, c));
+            xs.Add(new Intersection(6, a));
+
+            double[,] ns = new double[,]
+            {
+                { 1.0, 1.5 },
+                { 1.5, 2.0 },
+                { 2.0, 2.5 },
+                { 2.5, 2.5 },
+                { 2.5, 1.5 },
+                { 1.5, 1.0 }
+            };
+
+            for (int i = 0; i < xs.Count; i++)
+            {
+                var comps = xs[i].PrepareComputations(r, xs);
+                Assert.AreEqual(comps.N1, ns[i, 0]);
+                Assert.AreEqual(comps.N2, ns[i, 1]);
+            }
+        }
+
+        [TestMethod]
+        public void TestIntersectionUnderPoint()
+        {
+            var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
+            var shape = Sphere.Glass;
+            shape.Transform = Matrix.Translation(0, 0, 1);
+            var i = new Intersection(5, shape);
+            var xs = new Intersections(i);
+            var comps = i.PrepareComputations(r, xs);
+
+            Assert.IsTrue(comps.UnderPoint.z > epsilon / 2.0);
+            Assert.IsTrue(comps.Point.z < comps.UnderPoint.z);
         }
     }
 }

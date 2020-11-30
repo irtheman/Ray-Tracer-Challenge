@@ -6,6 +6,18 @@ namespace CSharp
 {
     public class Sphere : RTObject
     {
+        public static Sphere Glass
+        {
+            get
+            {
+                var sphere = new Sphere();
+                sphere.Material.Transparency = 1.0;
+                sphere.Material.RefractiveIndex = 1.5;
+
+                return sphere;
+            }
+        }
+
         protected override Intersections LocalIntersect(Ray ray)
         {
             var result = new Intersections();

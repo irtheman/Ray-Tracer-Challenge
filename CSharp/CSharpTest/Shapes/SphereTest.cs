@@ -153,5 +153,15 @@ namespace CSharpTest
 
             Assert.AreEqual(n, n.Normalize);
         }
+
+        [TestMethod]
+        public void TestSphereGlassCreate()
+        {
+            Sphere s = Sphere.Glass;
+
+            Assert.AreEqual(s.Transform, Matrix.Identity);
+            Assert.AreEqual(s.Material.Transparency, 1.0, epsilon);
+            Assert.AreEqual(s.Material.RefractiveIndex, 1.5, epsilon);
+        }
     }
 }

@@ -155,5 +155,32 @@ namespace CSharpTest
             Assert.AreEqual(c1, Color.White);
             Assert.AreEqual(c2, Color.Black);
         }
+
+        [TestMethod]
+        public void TestMaterialReflectivityCreate()
+        {
+            var m = new Material();
+            Assert.AreEqual(m.Reflective, 0.0, epsilon);
+        }
+
+        [TestMethod]
+        public void TestMaterialPrecomputingReflectionVector()
+        {
+            var shape = new Plane();
+            var r = new Ray(new Point(0, 1, -1), new Vector(0, -Math.Sqrt(2) / 2.0, Math.Sqrt(2) / 2.0));
+            var i = new Intersection(Math.Sqrt(2), shape);
+            var comps = i.PrepareComputations(r, new Intersections());
+
+            Assert.AreEqual(comps.ReflectVector, new Vector(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
+        }
+
+        [TestMethod]
+        public void TestMaterialTransparencyRefractiveCreate()
+        {
+            var m = new Material();
+
+            Assert.AreEqual(m.Transparency, 0.0, epsilon);
+            Assert.AreEqual(m.RefractiveIndex, 1.0, epsilon);
+        }
     }
 }

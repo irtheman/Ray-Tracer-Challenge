@@ -51,27 +51,30 @@ namespace CSharp
             return xs;
         }
 
-        public Color ShadeHit(RTObject obj, Computations comps)
+        public Color ShadeHit(RTObject obj, Computations comps, int remaining = 5)
         {
-            var totalColor = Color.Black;
+            var surface = Color.Black;
             var shadowed = IsShadowed(comps.OverPoint);
 
             foreach (var light in Lights)
             {
-                totalColor = totalColor +
-                             comps.Object.Material.Lighting(
-                                                            obj,
-                                                            light,
-                                                            comps.OverPoint,
-                                                            comps.EyeVector,
-                                                            comps.NormalVector,
-                                                            shadowed);
+                surface = surface +
+                          comps.Object.Material.Lighting(
+                                                         obj,
+                                                         light,
+                                                         comps.OverPoint,
+                                                         comps.EyeVector,
+                                                         comps.NormalVector,
+                                                         shadowed);
             }
 
-            return totalColor;
+            var reflected = ReflectedColor(comps, remaining);
+            var refracted = RefractedColor(comps, remaining);
+
+            return surface + reflected + refracted;
         }
 
-        public Color ColorAt(Ray r)
+        public Color ColorAt(Ray r, int remaining = 5)
         {
             var i = Intersect(r);
             var hit = i.Hit;
@@ -83,8 +86,8 @@ namespace CSharp
             }
             else
             {
-                var comps = hit.PrepareComputations(r);
-                result = ShadeHit(hit.Object, comps);
+                var comps = hit.PrepareComputations(r, i);
+                result = ShadeHit(hit.Object, comps, remaining);
             }
 
             return result;
@@ -112,6 +115,47 @@ namespace CSharp
             }
 
             return isShadowed;
+        }
+
+        public Color ReflectedColor(Computations comps, int remaining = 5)
+        {
+            if (remaining <= 0)
+            {
+                return Color.Black;
+            }
+
+            if (comps.Object.Material.Reflective.IsEqual(0.0))
+            {
+                return Color.Black;
+            }
+
+            var reflectRay = new Ray(comps.OverPoint, comps.ReflectVector);
+            var color = ColorAt(reflectRay, remaining - 1);
+
+            return color * comps.Object.Material.Reflective;
+        }
+
+        public Color RefractedColor(Computations comps, int remaining)
+        {
+            if ((remaining == 0) || comps.Object.Material.Transparency.IsEqual(0.0))
+            {
+                return Color.Black;
+            }
+
+            var nRatio = comps.N1 / comps.N2;
+            var cosI = comps.EyeVector.Dot(comps.NormalVector);
+            var sin2T = nRatio * nRatio * (1 - cosI * cosI);
+            if (sin2T > 1.0)
+            {
+                return Color.Black;
+            }
+
+            var cosT = Math.Sqrt(1.0 - sin2T);
+            var direction = new Vector(comps.NormalVector * (nRatio * cosI - cosT) - comps.EyeVector * nRatio);
+            var refractRay = new Ray(comps.UnderPoint, direction);
+            var color = ColorAt(refractRay, remaining - 1) * comps.Object.Material.Transparency;
+
+            return color;
         }
     }
 }

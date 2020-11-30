@@ -14,6 +14,11 @@ namespace CSharp
             intersections = new List<Intersection>();
         }
 
+        public Intersections(Intersection one) : this()
+        {
+            this.Add(one);
+        }
+
         public Intersections(Intersection one, Intersection two) : this()
         {
             this.Add(one);
