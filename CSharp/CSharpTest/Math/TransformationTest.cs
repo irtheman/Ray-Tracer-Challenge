@@ -79,7 +79,7 @@ namespace CSharpTest
             var half_quarter = Matrix.RotationX(Math.PI / 4);
             var full_quarter = Matrix.RotationX(Math.PI / 2);
 
-            Assert.AreEqual(new Point(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2), half_quarter * p);
+            Assert.AreEqual(new Point(0, MathHelper.SQRT2 / 2, MathHelper.SQRT2 / 2), half_quarter * p);
             Assert.AreEqual(Point.PointZ, full_quarter * p);
         }
 
@@ -90,7 +90,7 @@ namespace CSharpTest
             var half_quarter = Matrix.RotationX(Math.PI / 4);
             var inv = half_quarter.Inverse;
 
-            Assert.AreEqual(new Point(0, Math.Sqrt(2) / 2, -Math.Sqrt(2) / 2), inv * p);
+            Assert.AreEqual(new Point(0, MathHelper.SQRT2 / 2, -MathHelper.SQRT2 / 2), inv * p);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace CSharpTest
             var half_quarter = Matrix.RotationY(Math.PI / 4);
             var full_quarter = Matrix.RotationY(Math.PI / 2);
 
-            Assert.AreEqual(new Point(Math.Sqrt(2) / 2, 0, Math.Sqrt(2) / 2), half_quarter * p);
+            Assert.AreEqual(new Point(MathHelper.SQRT2 / 2, 0, MathHelper.SQRT2 / 2), half_quarter * p);
             Assert.AreEqual(Point.PointX, full_quarter * p);
         }
 
@@ -111,7 +111,7 @@ namespace CSharpTest
             var half_quarter = Matrix.RotationZ(Math.PI / 4);
             var full_quarter = Matrix.RotationZ(Math.PI / 2);
 
-            Assert.AreEqual(new Point(-Math.Sqrt(2) / 2, Math.Sqrt(2) / 2, 0), half_quarter * p);
+            Assert.AreEqual(new Point(-MathHelper.SQRT2 / 2, MathHelper.SQRT2 / 2, 0), half_quarter * p);
             Assert.AreEqual(new Point(-1, 0, 0), full_quarter * p);
         }
 

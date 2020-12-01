@@ -11,7 +11,7 @@ namespace CSharp
 
         public override Color PatternAt(Point p)
         {
-            return Math.Floor(p.x) % 2 == 0 ? a : b;
+            return (int) Math.Floor(p.x) % 2 == 0 ? a : b;
         }
 
         protected override Color PatternAtShape(RTObject obj, Point localPoint)

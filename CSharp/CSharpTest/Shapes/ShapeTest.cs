@@ -110,7 +110,7 @@ namespace CSharpTest
             var m = Matrix.Scaling(1, 0.5, 1) * Matrix.RotationZ(Math.PI / 5);
             s.Transform = m;
 
-            var value = Math.Sqrt(2) / 2.0;
+            var value = MathHelper.SQRT2 / 2.0;
             var n = s.Normal(new Point(0, value, -value));
 
             Assert.AreEqual(n, new Vector(0, 0.97014, -0.24254));

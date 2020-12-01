@@ -51,5 +51,13 @@ namespace CSharp
         }
 
         protected abstract Vector LocalNormal(Point p);
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as RTObject;
+            return ((other != null) &&
+                    (Material.Equals(other.Material)) &&
+                    (Transform.Equals(other.Transform)));
+        }
     }
 }

@@ -23,17 +23,16 @@ namespace CSharp
         public static Vector operator *(Vector lhs, double rhs)
         {
             var ret = new Vector(lhs.x * rhs,
-                             lhs.y * rhs,
-                             lhs.z * rhs);
-            ret.w = lhs.w * rhs;
+                                 lhs.y * rhs,
+                                 lhs.z * rhs);
 
             return ret;
         }
         public static Vector operator -(Vector rhs)
         {
             return new Vector(-rhs.x,
-                             -rhs.y,
-                             -rhs.z);
+                              -rhs.y,
+                              -rhs.z);
         }
 
         public double Magnitude
@@ -42,8 +41,7 @@ namespace CSharp
             {
                 return Sqrt(this.x * this.x +
                             this.y * this.y +
-                            this.z * this.z +
-                            this.w * this.w);
+                            this.z * this.z);
             }
         }
 
@@ -54,10 +52,7 @@ namespace CSharp
                 var mag = this.Magnitude;
                 return new Vector(this.x / mag,
                                   this.y / mag,
-                                  this.z / mag)
-                {
-                    w = w / mag
-                };
+                                  this.z / mag);
             }
         }
 
@@ -65,8 +60,7 @@ namespace CSharp
         {
             return this.x * rhs.x +
                    this.y * rhs.y +
-                   this.z * rhs.z +
-                   this.w * rhs.w;
+                   this.z * rhs.z;
         }
 
         public Vector Cross(Vector rhs)

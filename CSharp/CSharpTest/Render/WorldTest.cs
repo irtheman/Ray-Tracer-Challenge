@@ -54,7 +54,7 @@ namespace CSharpTest
             var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = w.Objects[0];
             var i = new Intersection(4, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
             var c = w.ShadeHit(i.Object, comps);
 
             Assert.AreEqual(c, new Color(0.38066, 0.47583, 0.2855));
@@ -68,7 +68,7 @@ namespace CSharpTest
             var r = new Ray(Point.Zero, Vector.VectorZ);
             var shape = w.Objects[1];
             var i = new Intersection(0.5, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
             var c = w.ShadeHit(i.Object, comps);
 
             Assert.AreEqual(c, new Color(0.90498, 0.90498, 0.90498));
@@ -123,7 +123,7 @@ namespace CSharpTest
 
             var r = new Ray(new Point(0, 0, 5), Vector.VectorZ);
             var i = new Intersection(4, s2);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
             var c = w.ShadeHit(i.Object, comps);
 
             Assert.AreEqual(c, new Color(0.1, 0.1, 0.1));
@@ -137,7 +137,7 @@ namespace CSharpTest
             var shape = w.Objects[1];
             shape.Material.Ambient = 1;
             var i = new Intersection(1, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
             var color = w.ReflectedColor(comps);
 
             Assert.AreEqual(color, Color.Black);
@@ -151,13 +151,12 @@ namespace CSharpTest
             shape.Material.Reflective = 0.5;
             shape.Transform = Matrix.Translation(0, -1, 0);
             w.Objects.Add(shape);
-            var r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.Sqrt(2) / 2.0, Math.Sqrt(2) / 2.0));
-            var i = new Intersection(Math.Sqrt(2), shape);
-            var comps = i.PrepareComputations(r, new Intersections());
-            var color = w.ReflectedColor(comps);
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -MathHelper.SQRT2 / 2.0, MathHelper.SQRT2 / 2.0));
+            var i = new Intersection(MathHelper.SQRT2, shape);
+            var comps = i.PrepareComputations(r, new Intersections(i));
+            var color = w.ReflectedColor(comps, 1);
 
-            // Note: Modified results: 0.19032, 0.2379, 0.14274
-            Assert.AreEqual(color, new Color(0.19033, 0.23792, 0.142749));
+            Assert.AreEqual(color, new Color(0.19032, 0.2379, 0.14274));
         }
 
         [TestMethod]
@@ -168,13 +167,12 @@ namespace CSharpTest
             shape.Material.Reflective = 0.5;
             shape.Transform = Matrix.Translation(0, -1, 0);
             w.Objects.Add(shape);
-            var r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.Sqrt(2) / 2.0, Math.Sqrt(2) / 2.0));
-            var i = new Intersection(Math.Sqrt(2), shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -MathHelper.SQRT2 / 2.0, MathHelper.SQRT2 / 2.0));
+            var i = new Intersection(MathHelper.SQRT2, shape);
+            var comps = i.PrepareComputations(r, new Intersections(i));
             var color = w.ShadeHit(shape, comps);
 
-            // Note: Modified results: 0.87677, 0.92436, 0.82918
-            Assert.AreEqual(color, new Color(0.87675, 0.92434, 0.82917));
+            Assert.AreEqual(color, new Color(0.87677, 0.92436, 0.82918));
         }
 
         [TestMethod]
@@ -204,12 +202,11 @@ namespace CSharpTest
             shape.Material.Reflective = 0.5;
             shape.Transform = Matrix.Translation(0, -1, 0);
             w.Objects.Add(shape);
-            var r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.Sqrt(2) / 2.0, Math.Sqrt(2) / 2.0));
-            var i = new Intersection(Math.Sqrt(2), shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -MathHelper.SQRT2 / 2.0, MathHelper.SQRT2 / 2.0));
+            var i = new Intersection(MathHelper.SQRT2, shape);
+            var comps = i.PrepareComputations(r, new Intersections(i));
             var color = w.ReflectedColor(comps, 0);
 
-            // Note: Modified results: 0.87677, 0.92436, 0.82918
             Assert.AreEqual(color, Color.Black);
         }
 
@@ -248,14 +245,13 @@ namespace CSharpTest
         [TestMethod]
         public void TestWorldRefractedColorTotalInternalReflection()
         {
-            var sqrt2 = Math.Sqrt(2);
             var w = World.Default;
             var shape = w.Objects[0];
             shape.Material.Transparency = 1.0;
             shape.Material.RefractiveIndex = 1.5;
-            var r = new Ray(new Point(0, 0, sqrt2 / 2.0), Vector.VectorY);
-            var i1 = new Intersection(-sqrt2 / 2.0, shape);
-            var i2 = new Intersection(sqrt2 / 2.0, shape);
+            var r = new Ray(new Point(0, 0, MathHelper.SQRT2 / 2.0), Vector.VectorY);
+            var i1 = new Intersection(-MathHelper.SQRT2 / 2.0, shape);
+            var i2 = new Intersection(MathHelper.SQRT2 / 2.0, shape);
             var xs = new Intersections(i1, i2);
             var comps = xs[1].PrepareComputations(r, xs);
             var c = w.RefractedColor(comps, 5);
@@ -282,14 +278,12 @@ namespace CSharpTest
             var comps = xs[2].PrepareComputations(r, xs);
             var c = w.RefractedColor(comps, 5);
 
-            // Note: Modified results: 0, 0.99888, 0.04725
-            Assert.AreEqual(c, new Color(0, 0.99887, 0.04722));
+            Assert.AreEqual(c, new Color(0, 0.99888, 0.04725));
         }
 
         [TestMethod]
         public void TestWorldShadeHitTransparentMaterial()
         {
-            var sqrt2 = Math.Sqrt(2);
             var w = World.Default;
 
             var floor = new Plane();
@@ -304,8 +298,8 @@ namespace CSharpTest
             ball.Transform = Matrix.Translation(0, -3.5, -0.5);
             w.Objects.Add(ball);
 
-            var r = new Ray(new Point(0, 0, -3), new Vector(0, -sqrt2 / 2.0, sqrt2 / 2.0));
-            var i = new Intersection(sqrt2, floor);
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -MathHelper.SQRT2 / 2.0, MathHelper.SQRT2 / 2.0));
+            var i = new Intersection(MathHelper.SQRT2, floor);
             var xs = new Intersections(i);
             var comps = xs[0].PrepareComputations(r, xs);
             var color = w.ShadeHit(new Sphere(), comps, 5);

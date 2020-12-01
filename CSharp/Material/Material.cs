@@ -53,7 +53,7 @@ namespace CSharp
             else
             {
                 diffuse = effectiveColor * Diffuse * lightDotNormal;
-                var reflectV = -lightV.Reflect(normalv);
+                var reflectV = (-lightV).Reflect(normalv);
                 var reflectDotEye = reflectV.Dot(eyev);
 
                 if (reflectDotEye <= 0)
@@ -78,17 +78,20 @@ namespace CSharp
                     (Ambient.IsEqual(other.Ambient)) &&
                     (Diffuse.IsEqual(other.Diffuse)) &&
                     (Specular.IsEqual(other.Specular)) &&
-                    (Shininess.IsEqual(other.Shininess)));
+                    (Shininess.IsEqual(other.Shininess)) &&
+                    (Reflective.IsEqual(other.Reflective)) &&
+                    (Transparency.IsEqual(other.Transparency)) &&
+                    (RefractiveIndex.IsEqual(other.RefractiveIndex)));
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Ambient, Diffuse, Specular, Shininess);
+            return HashCode.Combine(Ambient, Diffuse, Specular, Shininess, Reflective, Transparency, RefractiveIndex);
         }
 
         public override string ToString()
         {
-            return $"{Color}: ({Ambient},{Diffuse},{Specular},{Shininess})";
+            return $"{Color}: ({Ambient},{Diffuse},{Specular},{Shininess}, {Reflective}, {Transparency}, {RefractiveIndex})";
         }
     }
 }

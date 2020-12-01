@@ -27,13 +27,13 @@ namespace CSharp
             var c = sphereToRay.Dot(sphereToRay) - 1;
             var discriminant = b * b - 4 * a * c;
 
-            if (discriminant < 0)
+            if (discriminant < 0.0)
             {
                 return result;
             }
             else
             {
-                result.Add(new Intersection( (-b - Math.Sqrt(discriminant)) / (2 * a), this));
+                result.Add(new Intersection((-b - Math.Sqrt(discriminant)) / (2 * a), this));
                 result.Add(new Intersection((-b + Math.Sqrt(discriminant)) / (2 * a), this));
             }
 
@@ -42,20 +42,19 @@ namespace CSharp
 
         protected override Vector LocalNormal(Point p)
         {
-            return new Vector(p.x, p.y, p.z);
+            var point = p - Point.Zero;
+            return new Vector(point.x, point.y, point.z);
         }
 
         public override bool Equals(object obj)
         {
             var other = obj as Sphere;
-            return ((other != null) &&
-                    (Material.Equals(other.Material)) &&
-                    (Transform.Equals(other.Transform)));
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Material, Transform);
+            return HashCode.Combine("Sphere", Material, Transform);
         }
 
         public override string ToString()

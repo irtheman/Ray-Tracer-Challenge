@@ -87,7 +87,7 @@ namespace CSharpTest
             var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(4, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
 
             Assert.AreEqual(comps.t, i.t);
             Assert.AreEqual(comps.Object, i.Object);
@@ -102,7 +102,7 @@ namespace CSharpTest
             var r = new Ray(new Point(0, 0, -5), Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(4, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
 
             Assert.IsFalse(comps.Inside);
         }
@@ -113,7 +113,7 @@ namespace CSharpTest
             var r = new Ray(Point.Zero, Vector.VectorZ);
             var shape = new Sphere();
             var i = new Intersection(1, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
 
             Assert.AreEqual(comps.Point, Point.PointZ);
             Assert.AreEqual(comps.EyeVector, new Vector(0, 0, -1));
@@ -128,10 +128,21 @@ namespace CSharpTest
             var shape = new Sphere();
             shape.Transform = Matrix.Translation(0, 0, 1);
             var i = new Intersection(5, shape);
-            var comps = i.PrepareComputations(r, new Intersections());
+            var comps = i.PrepareComputations(r, new Intersections(i));
 
             Assert.IsTrue(comps.OverPoint.z < -epsilon / 2);
             Assert.IsTrue(comps.Point.z > comps.OverPoint.z);
+        }
+
+        [TestMethod]
+        public void TestIntersectionPrecomputingReflectionVector()
+        {
+            var shape = new Plane();
+            var r = new Ray(new Point(0, 1, -1), new Vector(0, -MathHelper.SQRT2 / 2.0, MathHelper.SQRT2 / 2.0));
+            var i = new Intersection(MathHelper.SQRT2, shape);
+            var comps = i.PrepareComputations(r, new Intersections(i));
+
+            Assert.AreEqual(comps.ReflectVector, new Vector(0, MathHelper.SQRT2 / 2, MathHelper.SQRT2 / 2));
         }
 
         [TestMethod]

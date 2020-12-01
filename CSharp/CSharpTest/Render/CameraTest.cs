@@ -7,7 +7,7 @@ namespace CSharpTest
     [TestClass]
     public class CameraTest
     {
-        private const double epsilon = 0.00001d;
+        private const double epsilon = 0.00001;
 
         [TestMethod]
         public void TestCameraCreate()
@@ -65,7 +65,7 @@ namespace CSharpTest
             var c = new Camera(201, 101, Math.PI / 2);
             c.Transform = Matrix.RotationY(Math.PI / 4) * Matrix.Translation(0, -2, 5);
             var r = c.RayForPixel(100, 50);
-            var value = Math.Sqrt(2) / 2;
+            var value = MathHelper.SQRT2 / 2;
 
             Assert.AreEqual(r.Origin, new Point(0, 2, -5));
             Assert.AreEqual(r.Direction, new Vector(value, 0, -value));

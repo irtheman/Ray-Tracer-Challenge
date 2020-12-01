@@ -23,5 +23,21 @@ namespace CSharp
         {
             return Vector.VectorY;
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Plane;
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine("Plane", Material, Transform);
+        }
+
+        public override string ToString()
+        {
+            return $"Plane(0, 0, 0): {Material} {Transform}";
+        }
     }
 }

@@ -137,7 +137,7 @@ namespace CSharp
 
         public Color RefractedColor(Computations comps, int remaining)
         {
-            if ((remaining == 0) || comps.Object.Material.Transparency.IsEqual(0.0))
+            if ((remaining <= 0) || comps.Object.Material.Transparency.IsEqual(0.0))
             {
                 return Color.Black;
             }

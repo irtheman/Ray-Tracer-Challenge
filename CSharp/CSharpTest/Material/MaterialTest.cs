@@ -48,7 +48,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestMaterialLightingBehindEyeOffset45()
         {
-            var value = Math.Sqrt(2) / 2.0;
+            var value = MathHelper.SQRT2 / 2.0;
             var eyev = new Vector(0, value, -value);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 0, -10), Color.White);
@@ -71,7 +71,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestMaterialLightingEyeInlineReflection()
         {
-            var value = Math.Sqrt(2) / 2.0;
+            var value = MathHelper.SQRT2 / 2.0;
             var eyev = new Vector(0, -value, -value);
             var normalv = new Vector(0, 0, -1);
             var light = new PointLight(new Point(0, 10, -10), Color.White);
@@ -161,17 +161,6 @@ namespace CSharpTest
         {
             var m = new Material();
             Assert.AreEqual(m.Reflective, 0.0, epsilon);
-        }
-
-        [TestMethod]
-        public void TestMaterialPrecomputingReflectionVector()
-        {
-            var shape = new Plane();
-            var r = new Ray(new Point(0, 1, -1), new Vector(0, -Math.Sqrt(2) / 2.0, Math.Sqrt(2) / 2.0));
-            var i = new Intersection(Math.Sqrt(2), shape);
-            var comps = i.PrepareComputations(r, new Intersections());
-
-            Assert.AreEqual(comps.ReflectVector, new Vector(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
         }
 
         [TestMethod]
