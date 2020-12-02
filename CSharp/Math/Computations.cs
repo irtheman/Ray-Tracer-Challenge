@@ -33,6 +33,32 @@ namespace CSharp
         public double N1 { get; }
         public double N2 { get; }
         public bool Inside { get; }
+        
+        public double Schlick
+        {
+            get
+            {
+                var cos = EyeVector.Dot(NormalVector);
 
+                if (N1 > N2)
+                {
+                    var n = N1 / N2;
+                    var sin2t = n * n * (1.0 - cos * cos);
+                    
+                    if (sin2t > 1.0)
+                    {
+                        return 1.0;
+                    }
+
+                    var cost = Math.Sqrt(1.0 - sin2t);
+                    cos = cost;
+                }
+
+                var a = (N1 - N2) / (N1 + N2);
+                var r0 = a * a;
+
+                return r0 + (1 - r0) * Math.Pow(1 - cos, 5);
+            }
+        }
     }
 }

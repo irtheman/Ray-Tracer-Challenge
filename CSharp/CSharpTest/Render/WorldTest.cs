@@ -306,5 +306,32 @@ namespace CSharpTest
 
             Assert.AreEqual(color, new Color(0.93642, 0.68642, 0.68642));
         }
+
+        [TestMethod]
+        public void TestWorldShadeHitTransparentReflectiveMaterial()
+        {
+            var w = World.Default;
+
+            var floor = new Plane();
+            floor.Transform = Matrix.Translation(0, -1, 0);
+            floor.Material.Reflective = 0.5;
+            floor.Material.Transparency = 0.5;
+            floor.Material.RefractiveIndex = 1.5;
+            w.Objects.Add(floor);
+
+            var ball = new Sphere();
+            ball.Material.Color = Color.Red;
+            ball.Material.Ambient = 0.5;
+            ball.Transform = Matrix.Translation(0, -3.5, -0.5);
+            w.Objects.Add(ball);
+
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -MathHelper.SQRT2 / 2.0, MathHelper.SQRT2 / 2.0));
+            var i = new Intersection(MathHelper.SQRT2, floor);
+            var xs = new Intersections(i);
+            var comps = xs[0].PrepareComputations(r, xs);
+            var color = w.ShadeHit(new Sphere(), comps, 5);
+
+            Assert.AreEqual(color, new Color(0.93391, 0.69643, 0.69243));
+        }
     }
 }

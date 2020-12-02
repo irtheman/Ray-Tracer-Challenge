@@ -34,6 +34,20 @@ My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to fo
 ![Chapter 9 Plane With Ceiling](Images/cs_plane_ceiling.png "Plane With Ceiling")
 ![Chapter 9 Plane Hex Room](Images/cs_plane_hexroom.png "Plane Hex Room")
 
+### Chapter 10
+![Chapter 10 Pattern First](Images/cs_pattern_first.png "First Pattern")
+![Chapter 10 Pattern](Images/cs_pattern.png "Pattern")
+![Chapter 10 Pattern Blended](Images/cs_pattern_blended.png "Pattern Blended")
+![Chapter 10 Pattern Nested](Images/cs_pattern_nested.png "Pattern Nested")
+![Chapter 10 Pattern Nested 2](Images/cs_pattern_nested2.png "Pattern Nested 2")
+![Chapter 10 Pattern Perlin](Images/cs_pattern_perlin.png "Pattern Perlin Noise")
+
+### Chapter 11
+![Chapter 11 Reflection](Images/cs_rtr_reflect.png "Reflection")
+![Chapter 11 Transparent](Images/cs_rtr_transparent.png "Transparent")
+![Chapter 11 Fresnel](Images/cs_rtr_fresnel.png "Fresnel")
+![Chapter 11 Under Water](Images/cs_rtr_underwater.png "Under Water")
+
 All of the following is for Ubuntu 20.04.
 
 # .NET Core

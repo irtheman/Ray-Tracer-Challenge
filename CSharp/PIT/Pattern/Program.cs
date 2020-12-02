@@ -31,7 +31,7 @@ namespace Pattern
 
             // Right Wall
             var rightWall = new Plane();
-            rightWall.Transform = Matrix.Translation(0, 0, 5.01) *
+            rightWall.Transform = Matrix.Translation(0, 0, 5) *
                                  Matrix.RotationY(Math.PI / 4) *
                                  Matrix.RotationX(Math.PI / 2);
             rightWall.Material.Color = new Color(1, 0.9, 0.9);

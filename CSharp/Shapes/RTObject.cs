@@ -14,6 +14,7 @@ namespace CSharp
         {
             Transform = Matrix.Identity;
             Material = new Material();
+            HasShadow = true;
         }
 
         public Material Material { get; set; }
@@ -32,6 +33,8 @@ namespace CSharp
         }
 
         public Matrix TransformInverse => transformInverse;
+
+        public bool HasShadow { get; set; }
 
         public Intersections Intersect(Ray r)
         {

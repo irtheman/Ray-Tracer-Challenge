@@ -71,6 +71,13 @@ namespace CSharp
             var reflected = ReflectedColor(comps, remaining);
             var refracted = RefractedColor(comps, remaining);
 
+            var material = comps.Object.Material;
+            if ((material.Reflective > 0) && (material.Transparency > 0))
+            {
+                var reflectance = comps.Schlick;
+                return surface + reflected * reflectance + refracted * (1 - reflectance);
+            }
+
             return surface + reflected + refracted;
         }
 
@@ -107,7 +114,7 @@ namespace CSharp
                 var intersections = Intersect(r);
 
                 var h = intersections.Hit;
-                if ((h != null) && (h.t < distance))
+                if ((h != null) && (h.t < distance) && (h.Object.HasShadow))
                 {
                     isShadowed = true;
                     break;

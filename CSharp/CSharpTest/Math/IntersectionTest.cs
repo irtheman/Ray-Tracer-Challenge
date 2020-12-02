@@ -200,5 +200,46 @@ namespace CSharpTest
             Assert.IsTrue(comps.UnderPoint.z > epsilon / 2.0);
             Assert.IsTrue(comps.Point.z < comps.UnderPoint.z);
         }
+
+        [TestMethod]
+        public void TestIntersectionSchlickApproximation()
+        {
+            var shape = Sphere.Glass;
+            var r = new Ray(new Point(0, 0, MathHelper.SQRT2 / 2), Vector.VectorY);
+            var i1 = new Intersection(-MathHelper.SQRT2 / 2, shape);
+            var i2 = new Intersection(MathHelper.SQRT2 / 2, shape);
+            var xs = new Intersections(i1, i2);
+            var comps = xs[1].PrepareComputations(r, xs);
+            var reflectance = comps.Schlick;
+
+            Assert.AreEqual(reflectance, 1.0, epsilon);
+        }
+
+        [TestMethod]
+        public void TestIntersectionSchlickApproximationPerpendicularViewingAngle()
+        {
+            var shape = Sphere.Glass;
+            var r = new Ray(Point.Zero, Vector.VectorY);
+            var i1 = new Intersection(-1, shape);
+            var i2 = new Intersection(1, shape);
+            var xs = new Intersections(i1, i2);
+            var comps = xs[1].PrepareComputations(r, xs);
+            var reflectance = comps.Schlick;
+
+            Assert.AreEqual(reflectance, 0.04, epsilon);
+        }
+
+        [TestMethod]
+        public void TestIntersectionSchlickApproximationSmallAngle()
+        {
+            var shape = Sphere.Glass;
+            var r = new Ray(new Point(0, 0.99, -2), Vector.VectorZ);
+            var i1 = new Intersection(1.8589, shape);
+            var xs = new Intersections(i1);
+            var comps = xs[0].PrepareComputations(r, xs);
+            var reflectance = comps.Schlick;
+
+            Assert.AreEqual(reflectance, 0.48873, epsilon);
+        }
     }
 }
