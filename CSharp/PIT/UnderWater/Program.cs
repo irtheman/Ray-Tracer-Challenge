@@ -20,10 +20,10 @@ namespace UnderWater
             var water = new Plane();
             water.HasShadow = false;
             water.Transform = Matrix.Translation(0, 2, 0);
-            water.Material.Color = new Color(0, .5, 1);
-            water.Material.Ambient = 0.1;
+            water.Material.Color = new Color(0, .25, 0.5);
+            water.Material.Ambient = 0.5;
             water.Material.Diffuse = 0.1;
-            water.Material.Specular = 0.5;
+            water.Material.Specular = 1;
             water.Material.Shininess = 300;
             water.Material.Reflective = 1;
             water.Material.Transparency = 0.3;
