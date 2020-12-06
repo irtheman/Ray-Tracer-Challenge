@@ -4,6 +4,12 @@ namespace CSharp
 {
     public class Material
     {
+        public const double Vacuum = 1.0;
+        public const double Air = 1.00029;
+        public const double Water = 1.33333;
+        public const double Glass = 1.52;
+        public const double Diamond = 2.417;
+
         public Material()
         {
             Color = Color.White;
@@ -32,6 +38,10 @@ namespace CSharp
             if (Pattern != null)
             {
                 color = Pattern.PatternAtObject(obj, position);
+            }
+            else if (obj.Parent != null)
+            {
+                color = obj.Parent.Material.Lighting(obj.Parent, light, position, eyev, normalv, inShadow);
             }
             else
             {

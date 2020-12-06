@@ -4,17 +4,32 @@ namespace CSharp
 {
     public class Plane : RTObject
     {
+        private readonly BoundingBox bounds;
+
+        public Plane() : base()
+        {
+            bounds = new BoundingBox(
+                                     new Point(double.NegativeInfinity, 0, double.NegativeInfinity),
+                                     new Point(double.PositiveInfinity, 0, double.PositiveInfinity)
+                                    );
+        }
+
+        public override BoundingBox Bounds => bounds;
+
         protected override Intersections LocalIntersect(Ray ray)
         {
             var i = new Intersections();
 
-            if (Math.Abs(ray.Direction.y) < MathHelper.Epsilon)
+            if (Bounds.Intersects(ray))
             {
-                return i;
-            }
+                if (Math.Abs(ray.Direction.y) < MathHelper.Epsilon)
+                {
+                    return i;
+                }
 
-            var t = -ray.Origin.y / ray.Direction.y;
-            i.Add(new Intersection(t, this));
+                var t = -ray.Origin.y / ray.Direction.y;
+                i.Add(new Intersection(t, this));
+            }
 
             return i;
         }

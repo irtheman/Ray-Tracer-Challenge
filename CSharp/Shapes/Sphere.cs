@@ -6,35 +6,48 @@ namespace CSharp
 {
     public class Sphere : RTObject
     {
+        private readonly BoundingBox bounds;
+
+        public Sphere() : base()
+        {
+            bounds = new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
+        }
+
         public static Sphere Glass
         {
             get
             {
                 var sphere = new Sphere();
                 sphere.Material.Transparency = 1.0;
-                sphere.Material.RefractiveIndex = 1.5;
+                sphere.Material.RefractiveIndex = Material.Glass;
 
                 return sphere;
             }
         }
 
+        public override BoundingBox Bounds => bounds;
+
         protected override Intersections LocalIntersect(Ray ray)
         {
             var result = new Intersections();
-            var sphereToRay = new Vector(ray.Origin - Point.Zero);
-            var a = ray.Direction.Dot(ray.Direction);
-            var b = 2.0 * ray.Direction.Dot(sphereToRay);
-            var c = sphereToRay.Dot(sphereToRay) - 1;
-            var discriminant = b * b - 4 * a * c;
 
-            if (discriminant < 0.0)
+            if (Bounds.Intersects(ray))
             {
-                return result;
-            }
-            else
-            {
-                result.Add(new Intersection((-b - Math.Sqrt(discriminant)) / (2 * a), this));
-                result.Add(new Intersection((-b + Math.Sqrt(discriminant)) / (2 * a), this));
+                var sphereToRay = new Vector(ray.Origin - Point.Zero);
+                var a = ray.Direction.Dot(ray.Direction);
+                var b = 2.0 * ray.Direction.Dot(sphereToRay);
+                var c = sphereToRay.Dot(sphereToRay) - 1;
+                var discriminant = b * b - 4 * a * c;
+
+                if (discriminant < 0.0)
+                {
+                    return result;
+                }
+                else
+                {
+                    result.Add(new Intersection((-b - Math.Sqrt(discriminant)) / (2 * a), this));
+                    result.Add(new Intersection((-b + Math.Sqrt(discriminant)) / (2 * a), this));
+                }
             }
 
             return result;

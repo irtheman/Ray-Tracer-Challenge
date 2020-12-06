@@ -4,25 +4,37 @@ namespace CSharp
 {
     public class Cube : RTObject
     {
+        private readonly BoundingBox bounds;
+
+        public Cube() : base()
+        {
+            bounds = new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
+        }
+
+        public override BoundingBox Bounds => bounds;
+
         protected override Intersections LocalIntersect(Ray ray)
         {
             var intersections = new Intersections();
 
-            CheckAxis(ray.Origin.x, ray.Direction.x, out double xtmin, out double xtmax);
-            CheckAxis(ray.Origin.y, ray.Direction.y, out double ytmin, out double ytmax);
-
-            if ((xtmin > ytmax) || (ytmin > xtmax))
-                return intersections;
-
-            CheckAxis(ray.Origin.z, ray.Direction.z, out double ztmin, out double ztmax);
-
-            var tmin = Math.Max(xtmin, Math.Max(ytmin, ztmin));
-            var tmax = Math.Min(xtmax, Math.Min(ytmax, ztmax));
-
-            if (tmin <= tmax)
+            if (Bounds.Intersects(ray))
             {
-                intersections.Add(new Intersection(tmin, this));
-                intersections.Add(new Intersection(tmax, this));
+                CheckAxis(ray.Origin.x, ray.Direction.x, out double xtmin, out double xtmax);
+                CheckAxis(ray.Origin.y, ray.Direction.y, out double ytmin, out double ytmax);
+
+                if ((xtmin > ytmax) || (ytmin > xtmax))
+                    return intersections;
+
+                CheckAxis(ray.Origin.z, ray.Direction.z, out double ztmin, out double ztmax);
+
+                var tmin = Math.Max(xtmin, Math.Max(ytmin, ztmin));
+                var tmax = Math.Min(xtmax, Math.Min(ytmax, ztmax));
+
+                if (tmin <= tmax)
+                {
+                    intersections.Add(new Intersection(tmin, this));
+                    intersections.Add(new Intersection(tmax, this));
+                }
             }
 
             return intersections;

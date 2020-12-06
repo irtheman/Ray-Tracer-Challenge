@@ -104,5 +104,15 @@ namespace CSharpTest
                 Assert.AreEqual(normal, normals[i]);
             }
         }
+
+        [TestMethod]
+        public void TestCubeBounds()
+        {
+            var shape = new Cube();
+            var box = shape.Bounds;
+
+            Assert.AreEqual(box.Min, new Point(-1, -1, -1));
+            Assert.AreEqual(box.Max, new Point(1, 1, 1));
+        }
     }
 }

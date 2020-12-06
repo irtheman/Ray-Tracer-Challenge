@@ -50,6 +50,11 @@ namespace CSharp
             get
             {
                 var mag = this.Magnitude;
+                if (mag.IsEqual(0))
+                {
+                    return new Vector(0, 0, 0);
+                }
+
                 return new Vector(this.x / mag,
                                   this.y / mag,
                                   this.z / mag);

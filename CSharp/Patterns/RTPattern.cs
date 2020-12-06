@@ -37,7 +37,7 @@ namespace CSharp
 
         public Color PatternAtObject(RTObject obj, Point worldPoint)
         {
-            var localPoint = obj.TransformInverse * worldPoint;
+            var localPoint = obj.WorldToObject(worldPoint); //obj.TransformInverse * worldPoint;
             return PatternAtShape(obj, localPoint);
         }
 

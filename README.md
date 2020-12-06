@@ -48,6 +48,16 @@ My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to fo
 ![Chapter 11 Fresnel](Images/cs_rtr_fresnel.png "Fresnel")
 ![Chapter 11 Under Water](Images/cs_rtr_underwater.png "Under Water")
 
+### Chapter 12
+![Chapter 12 Table](Images/cs_cube_table.png "Table")
+
+### Chapter 13
+![Chapter 13 Cylinders](Images/cs_cylinders.png "Cylinders")
+![Chapter 13 Cylinders](Images/cs_cones.png "Cone")
+
+### Chapter 14
+![Chapter 14 Groups](Images/cs_groups_hexagon.png "Hexagon")
+
 All of the following is for Ubuntu 20.04.
 
 # .NET Core

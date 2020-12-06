@@ -13,6 +13,7 @@ namespace CSharp
 
         public static bool IsEqual(this double a, double b)
         {
+            if (a == b) return true;
             return Math.Abs(a - b) < Epsilon;
         }
     }
