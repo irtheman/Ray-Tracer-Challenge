@@ -114,7 +114,7 @@ namespace CSharpTest
         public void TestSphereNormalX()
         {
             var s = new Sphere();
-            var n = s.Normal(Point.PointX);
+            var n = s.NormalAt(Point.PointX);
 
             Assert.AreEqual(n, Vector.VectorX);
         }
@@ -123,7 +123,7 @@ namespace CSharpTest
         public void TestSphereNormalY()
         {
             var s = new Sphere();
-            var n = s.Normal(Point.PointY);
+            var n = s.NormalAt(Point.PointY);
 
             Assert.AreEqual(n, Vector.VectorY);
         }
@@ -132,7 +132,7 @@ namespace CSharpTest
         public void TestSphereNormalZ()
         {
             var s = new Sphere();
-            var n = s.Normal(Point.PointZ);
+            var n = s.NormalAt(Point.PointZ);
 
             Assert.AreEqual(n, Vector.VectorZ);
         }
@@ -142,7 +142,7 @@ namespace CSharpTest
         {
             var s = new Sphere();
             var value = Math.Sqrt(3) / 3.0;
-            var n = s.Normal(new Point(value, value, value));
+            var n = s.NormalAt(new Point(value, value, value));
 
             Assert.AreEqual(n, new Vector(value, value, value));
         }
@@ -152,7 +152,7 @@ namespace CSharpTest
         {
             var s = new Sphere();
             var value = Math.Sqrt(3) / 3.0;
-            var n = s.Normal(new Point(value, value, value));
+            var n = s.NormalAt(new Point(value, value, value));
 
             Assert.AreEqual(n, n.Normalize);
         }

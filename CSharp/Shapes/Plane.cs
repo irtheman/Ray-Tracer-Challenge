@@ -34,7 +34,7 @@ namespace CSharp
             return i;
         }
 
-        protected override Vector LocalNormal(Point p)
+        protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             return Vector.VectorY;
         }

@@ -40,7 +40,7 @@ namespace CSharp
             return intersections;
         }
 
-        protected override Vector LocalNormal(Point p)
+        protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             var maxc = Math.Max(Math.Abs(p.x), Math.Max(Math.Abs(p.y), Math.Abs(p.z)));
 

@@ -10,9 +10,9 @@ namespace CSharpTest
         public void TestPlaneNormalEverywhere()
         {
             var p = new Plane();
-            var n1 = p.Normal(Point.Zero);
-            var n2 = p.Normal(new Point(10, 0, -10));
-            var n3 = p.Normal(new Point(-5, 0, 150));
+            var n1 = p.NormalAt(Point.Zero);
+            var n2 = p.NormalAt(new Point(10, 0, -10));
+            var n3 = p.NormalAt(new Point(-5, 0, 150));
 
             var result = Vector.VectorY;
             Assert.AreEqual(n1, result);

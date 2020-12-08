@@ -6,7 +6,11 @@ namespace CSharp
 {
     public static class MathHelper
     {
-        public const double Epsilon = 0.0001; // Adjusted per author in forums. 0.00001 is for production;
+#if DEBUG
+        public const double Epsilon = 0.0001;
+#else
+        public const double Epsilon = 0.0001;
+#endif
         public const int MaxRecursion = 20;
 
         public static readonly double SQRT2 = Math.Sqrt(2);

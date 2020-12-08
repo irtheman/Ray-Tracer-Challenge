@@ -83,7 +83,7 @@ namespace CSharpTest
             for (int i = 0; i < points.Count; i++)
             {
                 var p = points[i];
-                var normal = cyl.Normal(p);
+                var normal = cyl.NormalAt(p);
 
                 Assert.AreEqual(normal, normals[i]);
             }
@@ -192,7 +192,7 @@ namespace CSharpTest
             for (int i = 0; i < points.Count; i++)
             {
                 var p = points[i];
-                var normal = cyl.Normal(p);
+                var normal = cyl.NormalAt(p);
 
                 Assert.AreEqual(normal, normals[i]);
             }

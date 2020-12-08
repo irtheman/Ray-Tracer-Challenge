@@ -37,7 +37,7 @@ namespace CSharpTest
             return result;
         }
 
-        protected override Vector LocalNormal(Point p)
+        protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             return new Vector(p.x, p.y, p.z);
         }

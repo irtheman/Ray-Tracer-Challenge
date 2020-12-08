@@ -44,6 +44,11 @@ namespace CSharp
             }
         }
 
+        public bool Contains(RTObject obj)
+        {
+            return objects.Contains(obj);
+        }
+
         protected override Intersections LocalIntersect(Ray ray)
         {
             var intersections = new Intersections();
@@ -56,7 +61,7 @@ namespace CSharp
             return intersections;
         }
 
-        protected override Vector LocalNormal(Point p)
+        protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             throw new System.NotImplementedException();
         }

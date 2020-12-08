@@ -93,7 +93,7 @@ namespace CSharpTest
             for (int i = 0; i < points.Count; i++)
             {
                 var p = points[i];
-                var normal = shape.Normal(p);
+                var normal = shape.NormalAt(p);
 
                 Assert.AreEqual(normal, normals[i], i.ToString());
             }

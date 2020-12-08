@@ -12,15 +12,23 @@ namespace CSharp
             Object = obj;
         }
 
+        public Intersection(double time, RTObject obj, double u, double v) : this(time, obj)
+        {
+            U = u;
+            V = v;
+        }
+
         public double t { get; }
         public RTObject Object { get; }
+        public double U { get; }
+        public double V { get; }
 
         public Computations PrepareComputations(Ray r, Intersections xs)
         {
             List<RTObject> containers = new List<RTObject>();
             var p = r.Position(t);
             var eyev = -r.Direction;
-            var normv = Object.Normal(p);
+            var normv = Object.NormalAt(p, this);
             var inside = false;
 
             if (normv.Dot(eyev) < 0)

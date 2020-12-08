@@ -75,7 +75,7 @@ namespace Sphere
                     if (xs.Hit != null)
                     {
                         var point = r.Position(xs.Hit.t);
-                        var normal = xs.Hit.Object.Normal(point);
+                        var normal = xs.Hit.Object.NormalAt(point);
                         var eye = -r.Direction;
 
                         color = xs.Hit.Object.Material.Lighting(xs.Hit.Object, light, point, eye, normal, false);

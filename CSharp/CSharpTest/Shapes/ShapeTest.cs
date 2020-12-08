@@ -81,7 +81,7 @@ namespace CSharpTest
             var s = new TestShape();
             s.Transform = Matrix.Translation(0, 1, 0);
 
-            var n = s.Normal(new Point(0, 1.70711, -0.70711));
+            var n = s.NormalAt(new Point(0, 1.70711, -0.70711));
 
             Assert.AreEqual(n, new Vector(0, 0.70711, -0.70711));
         }
@@ -94,7 +94,7 @@ namespace CSharpTest
             s.Transform = m;
 
             var value = MathHelper.SQRT2 / 2.0;
-            var n = s.Normal(new Point(0, value, -value));
+            var n = s.NormalAt(new Point(0, value, -value));
 
             Assert.AreEqual(n, new Vector(0, 0.97014, -0.24254));
         }
@@ -158,7 +158,7 @@ namespace CSharpTest
             s.Transform = Matrix.Translation(5, 0, 0);
             g2.Add(s);
 
-            var n = s.Normal(new Point(1.7321, 1.1547, -5.5774));
+            var n = s.NormalAt(new Point(1.7321, 1.1547, -5.5774));
 
             Assert.AreEqual(n, new Vector(0.2857, 0.4286, -0.8571));
         }

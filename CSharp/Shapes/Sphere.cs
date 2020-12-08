@@ -19,7 +19,7 @@ namespace CSharp
             {
                 var sphere = new Sphere();
                 sphere.Material.Transparency = 1.0;
-                sphere.Material.RefractiveIndex = Material.Glass;
+                sphere.Material.RefractiveIndex = 1.5;
 
                 return sphere;
             }
@@ -53,7 +53,7 @@ namespace CSharp
             return result;
         }
 
-        protected override Vector LocalNormal(Point p)
+        protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             var point = p - Point.Zero;
             return new Vector(point.x, point.y, point.z);

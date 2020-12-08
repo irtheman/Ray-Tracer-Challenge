@@ -95,7 +95,7 @@ namespace CSharp
             return result;
         }
 
-        protected override Vector LocalNormal(Point p)
+        protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             var dist = p.x * p.x + p.z * p.z;
 

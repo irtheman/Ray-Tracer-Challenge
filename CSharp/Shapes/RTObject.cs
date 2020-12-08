@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks.Dataflow;
 
 namespace CSharp
 {
@@ -47,16 +44,16 @@ namespace CSharp
 
         protected abstract Intersections LocalIntersect(Ray ray);
 
-        public Vector Normal(Point p)
+        public Vector NormalAt(Point p, Intersection i = null)
         {
             var localPoint = WorldToObject(p);
-            var localNormal = LocalNormal(localPoint);
+            var localNormal = LocalNormalAt(localPoint, i);
             var worldNormal = NormalToWorld(localNormal);
          
             return worldNormal;
         }
 
-        protected abstract Vector LocalNormal(Point p);
+        protected abstract Vector LocalNormalAt(Point p, Intersection i);
 
         public Point WorldToObject(Point point)
         {
