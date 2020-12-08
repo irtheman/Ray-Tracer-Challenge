@@ -116,5 +116,91 @@ namespace CSharpTest
             Assert.AreEqual(xs[1].t, 6.5, epsilon);
             Assert.AreEqual(xs[1].Object, s2);
         }
+
+        [TestMethod]
+        public void TestCsgBBWithChildren()
+        {
+            var left = new Sphere();
+            var right = new Sphere();
+            right.Transform = Matrix.Translation(2, 3, 4);
+
+            var shape = new CSG(CsgOperation.Difference, left, right);
+            var box = shape.Bounds;
+
+            Assert.AreEqual(box.Min, new Point(-1, -1, -1));
+            Assert.AreEqual(box.Max, new Point(3, 4, 5));
+        }
+
+        [TestMethod]
+        public void TestCsgBBIntersectMiss()
+        {
+            var left = new TestShape();
+            var right = new TestShape();
+            var shape = new CSG(CsgOperation.Difference, left, right);
+            var r = new Ray(new Point(0, 0, -5), new Vector(0, 1, 0));
+            var xs = shape.Intersect(r);
+
+            Assert.IsNull(left.SavedRay);
+            Assert.IsNull(right.SavedRay);
+        }
+
+        [TestMethod]
+        public void TestCsgBBIntersectHit()
+        {
+            var left = new TestShape();
+            var right = new TestShape();
+            var shape = new CSG(CsgOperation.Difference, left, right);
+            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var xs = shape.Intersect(r);
+
+            Assert.IsNotNull(left.SavedRay);
+            Assert.IsNotNull(right.SavedRay);
+        }
+
+        [TestMethod]
+        public void TestCsgSubdividingChildren()
+        {
+            var left = new Group();
+
+            var s1 = new Sphere();
+            s1.Transform = Matrix.Translation(-1.5, 0, 0);
+            left.Add(s1);
+
+            var s2 = new Sphere();
+            s2.Transform = Matrix.Translation(1.5, 0, 0);
+            left.Add(s2);
+
+            var right = new Group();
+
+            var s3 = new Sphere();
+            s3.Transform = Matrix.Translation(0, 0, -1.5);
+            right.Add(s3);
+
+            var s4 = new Sphere();
+            s4.Transform = Matrix.Translation(0, 0, 1.5);
+            right.Add(s4);
+
+            var shape = new CSG(CsgOperation.Difference, left, right);
+
+            shape.Divide(1);
+
+            Group group;
+
+            group = left[0] as Group;
+            Assert.IsNotNull(group);
+            Assert.AreEqual(group[0], s1);
+
+            group = left[1] as Group;
+            Assert.IsNotNull(group);
+            Assert.AreEqual(group[0], s2);
+
+            group = right[0] as Group;
+            Assert.IsNotNull(group);
+            Assert.AreEqual(group[0], s3);
+
+            group = right[1] as Group;
+            Assert.IsNotNull(group);
+            Assert.AreEqual(group[0], s4);
+        }
     }
 }

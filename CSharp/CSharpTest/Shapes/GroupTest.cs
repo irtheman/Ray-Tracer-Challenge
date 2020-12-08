@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CSharp;
+using System.Collections.Generic;
 
 namespace CSharpTest
 {
@@ -121,6 +122,107 @@ namespace CSharpTest
             var xs = shape.Intersect(r);
 
             Assert.IsNotNull(child.SavedRay);
+        }
+
+        [TestMethod]
+        public void TestGroupPartitionChildren()
+        {
+            var g = new Group();
+
+            var s1 = new Sphere();
+            s1.Transform = Matrix.Translation(-2, 0, 0);
+            g.Add(s1);
+
+            var s2 = new Sphere();
+            s2.Transform = Matrix.Translation(2, 0, 0);
+            g.Add(s2);
+
+            var s3 = new Sphere();
+            g.Add(s3);
+
+            Group left, right;
+            g.PartitionChildren(out left, out right);
+
+            Assert.AreEqual(g[0], s3);
+            Assert.AreEqual(left[0], s1);
+            Assert.AreEqual(right[0], s2);
+        }
+
+        [TestMethod]
+        public void TestGroupSubGroup()
+        {
+            var s1 = new Sphere();
+            var s2 = new Sphere();
+            var g = new Group();
+
+            g.MakeSubGroup(new List<RTObject>() { s1, s2 });
+
+            Assert.AreEqual(g.Count, 1);
+
+            var group = g[0] as Group;
+            Assert.IsNotNull(group);
+            Assert.IsTrue(group.Contains(s1));
+            Assert.IsTrue(group.Contains(s2));
+        }
+
+        [TestMethod]
+        public void TestGroupSubdividePartitionChildren()
+        {
+            var g = new Group();
+
+            var s1 = new Sphere();
+            s1.Transform = Matrix.Translation(-2, -2, 0);
+            g.Add(s1);
+
+            var s2 = new Sphere();
+            s2.Transform = Matrix.Translation(-2, 2, 0);
+            g.Add(s2);
+
+            var s3 = new Sphere();
+            s3.Transform = Matrix.Scaling(4, 4, 4);
+            g.Add(s3);
+
+            g.Divide(1);
+
+            Assert.AreEqual(g[0], s3);
+
+            Group subgroup = g[1] as Group;
+            Assert.IsNotNull(subgroup);
+            Assert.AreEqual(subgroup.Count, 2);
+            Assert.AreEqual(((Group)subgroup[0])[0], s1);
+            Assert.AreEqual(((Group)subgroup[1])[0], s2);
+        }
+        [TestMethod]
+        public void TestGroupSubdivideToFewChildren()
+        {
+            var group = new Group();
+            var subgroup = new Group();
+
+            var s1 = new Sphere();
+            s1.Transform = Matrix.Translation(-2, 0, 0);
+            subgroup.Add(s1);
+
+            var s2 = new Sphere();
+            s2.Transform = Matrix.Translation(2, 1, 0);
+            subgroup.Add(s2);
+
+            var s3 = new Sphere();
+            s3.Transform = Matrix.Translation(2, -1, 0);
+            subgroup.Add(s3);
+
+            var s4 = new Sphere();
+            group.Add(subgroup);
+            group.Add(s4);
+
+            group.Divide(3);
+
+            Assert.AreEqual(group[0], subgroup);
+            Assert.AreEqual(group[1], s4);
+
+            Assert.AreEqual(subgroup.Count, 2);
+            Assert.AreEqual(((Group)subgroup[0])[0], s1);
+            Assert.AreEqual(((Group)subgroup[1])[0], s2);
+            Assert.AreEqual(((Group)subgroup[1])[1], s3);
         }
     }
 }

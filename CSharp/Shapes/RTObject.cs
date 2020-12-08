@@ -79,6 +79,11 @@ namespace CSharp
 
         public abstract BoundingBox Bounds { get; }
 
+        public virtual void Divide(int threshold)
+        {
+            // Does nothing by default
+        }
+
         public BoundingBox ParentSpaceBounds()
         {
             return Bounds.Transform(Transform);

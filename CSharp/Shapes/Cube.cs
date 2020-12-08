@@ -17,24 +17,21 @@ namespace CSharp
         {
             var intersections = new Intersections();
 
-            if (Bounds.Intersects(ray))
+            CheckAxis(ray.Origin.x, ray.Direction.x, out double xtmin, out double xtmax);
+            CheckAxis(ray.Origin.y, ray.Direction.y, out double ytmin, out double ytmax);
+
+            if ((xtmin > ytmax) || (ytmin > xtmax))
+                return intersections;
+
+            CheckAxis(ray.Origin.z, ray.Direction.z, out double ztmin, out double ztmax);
+
+            var tmin = Math.Max(xtmin, Math.Max(ytmin, ztmin));
+            var tmax = Math.Min(xtmax, Math.Min(ytmax, ztmax));
+
+            if (tmin <= tmax)
             {
-                CheckAxis(ray.Origin.x, ray.Direction.x, out double xtmin, out double xtmax);
-                CheckAxis(ray.Origin.y, ray.Direction.y, out double ytmin, out double ytmax);
-
-                if ((xtmin > ytmax) || (ytmin > xtmax))
-                    return intersections;
-
-                CheckAxis(ray.Origin.z, ray.Direction.z, out double ztmin, out double ztmax);
-
-                var tmin = Math.Max(xtmin, Math.Max(ytmin, ztmin));
-                var tmax = Math.Min(xtmax, Math.Min(ytmax, ztmax));
-
-                if (tmin <= tmax)
-                {
-                    intersections.Add(new Intersection(tmin, this));
-                    intersections.Add(new Intersection(tmax, this));
-                }
+                intersections.Add(new Intersection(tmin, this));
+                intersections.Add(new Intersection(tmax, this));
             }
 
             return intersections;

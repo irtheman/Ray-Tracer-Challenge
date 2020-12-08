@@ -36,6 +36,17 @@ namespace CSharp
             objects.Add(obj);
         }
 
+        public void Add(Group obj)
+        {
+            Add((RTObject)obj);
+        }
+
+        public void Add(IEnumerable<RTObject> list)
+        {
+            foreach (var item in list)
+                Add(item);
+        }
+
         public RTObject this[int index]
         {
             get
@@ -64,13 +75,40 @@ namespace CSharp
             return ret;
         }
 
+        public override void Divide(int threshold)
+        {
+            if (threshold <= Count)
+            {
+                Group left, right;
+                PartitionChildren(out left, out right);
+
+                if (left.Count > 0)
+                {
+                    MakeSubGroup(left);
+                }
+
+                if (right.Count > 0)
+                {
+                    MakeSubGroup(right);
+                }
+            }
+
+            foreach (var child in objects)
+            {
+                child.Divide(threshold);
+            }
+        }
+
         protected override Intersections LocalIntersect(Ray ray)
         {
             var intersections = new Intersections();
 
-            foreach(var obj in objects)
+            if (Bounds.Intersects(ray))
             {
-                intersections.Add(obj.Intersect(ray));
+                foreach (var obj in objects)
+                {
+                    intersections.Add(obj.Intersect(ray));
+                }
             }
 
             return intersections;
@@ -79,6 +117,45 @@ namespace CSharp
         protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void PartitionChildren(out Group left, out Group right)
+        {
+            left = new Group();
+            right = new Group();
+
+            BoundingBox boundsLeft, boundsRight;
+            Bounds.SplitBounds(out boundsLeft, out boundsRight);
+
+            foreach (var obj in objects)
+            {
+                if (boundsLeft.Contains(obj.ParentSpaceBounds()))
+                {
+                    left.Add(obj);
+                }
+                else if (boundsRight.Contains(obj.ParentSpaceBounds()))
+                {
+                    right.Add(obj);
+                }
+            }
+
+            foreach (var obj in left)
+            {
+                objects.Remove(obj);
+            }
+
+            foreach (var obj in right)
+            {
+                objects.Remove(obj);
+            }
+        }
+
+        public void MakeSubGroup(IEnumerable<RTObject> lists)
+        {
+            var group = new Group();
+            group.Add(lists);
+
+            Add(group);
         }
 
         public IEnumerator<RTObject> GetEnumerator()
@@ -91,5 +168,6 @@ namespace CSharp
         {
             return GetEnumerator();
         }
+
     }
 }

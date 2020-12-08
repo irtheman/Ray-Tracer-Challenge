@@ -63,5 +63,19 @@ namespace CSharpTest
 
             Assert.AreEqual(comps.NormalVector, new Vector(-0.5547, 0.83205, 0));
         }
+
+        [TestMethod]
+        public void TestSmoothTriangleBounds()
+        {
+            var p1 = new Point(-3, 7, 2);
+            var p2 = new Point(6, 2, -4);
+            var p3 = new Point(2, -1, -1);
+            var n = Vector.Zero;
+            var shape = new SmoothTriangle(p1, p2, p3, n, n, n);
+            var box = shape.Bounds;
+
+            Assert.AreEqual(box.Min, new Point(-3, -1, -4));
+            Assert.AreEqual(box.Max, new Point(6, 7, 2));
+        }
     }
 }

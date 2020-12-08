@@ -5,7 +5,7 @@ using System;
 namespace CSharpTest
 {
     [TestClass]
-    public class Bounds
+    public class BoundsTest
     {
         [TestMethod]
         public void TestBBCreate()
@@ -207,6 +207,58 @@ namespace CSharpTest
 
                 Assert.AreEqual(result, results[i], i.ToString());
             }
+        }
+
+        [TestMethod]
+        public void TestBBSplittingPerfectCube()
+        {
+            var box = new BoundingBox(new Point(-1, -4, -5), new Point(9, 6, 5));
+            BoundingBox left, right;
+            box.SplitBounds(out left, out right);
+
+            Assert.AreEqual(left.Min, new Point(-1, -4, -5));
+            Assert.AreEqual(left.Max, new Point(4, 6, 5));
+            Assert.AreEqual(right.Min, new Point(4, -4, -5));
+            Assert.AreEqual(right.Max, new Point(9, 6, 5));
+        }
+
+        [TestMethod]
+        public void TestBBSplittingXWideBox()
+        {
+            var box = new BoundingBox(new Point(-1, -2, -3), new Point(9, 5.5, 3));
+            BoundingBox left, right;
+            box.SplitBounds(out left, out right);
+
+            Assert.AreEqual(left.Min, new Point(-1, -2, -3));
+            Assert.AreEqual(left.Max, new Point(4, 5.5, 3));
+            Assert.AreEqual(right.Min, new Point(4, -2, -3));
+            Assert.AreEqual(right.Max, new Point(9, 5.5, 3));
+        }
+
+        [TestMethod]
+        public void TestBBSplittingYWideBox()
+        {
+            var box = new BoundingBox(new Point(-1, -2, -3), new Point(5, 8, 3));
+            BoundingBox left, right;
+            box.SplitBounds(out left, out right);
+
+            Assert.AreEqual(left.Min, new Point(-1, -2, -3));
+            Assert.AreEqual(left.Max, new Point(5, 3, 3));
+            Assert.AreEqual(right.Min, new Point(-1, 3, -3));
+            Assert.AreEqual(right.Max, new Point(5, 8, 3));
+        }
+
+        [TestMethod]
+        public void TestBBSplittingZWideBox()
+        {
+            var box = new BoundingBox(new Point(-1, -2, -3), new Point(5, 3, 7));
+            BoundingBox left, right;
+            box.SplitBounds(out left, out right);
+
+            Assert.AreEqual(left.Min, new Point(-1, -2, -3));
+            Assert.AreEqual(left.Max, new Point(5, 3, 2));
+            Assert.AreEqual(right.Min, new Point(-1, -2, 2));
+            Assert.AreEqual(right.Max, new Point(5, 3, 7));
         }
     }
 }

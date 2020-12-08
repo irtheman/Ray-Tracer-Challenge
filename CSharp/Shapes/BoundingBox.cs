@@ -106,6 +106,46 @@ namespace CSharp
             return false;
         }
 
+        public void SplitBounds(out BoundingBox left, out BoundingBox right)
+        {
+            var dx = Max.x - Min.x;
+            var dy = Max.y - Min.y;
+            var dz = Max.z - Min.z;
+
+            var greatest = Math.Max(dx, Math.Max(dy, dz));
+
+            var x0 = Min.x;
+            var y0 = Min.y;
+            var z0 = Min.z;
+            var x1 = Max.x;
+            var y1 = Max.y;
+            var z1 = Max.z;
+
+            if (greatest.IsEqual(dx))
+            {
+                x0 = x1 = x0 + dx / 2.0;
+            }
+            else if (greatest.IsEqual(dy))
+            {
+                y0 = y1 = y0 + dy / 2.0;
+            }
+            else if (greatest.IsEqual(dz))
+            {
+                z0 = z1 = z0 + dz / 2.0;
+            }
+
+            var midMin = new Point(x0, y0, z0);
+            var midMax = new Point(x1, y1, z1);
+
+            left = new BoundingBox(Min, midMax);
+            right = new BoundingBox(midMin, Max);
+        }
+
+        public override string ToString()
+        {
+            return $"Min: {Min} Max: {Max}";
+        }
+
         private void CheckAxis(double origin, double direction, double min, double max, out double tmin, out double tmax)
         {
             var tmin_numerator = (min - origin);
@@ -120,11 +160,6 @@ namespace CSharp
                 tmin = tmax;
                 tmax = temp;
             }
-        }
-
-        public override string ToString()
-        {
-            return $"Min: {Min} Max: {Max}";
         }
     }
 }

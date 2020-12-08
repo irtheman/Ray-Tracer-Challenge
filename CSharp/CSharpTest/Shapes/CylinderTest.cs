@@ -45,7 +45,7 @@ namespace CSharpTest
                 { 4, 6 },
                 { 6.80798, 7.08872 }
             };
-            var counts = new int[] { 0, 2, 2 };
+            var counts = new int[] { 2, 2, 2 };
 
             for (int i = 0; i < rays.Count; i++)
             {
@@ -53,11 +53,8 @@ namespace CSharpTest
                 var xs = cyl.Intersect(r);
 
                 Assert.AreEqual(xs.Count, counts[i], i.ToString());
-                if (counts[i] > 0)
-                {
-                    Assert.AreEqual(xs[0].t, Ts[i, 0], epsilon, i.ToString());
-                    Assert.AreEqual(xs[1].t, Ts[i, 1], epsilon, i.ToString());
-                }
+                Assert.AreEqual(xs[0].t, Ts[i, 0], epsilon, i.ToString());
+                Assert.AreEqual(xs[1].t, Ts[i, 1], epsilon, i.ToString());
             }
         }
 

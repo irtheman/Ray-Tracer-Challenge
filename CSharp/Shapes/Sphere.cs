@@ -31,23 +31,20 @@ namespace CSharp
         {
             var result = new Intersections();
 
-            if (Bounds.Intersects(ray))
-            {
-                var sphereToRay = new Vector(ray.Origin - Point.Zero);
-                var a = ray.Direction.Dot(ray.Direction);
-                var b = 2.0 * ray.Direction.Dot(sphereToRay);
-                var c = sphereToRay.Dot(sphereToRay) - 1;
-                var discriminant = b * b - 4 * a * c;
+            var sphereToRay = new Vector(ray.Origin - Point.Zero);
+            var a = ray.Direction.Dot(ray.Direction);
+            var b = 2.0 * ray.Direction.Dot(sphereToRay);
+            var c = sphereToRay.Dot(sphereToRay) - 1;
+            var discriminant = b * b - 4 * a * c;
 
-                if (discriminant < 0.0)
-                {
-                    return result;
-                }
-                else
-                {
-                    result.Add(new Intersection((-b - Math.Sqrt(discriminant)) / (2 * a), this));
-                    result.Add(new Intersection((-b + Math.Sqrt(discriminant)) / (2 * a), this));
-                }
+            if (discriminant < 0.0)
+            {
+                return result;
+            }
+            else
+            {
+                result.Add(new Intersection((-b - Math.Sqrt(discriminant)) / (2 * a), this));
+                result.Add(new Intersection((-b + Math.Sqrt(discriminant)) / (2 * a), this));
             }
 
             return result;

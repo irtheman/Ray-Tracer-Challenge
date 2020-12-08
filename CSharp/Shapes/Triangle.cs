@@ -4,6 +4,8 @@ namespace CSharp
 {
     public class Triangle :RTObject
     {
+        private BoundingBox bounds;
+
         public Triangle(Point p1, Point p2, Point p3)
         {
             P1 = p1;
@@ -12,6 +14,12 @@ namespace CSharp
             E1 = new Vector(p2 - p1);
             E2 = new Vector(p3 - p1);
             Normal = E2.Cross(E1).Normalize;
+
+            bounds = new BoundingBox(new Point(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity),
+                                     new Point(double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity));
+            bounds.Add(p1);
+            bounds.Add(p2);
+            bounds.Add(p3);
         }
 
         public Point P1 { get; }
@@ -21,7 +29,7 @@ namespace CSharp
         public Vector E2 { get; }
         public Vector Normal { get; }
 
-        public override BoundingBox Bounds => throw new System.NotImplementedException();
+        public override BoundingBox Bounds => bounds;
 
         protected override Intersections LocalIntersect(Ray ray)
         {

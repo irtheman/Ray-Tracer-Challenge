@@ -42,54 +42,51 @@ namespace CSharp
         {
             var result = new Intersections();
 
-            if (Bounds.Intersects(ray))
+            IntersectCaps(ray, result);
+
+            var a = ray.Direction.x * ray.Direction.x - ray.Direction.y * ray.Direction.y + ray.Direction.z * ray.Direction.z;
+            var b = 2.0 * ray.Origin.x * ray.Direction.x -
+                    2.0 * ray.Origin.y * ray.Direction.y +
+                    2.0 * ray.Origin.z * ray.Direction.z;
+            var c = ray.Origin.x * ray.Origin.x - ray.Origin.y * ray.Origin.y + ray.Origin.z * ray.Origin.z;
+
+            if (a.IsEqual(0.0))
             {
-                IntersectCaps(ray, result);
-
-                var a = ray.Direction.x * ray.Direction.x - ray.Direction.y * ray.Direction.y + ray.Direction.z * ray.Direction.z;
-                var b = 2.0 * ray.Origin.x * ray.Direction.x -
-                        2.0 * ray.Origin.y * ray.Direction.y +
-                        2.0 * ray.Origin.z * ray.Direction.z;
-                var c = ray.Origin.x * ray.Origin.x - ray.Origin.y * ray.Origin.y + ray.Origin.z * ray.Origin.z;
-
-                if (a.IsEqual(0.0))
+                if (!b.IsEqual(0.0))
                 {
-                    if (!b.IsEqual(0.0))
-                    {
-                        var t = -c / (2 * b);
-                        result.Add(new Intersection(t, this));
-                    }
-
-                    return result;
+                    var t = -c / (2 * b);
+                    result.Add(new Intersection(t, this));
                 }
 
-                var disc = b * b - 4 * a * c;
+                return result;
+            }
 
-                if (disc < 0.0)
-                {
-                    return result;
-                }
+            var disc = b * b - 4 * a * c;
 
-                var t0 = (-b - Math.Sqrt(disc)) / (2 * a);
-                var t1 = (-b + Math.Sqrt(disc)) / (2 * a);
-                if (t0 > t1)
-                {
-                    var temp = t0;
-                    t0 = t1;
-                    t1 = temp;
-                }
+            if (disc < 0.0)
+            {
+                return result;
+            }
 
-                var y0 = ray.Origin.y + t0 * ray.Direction.y;
-                if ((Minimum < y0) && (y0 < Maximum))
-                {
-                    result.Add(new Intersection(t0, this));
-                }
+            var t0 = (-b - Math.Sqrt(disc)) / (2 * a);
+            var t1 = (-b + Math.Sqrt(disc)) / (2 * a);
+            if (t0 > t1)
+            {
+                var temp = t0;
+                t0 = t1;
+                t1 = temp;
+            }
 
-                var y1 = ray.Origin.y + t1 * ray.Direction.y;
-                if ((Minimum < y1) && (y1 < Maximum))
-                {
-                    result.Add(new Intersection(t1, this));
-                }
+            var y0 = ray.Origin.y + t0 * ray.Direction.y;
+            if ((Minimum < y0) && (y0 < Maximum))
+            {
+                result.Add(new Intersection(t0, this));
+            }
+
+            var y1 = ray.Origin.y + t1 * ray.Direction.y;
+            if ((Minimum < y1) && (y1 < Maximum))
+            {
+                result.Add(new Intersection(t1, this));
             }
 
             return result;

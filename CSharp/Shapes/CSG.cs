@@ -21,7 +21,21 @@ namespace CSharp
             Right.Parent = this;
         }
 
-        public override BoundingBox Bounds => throw new System.NotImplementedException();
+
+        public override BoundingBox Bounds
+        {
+            get
+            {
+                var box = new BoundingBox();
+                var cbox = Left.ParentSpaceBounds();
+                box.Add(cbox);
+
+                cbox = Right.ParentSpaceBounds();
+                box.Add(cbox);
+
+                return box;
+            }
+        }
 
         public CsgOperation Operation { get; }
         public RTObject Left { get; }
@@ -31,11 +45,14 @@ namespace CSharp
         {
             var results = new Intersections();
 
-            var leftXs = Left.Intersect(ray);
-            var rightXs = Right.Intersect(ray);
+            if (Bounds.Intersects(ray))
+            {
+                var leftXs = Left.Intersect(ray);
+                var rightXs = Right.Intersect(ray);
 
-            results.Add(leftXs);
-            results.Add(rightXs);
+                results.Add(leftXs);
+                results.Add(rightXs);
+            }
 
             return FilterIntersections(results);
         }
@@ -43,6 +60,12 @@ namespace CSharp
         protected override Vector LocalNormalAt(Point p, Intersection i)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void Divide(int threshold)
+        {
+            Left.Divide(threshold);
+            Right.Divide(threshold);
         }
 
         public static bool IntersectionAllowed(CsgOperation op, bool lhit, bool inl, bool inr)

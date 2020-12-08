@@ -34,11 +34,9 @@ namespace CSharpTest
             var s = new Sphere();
             var xs = s.Intersect(r);
 
-            // Bounding Box broke this...
-            Assert.AreEqual(xs.Count, 0);
-            //Assert.AreEqual(xs.Count, 2);
-            //Assert.AreEqual(xs[0].t, 5, epsilon);
-            //Assert.AreEqual(xs[1].t, 5, epsilon);
+            Assert.AreEqual(xs.Count, 2);
+            Assert.AreEqual(xs[0].t, 5, epsilon);
+            Assert.AreEqual(xs[1].t, 5, epsilon);
         }
 
         [TestMethod]

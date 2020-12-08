@@ -184,5 +184,14 @@ namespace CSharpTest
             Assert.AreEqual(box.Min, new Point(0.5, -5, 1));
             Assert.AreEqual(box.Max, new Point(1.5, -1, 9));
         }
+
+        [TestMethod]
+        public void TestShapeSubdividePrimitive()
+        {
+            var shape = new Sphere();
+            shape.Divide(1);
+
+            Assert.IsTrue(shape is Sphere);
+        }
     }
 }

@@ -20,16 +20,13 @@ namespace CSharp
         {
             var i = new Intersections();
 
-            if (Bounds.Intersects(ray))
+            if (Math.Abs(ray.Direction.y) < MathHelper.Epsilon)
             {
-                if (Math.Abs(ray.Direction.y) < MathHelper.Epsilon)
-                {
-                    return i;
-                }
-
-                var t = -ray.Origin.y / ray.Direction.y;
-                i.Add(new Intersection(t, this));
+                return i;
             }
+
+            var t = -ray.Origin.y / ray.Direction.y;
+            i.Add(new Intersection(t, this));
 
             return i;
         }
