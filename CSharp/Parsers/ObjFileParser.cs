@@ -119,7 +119,7 @@ namespace CSharp
                                 d = 0;
                             if (!int.TryParse(fields[2], out g))
                                 g = 0;
-                            
+
                             fields = parts[j].Split('/');
                             if (!int.TryParse(fields[0], out b))
                                 b = 0;
@@ -156,9 +156,9 @@ namespace CSharp
                 {
                     Ignored += 1;
                 }
-                }
-
-                return true;
             }
+
+            return true;
         }
     }
+}

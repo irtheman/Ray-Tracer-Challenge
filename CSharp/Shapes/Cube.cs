@@ -71,5 +71,21 @@ namespace CSharp
                 tmax = temp;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Cube;
+            return (other != null) && base.Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine("Cube", Material, Transform);
+        }
+
+        public override string ToString()
+        {
+            return $"Cube(0, 0, 0): {Material} {Transform}";
+        }
     }
 }

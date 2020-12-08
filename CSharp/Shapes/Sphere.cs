@@ -62,7 +62,7 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Sphere;
-            return base.Equals(obj);
+            return (other != null) && base.Equals(other);
         }
 
         public override int GetHashCode()

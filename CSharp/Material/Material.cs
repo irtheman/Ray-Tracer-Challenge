@@ -41,7 +41,25 @@ namespace CSharp
             }
             else if (obj.Parent != null)
             {
-                color = obj.Parent.Material.Lighting(obj.Parent, light, position, eyev, normalv, inShadow);
+                if (obj.Parent is Group)
+                {
+                    // Build up colors from parent objects
+                    color = Color.Black;
+
+                    var parent = obj.Parent;
+                    int count = 0;
+                    while (parent != null)
+                    {
+                        color = color + obj.Parent.Material.Lighting(parent, light, position, eyev, normalv, inShadow);
+                        count += 1;
+                        parent = parent.Parent;
+                    }
+                    color = color / count;
+                }
+                else
+                {
+                    color = Color;
+                }
             }
             else
             {

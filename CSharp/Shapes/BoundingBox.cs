@@ -121,5 +121,10 @@ namespace CSharp
                 tmax = temp;
             }
         }
+
+        public override string ToString()
+        {
+            return $"Min: {Min} Max: {Max}";
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Plane;
-            return base.Equals(obj);
+            return (other != null) && base.Equals(other);
         }
 
         public override int GetHashCode()

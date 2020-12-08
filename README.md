@@ -58,6 +58,12 @@ My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to fo
 ### Chapter 14
 ![Chapter 14 Groups](Images/cs_groups_hexagon.png "Hexagon")
 
+### Chapter 15
+![Chapter 15 Triangles](Images/cs_triangles.png "Smooth Triangles")
+
+### Chapter 16
+![Chapter 16 CSG](Images/cs_csg.png "CSG Difference")
+
 All of the following is for Ubuntu 20.04.
 
 # .NET Core

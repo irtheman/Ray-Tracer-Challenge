@@ -46,7 +46,22 @@ namespace CSharp
 
         public bool Contains(RTObject obj)
         {
-            return objects.Contains(obj);
+            var ret = objects.Contains(obj);
+
+            if (!ret)
+            {
+                foreach (var item in objects)
+                {
+                    var group = item as Group;
+                    if (group != null)
+                    {
+                        ret = group.Contains(obj);
+                        if (ret) break;
+                    }
+                }
+            }
+
+            return ret;
         }
 
         protected override Intersections LocalIntersect(Ray ray)

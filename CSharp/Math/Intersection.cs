@@ -89,5 +89,20 @@ namespace CSharp
                                     n2,
                                     inside);
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Intersection;
+            return ((other != null) &&
+                    t.IsEqual(other.t) &&
+                    Object.Equals(other.Object) &&
+                    U.IsEqual(other.U) &&
+                    V.IsEqual(other.V)) ;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(t, Object, U, V);
+        }
     }
 }

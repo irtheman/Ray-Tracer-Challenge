@@ -60,5 +60,25 @@ namespace CSharp
         {
             return Normal;
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Triangle;
+            return (other != null) &&
+                   (P1.Equals(other.P1)) &&
+                   (P2.Equals(other.P2)) &&
+                   (P3.Equals(other.P3)) &&
+                   base.Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine("Triangle", P1, P2, P3);
+        }
+
+        public override string ToString()
+        {
+            return $"P1: {P1} P2: {P2} P3: {P3}";
+        }
     }
 }

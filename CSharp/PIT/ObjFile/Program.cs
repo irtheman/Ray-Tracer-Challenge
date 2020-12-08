@@ -10,13 +10,15 @@ namespace ObjFile
             Console.WriteLine("Generating an ObjFile Rendering!");
 
             var parser = new ObjFileParser(@"..\..\..\..\..\..\Scenes\bunny.obj");
+            var group = parser.ObjToGroup;
+            group.Transform = Matrix.Translation(0, -1, 0);
 
             var world = new World();
-            world.Lights.Add(new PointLight(new Point(-10, 10, -10), Color.White));
-            world.Objects.Add(parser.ObjToGroup);
+            world.Lights.Add(new PointLight(new Point(10, 10, 10), Color.White));
+            world.Objects.Add(group);
 
-            var camera = new Camera(100, 50, Math.PI / 3);
-            camera.Transform = Matrix.ViewTransform(new Point(0, 1, 6),
+            var camera = new Camera(400, 200, Math.PI / 3);
+            camera.Transform = Matrix.ViewTransform(new Point(0.5, 2, 6),
                                                     Point.Zero,
                                                     Vector.VectorY);
 

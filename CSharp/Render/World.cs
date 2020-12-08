@@ -67,6 +67,10 @@ namespace CSharp
                                                          comps.NormalVector,
                                                          shadowed);
             }
+            if (Lights.Count > 1)
+            {
+                surface = surface / Lights.Count;
+            }
 
             var reflected = ReflectedColor(comps, remaining);
             var refracted = RefractedColor(comps, remaining);

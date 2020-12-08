@@ -119,18 +119,18 @@ namespace CSharp
 
         public override bool Equals(object obj)
         {
-            var other = obj as Cylinder;
-            return base.Equals(obj);
+            var other = obj as Cone;
+            return (other != null) && base.Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Cylinder", Material, Transform);
+            return HashCode.Combine("Cone", Material, Transform);
         }
 
         public override string ToString()
         {
-            return $"Cylinder(0, 0): {Material} {Transform}";
+            return $"Cone(0, 0, 0): {Material} {Transform}";
         }
 
         private bool CheckCap(Ray ray, double t)
