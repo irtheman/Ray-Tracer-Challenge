@@ -15,7 +15,7 @@ namespace ObjFile
             var parser = new ObjFileParser(@"..\..\..\..\..\..\Scenes\bunny.obj");
             var group = parser.ObjToGroup;
             group.Transform = Matrix.Translation(0, -1, 0);
-            //group.Divide(10);
+            group.Divide(5);
 
             var time = DateTime.Now - dt;
             Console.WriteLine($"Loading: {time.Hours}:{time.Minutes}:{time.Seconds}");
@@ -45,6 +45,7 @@ namespace ObjFile
             System.IO.File.WriteAllText("ObjFile.ppm", c.GetPPM());
 
             Console.WriteLine("Done!");
+            Console.ReadLine();
         }
     }
 }
