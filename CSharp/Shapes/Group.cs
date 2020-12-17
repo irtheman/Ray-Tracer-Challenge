@@ -21,9 +21,7 @@ namespace CSharp
         {
             get
             {
-                var box = new BoundingBox();
-
-                foreach (var child in objects)
+                if (box == null)
                 {
                     box = new BoundingBox();
 
