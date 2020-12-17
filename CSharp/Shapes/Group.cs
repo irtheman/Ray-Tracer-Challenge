@@ -5,11 +5,14 @@ namespace CSharp
 {
     public class Group : RTObject, IEnumerable<RTObject>
     {
-        List<RTObject> objects;
+        private List<RTObject> objects;
+        private BoundingBox box;
+
 
         public Group()
         {
             objects = new List<RTObject>();
+            box = null;
         }
 
         public long Count => objects.Count;
@@ -22,8 +25,13 @@ namespace CSharp
 
                 foreach (var child in objects)
                 {
-                    var cbox = child.ParentSpaceBounds();
-                    box.Add(cbox);
+                    box = new BoundingBox();
+
+                    foreach (var child in objects)
+                    {
+                        var cbox = child.ParentSpaceBounds();
+                        box.Add(cbox);
+                    }
                 }
 
                 return box;
@@ -32,12 +40,15 @@ namespace CSharp
 
         public void Add(RTObject obj)
         {
+            box = null;
             obj.Parent = this;
             objects.Add(obj);
         }
 
         public void Add(Group obj)
         {
+            box = null;
+            obj.Parent = this;
             Add((RTObject)obj);
         }
 
@@ -148,6 +159,8 @@ namespace CSharp
             {
                 objects.Remove(obj);
             }
+
+            box = null;
         }
 
         public void MakeSubGroup(IEnumerable<RTObject> lists)

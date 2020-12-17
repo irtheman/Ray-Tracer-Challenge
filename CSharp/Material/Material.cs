@@ -44,17 +44,28 @@ namespace CSharp
                 if (obj.Parent is Group)
                 {
                     // Build up colors from parent objects
+                    var mat = new Material();
                     color = Color.Black;
 
                     var parent = obj.Parent;
-                    int count = 0;
                     while (parent != null)
                     {
-                        color = color + obj.Parent.Material.Lighting(parent, light, position, eyev, normalv, inShadow);
-                        count += 1;
+                        if (!parent.Material.Equals(mat))
+                        {
+                            break;
+                        }
+
                         parent = parent.Parent;
                     }
-                    color = color / count;
+
+                    if (parent != null)
+                    {
+                        color = parent.Material.Lighting(parent, light, position, eyev, normalv, inShadow);
+                    }
+                    else
+                    {
+                        color = Color;
+                    }
                 }
                 else
                 {

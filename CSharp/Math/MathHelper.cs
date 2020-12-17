@@ -20,5 +20,10 @@ namespace CSharp
             if (a == b) return true;
             return Math.Abs(a - b) < Epsilon;
         }
+
+        public static double DegToRed(double degrees)
+        {
+            return degrees * (Math.PI / 180.0);
+        }
     }
 }

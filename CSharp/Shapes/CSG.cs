@@ -11,6 +11,8 @@ namespace CSharp
 
     public class CSG : RTObject
     {
+        private BoundingBox box;
+
         public CSG(CsgOperation op, RTObject left, RTObject right)
         {
             Operation = op;
@@ -19,6 +21,7 @@ namespace CSharp
 
             Left.Parent = this;
             Right.Parent = this;
+            box = null;
         }
 
 
@@ -26,12 +29,15 @@ namespace CSharp
         {
             get
             {
-                var box = new BoundingBox();
-                var cbox = Left.ParentSpaceBounds();
-                box.Add(cbox);
+                if (box == null)
+                {
+                    box = new BoundingBox();
+                    var cbox = Left.ParentSpaceBounds();
+                    box.Add(cbox);
 
-                cbox = Right.ParentSpaceBounds();
-                box.Add(cbox);
+                    cbox = Right.ParentSpaceBounds();
+                    box.Add(cbox);
+                }
 
                 return box;
             }

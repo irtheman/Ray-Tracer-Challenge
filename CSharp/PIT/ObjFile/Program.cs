@@ -12,21 +12,33 @@ namespace ObjFile
             var dt = DateTime.Now;
             Console.WriteLine($"Starting: {dt}");
 
-            var parser = new ObjFileParser(@"..\..\..\..\..\..\Scenes\bunny.obj");
-            var group = parser.ObjToGroup;
-            group.Transform = Matrix.Translation(0, -1, 0);
-            group.Divide(5);
+            // Floor
+            var floor = new Plane();
+            floor.Material.Color = Color.Red;
+            floor.Material.Diffuse = 0.1;
+            floor.Material.Specular = 0.9;
+            floor.Material.Shininess = 300;
+            floor.Material.Reflective = 0.9;
 
+            var parser = new ObjFileParser(@"..\..\..\..\..\..\ObjFiles\humanoid_quad.obj");
+
+            var group = parser.ObjToGroup;
+            group.Transform = Matrix.Translation(0, -parser.Min.y, 0)
+                              * Matrix.RotationZ(Math.PI / 2)
+                              * Matrix.RotationY(Math.PI / 2);
+            group.Divide(10);
+            
             var time = DateTime.Now - dt;
             Console.WriteLine($"Loading: {time.Hours}:{time.Minutes}:{time.Seconds}");
 
             var world = new World();
             world.Lights.Add(new PointLight(new Point(10, 10, 10), Color.White));
             world.Objects.Add(group);
+            world.Objects.Add(floor);
 
-            var camera = new Camera(400, 200, Math.PI / 3);
-            camera.Transform = Matrix.ViewTransform(new Point(0.5, 2, 6),
-                                                    Point.Zero,
+            var camera = new Camera(100, 50, Math.PI / 3);
+            camera.Transform = Matrix.ViewTransform(new Point(0, 1, 5),
+                                                    new Point(0, 0.5, 0),
                                                     Vector.VectorY);
 
             Console.WriteLine();
