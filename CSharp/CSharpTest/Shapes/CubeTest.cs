@@ -109,7 +109,7 @@ namespace CSharpTest
         public void TestCubeBounds()
         {
             var shape = new Cube();
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-1, -1, -1));
             Assert.AreEqual(box.Max, new Point(1, 1, 1));

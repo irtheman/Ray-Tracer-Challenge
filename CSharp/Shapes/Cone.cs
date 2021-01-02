@@ -4,7 +4,7 @@ namespace CSharp
 {
     public class Cone : RTObject
     {
-        private BoundingBox bounds;
+        private BoundingBox _bounds;
 
         public Cone() : this(double.NegativeInfinity, double.PositiveInfinity, false)
         {
@@ -17,24 +17,27 @@ namespace CSharp
             Maximum = max;
             Closed = closed;
 
-            bounds = null;
+            _bounds = null;
         }
 
         public double Minimum { get; set; }
         public double Maximum { get; set; }
         public bool Closed { get; set; }
 
-        public override BoundingBox Bounds
+        public override BoundingBox BoundsOf
         {
             get
             {
-                var a = Math.Abs(Minimum);
-                var b = Math.Abs(Maximum);
-                var limit = Math.Max(a, b);
+                if (_bounds == null || !_bounds.Min.y.IsEqual(Minimum) || !_bounds.Max.y.IsEqual(Maximum))
+                {
+                    var a = Math.Abs(Minimum);
+                    var b = Math.Abs(Maximum);
+                    var limit = Math.Max(a, b);
 
-                bounds = new BoundingBox(new Point(-limit, Minimum, -limit), new Point(limit, Maximum, limit));
+                    _bounds = new BoundingBox(new Point(-limit, Minimum, -limit), new Point(limit, Maximum, limit));
+                }
 
-                return bounds;
+                return _bounds;
             }
         }
 
@@ -92,7 +95,7 @@ namespace CSharp
             return result;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection i)
         {
             var dist = p.x * p.x + p.z * p.z;
 
@@ -117,17 +120,20 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Cone;
-            return (other != null) && base.Equals(other);
+            return base.Equals(other) &&
+                   Minimum.IsEqual(other.Minimum) &&
+                   Maximum.IsEqual(other.Maximum) &&
+                   (Closed == other.Closed);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Cone", Material, Transform);
+            return HashCode.Combine("Cone", base.GetHashCode(), Minimum, Maximum, Closed);
         }
 
         public override string ToString()
         {
-            return $"Cone(0, 0, 0): {Material} {Transform}";
+            return $"Cone: {Minimum} {Maximum} Closed: {Closed}";
         }
 
         private bool CheckCap(Ray ray, double t)

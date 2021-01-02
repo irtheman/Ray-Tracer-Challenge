@@ -40,8 +40,8 @@ namespace CSharpTest
             var r = new Ray(new Point(-0.2, 0.3, -2), Vector.VectorZ);
             var xs = tri.Intersect(r);
 
-            Assert.AreEqual(xs[0].U, 0.45, epsilon);
-            Assert.AreEqual(xs[0].V, 0.25, epsilon);
+            Assert.AreEqual(xs[0].u, 0.45, epsilon);
+            Assert.AreEqual(xs[0].v, 0.25, epsilon);
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace CSharpTest
             var p3 = new Point(2, -1, -1);
             var n = Vector.Zero;
             var shape = new SmoothTriangle(p1, p2, p3, n, n, n);
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-3, -1, -4));
             Assert.AreEqual(box.Max, new Point(6, 7, 2));

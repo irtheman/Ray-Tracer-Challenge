@@ -4,7 +4,7 @@ namespace CSharp
 {
     public class Triangle :RTObject
     {
-        private BoundingBox bounds;
+        private BoundingBox _bounds;
 
         public Triangle(Point p1, Point p2, Point p3)
         {
@@ -15,11 +15,10 @@ namespace CSharp
             E2 = new Vector(p3 - p1);
             Normal = E2.Cross(E1).Normalize;
 
-            bounds = new BoundingBox(new Point(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity),
-                                     new Point(double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity));
-            bounds.Add(p1);
-            bounds.Add(p2);
-            bounds.Add(p3);
+            _bounds = new BoundingBox();
+            _bounds.Add(p1);
+            _bounds.Add(p2);
+            _bounds.Add(p3);
         }
 
         public Point P1 { get; }
@@ -29,7 +28,7 @@ namespace CSharp
         public Vector E2 { get; }
         public Vector Normal { get; }
 
-        public override BoundingBox Bounds => bounds;
+        public override BoundingBox BoundsOf => _bounds;
 
         protected override Intersections LocalIntersect(Ray ray)
         {
@@ -64,29 +63,24 @@ namespace CSharp
             return results;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection hit)
         {
             return Normal;
         }
-
         public override bool Equals(object obj)
         {
             var other = obj as Triangle;
-            return (other != null) &&
-                   (P1.Equals(other.P1)) &&
-                   (P2.Equals(other.P2)) &&
-                   (P3.Equals(other.P3)) &&
-                   base.Equals(other);
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Triangle", P1, P2, P3);
+            return HashCode.Combine("Sphere", Material, Transform);
         }
 
         public override string ToString()
         {
-            return $"P1: {P1} P2: {P2} P3: {P3}";
+            return $"Sphere(0, 0): {Material} {Transform}";
         }
     }
 }

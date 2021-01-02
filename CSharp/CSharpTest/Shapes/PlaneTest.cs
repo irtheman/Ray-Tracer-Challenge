@@ -68,7 +68,7 @@ namespace CSharpTest
         public void TestPlaneBounds()
         {
             var shape = new Plane();
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(double.NegativeInfinity, 0, double.NegativeInfinity));
             Assert.AreEqual(box.Max, new Point(double.PositiveInfinity, 0, double.PositiveInfinity));

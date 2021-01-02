@@ -4,17 +4,17 @@ namespace CSharp
 {
     public class Plane : RTObject
     {
-        private readonly BoundingBox bounds;
+        private BoundingBox _bounds;
 
-        public Plane() : base()
+        public Plane()
         {
-            bounds = new BoundingBox(
-                                     new Point(double.NegativeInfinity, 0, double.NegativeInfinity),
-                                     new Point(double.PositiveInfinity, 0, double.PositiveInfinity)
-                                    );
+            _bounds = new BoundingBox(
+                                        new Point(double.NegativeInfinity, 0, double.NegativeInfinity),
+                                        new Point(double.PositiveInfinity, 0, double.PositiveInfinity)
+                                      );
         }
 
-        public override BoundingBox Bounds => bounds;
+        public  override BoundingBox BoundsOf => _bounds;
 
         protected override Intersections LocalIntersect(Ray ray)
         {
@@ -31,7 +31,7 @@ namespace CSharp
             return i;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection hit)
         {
             return Vector.VectorY;
         }
@@ -39,17 +39,17 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Plane;
-            return (other != null) && base.Equals(other);
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Plane", Material, Transform);
+            return HashCode.Combine("Plane", base.GetHashCode());
         }
 
         public override string ToString()
         {
-            return $"Plane(0, 0, 0): {Material} {Transform}";
+            return $"Plane: {Material} {Transform}";
         }
     }
 }

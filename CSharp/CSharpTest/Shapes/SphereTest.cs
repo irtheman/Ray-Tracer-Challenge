@@ -169,7 +169,7 @@ namespace CSharpTest
         public void TestSphereBounds()
         {
             var shape = new Sphere();
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-1, -1, -1));
             Assert.AreEqual(box.Max, new Point(1, 1, 1));

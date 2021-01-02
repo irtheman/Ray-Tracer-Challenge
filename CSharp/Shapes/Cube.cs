@@ -4,14 +4,14 @@ namespace CSharp
 {
     public class Cube : RTObject
     {
-        private readonly BoundingBox bounds;
+        private BoundingBox _bounds;
 
-        public Cube() : base()
+        public Cube()
         {
-            bounds = new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
+            _bounds = new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
         }
 
-        public override BoundingBox Bounds => bounds;
+        public override BoundingBox BoundsOf => _bounds;
 
         protected override Intersections LocalIntersect(Ray ray)
         {
@@ -19,10 +19,6 @@ namespace CSharp
 
             CheckAxis(ray.Origin.x, ray.Direction.x, out double xtmin, out double xtmax);
             CheckAxis(ray.Origin.y, ray.Direction.y, out double ytmin, out double ytmax);
-
-            if ((xtmin > ytmax) || (ytmin > xtmax))
-                return intersections;
-
             CheckAxis(ray.Origin.z, ray.Direction.z, out double ztmin, out double ztmax);
 
             var tmin = Math.Max(xtmin, Math.Max(ytmin, ztmin));
@@ -37,7 +33,7 @@ namespace CSharp
             return intersections;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection hit)
         {
             var maxc = Math.Max(Math.Abs(p.x), Math.Max(Math.Abs(p.y), Math.Abs(p.z)));
 
@@ -72,17 +68,17 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Cube;
-            return (other != null) && base.Equals(other);
+            return base.Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Cube", Material, Transform);
+            return HashCode.Combine("Cube", base.GetHashCode());
         }
 
         public override string ToString()
         {
-            return $"Cube(0, 0, 0): {Material} {Transform}";
+            return $"Cube: {Material} {Transform}";
         }
     }
 }

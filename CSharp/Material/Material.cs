@@ -4,12 +4,6 @@ namespace CSharp
 {
     public class Material
     {
-        public const double Vacuum = 1.0;
-        public const double Air = 1.00029;
-        public const double Water = 1.333;
-        public const double Glass = 1.52;
-        public const double Diamond = 2.417;
-
         public Material()
         {
             Color = Color.White;
@@ -39,39 +33,6 @@ namespace CSharp
             {
                 color = Pattern.PatternAtObject(obj, position);
             }
-            else if (obj.Parent != null)
-            {
-                if (obj.Parent is Group)
-                {
-                    // Build up colors from parent objects
-                    var mat = new Material();
-                    color = Color.Black;
-
-                    var parent = obj.Parent;
-                    while (parent != null)
-                    {
-                        if (!parent.Material.Equals(mat))
-                        {
-                            break;
-                        }
-
-                        parent = parent.Parent;
-                    }
-
-                    if (parent != null)
-                    {
-                        color = parent.Material.Lighting(parent, light, position, eyev, normalv, inShadow);
-                    }
-                    else
-                    {
-                        color = Color;
-                    }
-                }
-                else
-                {
-                    color = Color;
-                }
-            }
             else
             {
                 color = Color;
@@ -86,8 +47,8 @@ namespace CSharp
 
             if ((lightDotNormal < 0) || inShadow)
             {
-                diffuse = Color.Black;
-                specular = Color.Black;
+                diffuse = Color.Black; // inShadow ? Color.Green : Color.Black;
+                specular = Color.Black; // inShadow ? Color.Green : Color.Black;
             }
             else
             {

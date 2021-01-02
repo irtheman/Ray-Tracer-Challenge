@@ -248,8 +248,8 @@ namespace CSharpTest
             var s = new Triangle(new Point(0, 1, 0), new Point(-1, 0, 0), new Point(1, 0, 0));
             var i = new Intersection(3.5, s, 0.2, 0.4);
 
-            Assert.AreEqual(i.U, 0.2, epsilon);
-            Assert.AreEqual(i.V, 0.4, epsilon);
+            Assert.AreEqual(i.u, 0.2, epsilon);
+            Assert.AreEqual(i.v, 0.4, epsilon);
         }
     }
 }

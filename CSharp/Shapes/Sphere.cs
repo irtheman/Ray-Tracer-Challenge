@@ -6,11 +6,11 @@ namespace CSharp
 {
     public class Sphere : RTObject
     {
-        private readonly BoundingBox bounds;
+        private BoundingBox _bounds;
 
-        public Sphere() : base()
+        public Sphere()
         {
-            bounds = new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
+            _bounds = new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
         }
 
         public static Sphere Glass
@@ -25,12 +25,11 @@ namespace CSharp
             }
         }
 
-        public override BoundingBox Bounds => bounds;
+        public override BoundingBox BoundsOf => _bounds;
 
         protected override Intersections LocalIntersect(Ray ray)
         {
             var result = new Intersections();
-
             var sphereToRay = new Vector(ray.Origin - Point.Zero);
             var a = ray.Direction.Dot(ray.Direction);
             var b = 2.0 * ray.Direction.Dot(sphereToRay);
@@ -50,7 +49,7 @@ namespace CSharp
             return result;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection hit)
         {
             var point = p - Point.Zero;
             return new Vector(point.x, point.y, point.z);
@@ -59,7 +58,7 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Sphere;
-            return (other != null) && base.Equals(other);
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
@@ -69,7 +68,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Sphere(0, 0): {Material} {Transform}";
+            return $"Sphere: {Material} {Transform}";
         }
     }
 }

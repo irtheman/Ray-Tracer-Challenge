@@ -7,13 +7,13 @@ namespace CSharpTest
     {
         public Ray SavedRay { get; set; }
 
-        public override BoundingBox Bounds => new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
+        public override BoundingBox BoundsOf => new BoundingBox(new Point(-1, -1, -1), new Point(1, 1, 1));
 
         protected override Intersections LocalIntersect(Ray ray)
         {
             var result = new Intersections();
 
-            if (Bounds.Intersects(ray))
+            if (BoundsOf.Intersects(ray))
             {
                 SavedRay = ray;
 
@@ -37,7 +37,7 @@ namespace CSharpTest
             return result;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection i)
         {
             return new Vector(p.x, p.y, p.z);
         }

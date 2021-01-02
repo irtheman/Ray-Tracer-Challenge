@@ -20,6 +20,14 @@ namespace CSharp
         public bool IsPoint => w.IsEqual(1.0);
         public bool IsVector => w.IsEqual(0.0);
 
+        public void SetX(double X) => x = X;
+
+        public void SetY(double Y) => y = Y;
+
+        public void SetZ(double Z) => z = Z;
+
+        public void SetW(double W) => w = W;
+
         public static Tuple operator+(Tuple lhs, Tuple rhs)
         {
             return new Tuple(lhs.x + rhs.x,

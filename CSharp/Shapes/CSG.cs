@@ -11,7 +11,7 @@ namespace CSharp
 
     public class CSG : RTObject
     {
-        private BoundingBox box;
+        private BoundingBox _bounds;
 
         public CSG(CsgOperation op, RTObject left, RTObject right)
         {
@@ -21,25 +21,25 @@ namespace CSharp
 
             Left.Parent = this;
             Right.Parent = this;
-            box = null;
+            _bounds = null;
         }
 
 
-        public override BoundingBox Bounds
+        public override BoundingBox BoundsOf
         {
             get
             {
-                if (box == null)
+                if (_bounds == null)
                 {
-                    box = new BoundingBox();
-                    var cbox = Left.ParentSpaceBounds();
-                    box.Add(cbox);
+                    _bounds = new BoundingBox();
+                    var cbox = Left.ParentSpaceBoundsOf;
+                    _bounds.Add(cbox);
 
-                    cbox = Right.ParentSpaceBounds();
-                    box.Add(cbox);
+                    cbox = Right.ParentSpaceBoundsOf;
+                    _bounds.Add(cbox);
                 }
 
-                return box;
+                return _bounds;
             }
         }
 
@@ -51,7 +51,7 @@ namespace CSharp
         {
             var results = new Intersections();
 
-            if (Bounds.Intersects(ray))
+            if (BoundsOf.Intersects(ray))
             {
                 var leftXs = Left.Intersect(ray);
                 var rightXs = Right.Intersect(ray);
@@ -63,7 +63,7 @@ namespace CSharp
             return FilterIntersections(results);
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection i)
         {
             throw new System.NotImplementedException();
         }
@@ -123,15 +123,15 @@ namespace CSharp
                 return true;
             }
 
-            var group = child as Group;
-            if (group != null)
-            {
-                if (group.Contains(obj))
-                {
-                    return true;
-                }
-
-            }
+            // ToDo - Fix this
+            //var group = child as Group;
+            //if (group != null)
+            //{
+            //    if (group.Contains(obj))
+            //    {
+            //        return true;
+            //    }
+            //}
 
             var csg = child as CSG;
             if (csg != null)
@@ -140,6 +140,25 @@ namespace CSharp
             }
 
             return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as CSG;
+            return base.Equals(other) &&
+                   Operation.Equals(other.Operation) &&
+                   Left.Equals(other.Left) &&
+                   Right.Equals(other.Right);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine("CSG", base.GetHashCode(), Operation, Left, Right);
+        }
+
+        public override string ToString()
+        {
+            return $"CSG: {Operation}";
         }
     }
 }

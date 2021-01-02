@@ -15,7 +15,7 @@ namespace CSharp
             // Nothing else to do
         }
 
-        public Vector(Tuple t) : base(t.x, t.y, t.z, 0.0)
+        public Vector(Tuple t) : base(t.x, t.y, t.z, t.w)
         {
             // Nothing else to do
         }
@@ -24,7 +24,8 @@ namespace CSharp
         {
             var ret = new Vector(lhs.x * rhs,
                                  lhs.y * rhs,
-                                 lhs.z * rhs);
+                                 lhs.z * rhs)
+            { w = lhs.w * rhs };
 
             return ret;
         }
@@ -32,7 +33,8 @@ namespace CSharp
         {
             return new Vector(-rhs.x,
                               -rhs.y,
-                              -rhs.z);
+                              -rhs.z)
+            { w = -rhs.w };
         }
 
         public double Magnitude
@@ -41,7 +43,8 @@ namespace CSharp
             {
                 return Sqrt(this.x * this.x +
                             this.y * this.y +
-                            this.z * this.z);
+                            this.z * this.z +
+                            this.w * this.w);
             }
         }
 
@@ -50,14 +53,10 @@ namespace CSharp
             get
             {
                 var mag = this.Magnitude;
-                if (mag.IsEqual(0))
-                {
-                    return new Vector(0, 0, 0);
-                }
-
                 return new Vector(this.x / mag,
                                   this.y / mag,
-                                  this.z / mag);
+                                  this.z / mag)
+                { w = this.w / mag };
             }
         }
 
@@ -65,7 +64,8 @@ namespace CSharp
         {
             return this.x * rhs.x +
                    this.y * rhs.y +
-                   this.z * rhs.z;
+                   this.z * rhs.z +
+                   this.w * rhs.w;
         }
 
         public Vector Cross(Vector rhs)
@@ -80,6 +80,11 @@ namespace CSharp
         public Vector Reflect(Vector normal)
         {
             return new Vector(this - normal * 2 * Dot(normal));
+        }
+
+        public void ClearW()
+        {
+            this.w = 0;
         }
     }
 }

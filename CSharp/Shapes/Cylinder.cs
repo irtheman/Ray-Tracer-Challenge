@@ -4,7 +4,7 @@ namespace CSharp
 {
     public class Cylinder : RTObject
     {
-        private BoundingBox bounds;
+        private BoundingBox _bounds;
 
         public Cylinder() : this(double.NegativeInfinity, double.PositiveInfinity, false)
         {
@@ -17,7 +17,7 @@ namespace CSharp
             Maximum = max;
             Closed = closed;
 
-            bounds = null;
+            _bounds = null;
         }
 
         public double Minimum { get; set; }
@@ -26,16 +26,16 @@ namespace CSharp
 
         public bool Closed { get; set; }
 
-        public override BoundingBox Bounds
+        public override BoundingBox BoundsOf
         {
             get
             {
-                if (bounds == null || bounds.Min.y != Minimum || bounds.Max.y != Maximum)
+                if (_bounds == null || !_bounds.Min.y.IsEqual(Minimum) || !_bounds.Max.y.IsEqual(Maximum))
                 {
-                    bounds = new BoundingBox(new Point(-1, Minimum, -1), new Point(1, Maximum, 1));
+                    _bounds = new BoundingBox(new Point(-1, Minimum, -1), new Point(1, Maximum, 1));
                 }
 
-                return bounds;
+                return _bounds;
             }
         }
 
@@ -86,7 +86,7 @@ namespace CSharp
             return result;
         }
 
-        protected override Vector LocalNormalAt(Point p, Intersection i)
+        protected override Vector LocalNormal(Point p, Intersection i)
         {
             var dist = p.x * p.x + p.z * p.z;
 
@@ -105,17 +105,20 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Cylinder;
-            return (other != null) && base.Equals(other);
+            return base.Equals(other) &&
+                   Minimum.IsEqual(other.Minimum) &&
+                   Maximum.IsEqual(other.Maximum) &&
+                   (Closed == other.Closed);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Cylinder", Material, Transform);
+            return HashCode.Combine("Cylinder", base.GetHashCode(), Minimum, Maximum, Closed);
         }
 
         public override string ToString()
         {
-            return $"Cylinder(0, 0): {Material} {Transform}";
+            return $"Cylinder: {Minimum} {Maximum} Closed: {Closed}";
         }
 
         private bool CheckCap(Ray ray, double t)

@@ -7,15 +7,13 @@ namespace CSharp
 {
     public class ObjFileParser
     {
-        private bool cleanVertices;
-
-        public ObjFileParser(string fullPath)
+        public ObjFileParser(string fullPath, bool cleanVertices = true)
         {
-            cleanVertices = true;
+            CleanVertices = cleanVertices;
             FullPath = fullPath;
 
             DefaultGroup = new Group();
-            Groups = new List<Group>();
+            Groups = DefaultGroup;
 
             Vertices = new List<Point>();
             Vertices.Add(Point.Zero);
@@ -34,11 +32,12 @@ namespace CSharp
         public List<Point> Vertices { get; }
         public List<Vector> Normals { get; }
         public Group DefaultGroup { get; }
-        public List<Group> Groups { get; }
+        public Group Groups { get; }
         public Group ObjToGroup => DefaultGroup;
         public Point Min { get; private set; }
         public Point Max { get; private set; }
         public Point Center => new Point(((Max - Min) / 2.0) + Min);
+        public bool CleanVertices { get; set; }
 
         public bool Parse(string fullPath)
         {
@@ -49,7 +48,7 @@ namespace CSharp
 
             var lines = File.ReadAllLines(fullPath);
 
-            Group group = DefaultGroup;
+            var group = DefaultGroup;
             string[] parts;
 
             foreach (var line in lines)
@@ -72,11 +71,11 @@ namespace CSharp
                 }
                 else if (parts[0] == "f")
                 {
-                    if (cleanVertices)
+                    if (CleanVertices)
                     {
                         // Vertices are complete and can be processed
                         ProcessVertices();
-                        cleanVertices = false;
+                        CleanVertices = false;
                     }
 
                     AddFace(group, parts);
@@ -160,14 +159,14 @@ namespace CSharp
                     default:
                         throw new Exception("Unknown Face Arrangement!");
                 }
+
+                if (!smooth)
+                    tri = new Triangle(Vertices[a], Vertices[b], Vertices[c]);
+                else
+                    tri = new SmoothTriangle(Vertices[a], Vertices[b], Vertices[c], Normals[g], Normals[h], Normals[i]);
+
+                group.Add(tri);
             }
-
-            if (!smooth)
-                tri = new Triangle(Vertices[a], Vertices[b], Vertices[c]);
-            else
-                tri = new SmoothTriangle(Vertices[a], Vertices[b], Vertices[c], Normals[g], Normals[h], Normals[i]);
-
-            group.Add(tri);
         }
 
         private void AddNormal(string[] parts)
@@ -195,6 +194,14 @@ namespace CSharp
 
                 var point = new Point(x, y, z);
 
+                if (!CleanVertices)
+                {
+                    if (x < Min.x || y < Min.y || z < Min.z)
+                        Min = new Point(Math.Min(x, Min.x), Math.Min(y, Min.y), Math.Min(z, Min.z));
+                    if (x > Max.x || y > Max.y || z > Max.z)
+                        Max = new Point(Math.Max(x, Max.x), Math.Max(y, Max.y), Math.Max(z, Max.z));
+                }
+
                 Vertices.Add(point);
             }
         }
@@ -204,33 +211,64 @@ namespace CSharp
         /// </summary>
         private void ProcessVertices()
         {
-            var box = new BoundingBox();
-            
+            var box = new BBox();
+
             foreach (var vert in Vertices)
             {
                 box.Add(vert);
             }
+            box.Calculate();
 
             var sx = box.Max.x - box.Min.x;
             var sy = box.Max.y - box.Min.y;
             var sz = box.Max.z - box.Min.z;
 
             var scale = Math.Max(sx, Math.Max(sy, sz)) / 2.0;
-            double x, y, z;
-            Point v;
 
             Parallel.For(0, Vertices.Count, i =>
             {
-                v = Vertices[i];
-                x = (v.x - (box.Min.x + sx / 2.0)) / scale;
-                y = (v.y - (box.Min.y + sy / 2.0)) / scale;
-                z = (v.z - (box.Min.z + sz / 2.0)) / scale;
+                Point v = Vertices[i];
+                double x = (v.x - (box.Min.x + sx / 2.0)) / scale;
+                double y = (v.y - (box.Min.y + sy / 2.0)) / scale;
+                double z = (v.z - (box.Min.z + sz / 2.0)) / scale;
 
                 Vertices[i] = new Point(x, y, z);
             });
 
             Min = new Point(box.Min / scale);
             Max = new Point(box.Max / scale);
+        }
+    }
+
+    internal class BBox
+    {
+        private double x, y, z;
+        private double a, b, c;
+
+        public BBox()
+        {
+            x = y = z = double.MaxValue;
+            a = b = c = double.MinValue;
+        }
+
+        public Point Min { get; private set; }
+        public Point Max { get; private set; }
+
+        public void Add(Point p)
+        {
+            x = Math.Min(x, p.x);
+            y = Math.Min(y, p.y);
+            z = Math.Min(z, p.z);
+
+            a = Math.Max(a, p.x);
+            b = Math.Max(b, p.y);
+            c = Math.Max(c, p.z);
+        }
+
+        public void Calculate()
+        {
+            Min = new Point(x, y, z);
+            Max = new Point(a, b, c);
         }
     }
 }

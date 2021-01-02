@@ -10,9 +10,14 @@ namespace rtc
             string file = string.Empty;
             string output = "Output.ppm";
 
+            // ToDo: Parse 2 types of files
+            // renderObjFile(args)
+            // renderYamlFile(args)
+
             if (args.Length == 0)
             {
-                Console.WriteLine("rtc <yaml file> <output file>");
+                Console.WriteLine("rtc <output.ppm> <width:400> <height:200> <yaml file>");
+                Console.WriteLine("rtc <output.ppm> <width:400> <height:200> <obj file> [floor:color] [x:0] [y:0] [z:0]");
                 return;
             }
             else if (args.Length > 0)
@@ -25,7 +30,7 @@ namespace rtc
                 else
                 {
                     Console.WriteLine("To many paramters...");
-                    Console.WriteLine("rtc <yaml file> <output file>");
+                    Console.WriteLine("rtc <output file> <yaml file>");
                     return;
                 }
             }

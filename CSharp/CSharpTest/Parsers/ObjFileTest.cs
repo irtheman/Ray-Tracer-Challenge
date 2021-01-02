@@ -9,7 +9,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFileIgnoreGibberish()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\GibberishTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\GibberishTest.obj");
 
             Assert.AreEqual(parser.Ignored, 5);
         }
@@ -17,7 +17,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFileVertexRecords()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\VertexTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\VertexTest.obj");
 
             Assert.AreEqual(parser.Vertices[1], new Point(-1, 1, 0));
             Assert.AreEqual(parser.Vertices[2], new Point(-1, 0.5, 0));
@@ -28,7 +28,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFileFaces()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\FacesTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\FacesTest.obj");
             Group g = parser.DefaultGroup;
             var t1 = g[0] as Triangle;
             var t2 = g[1] as Triangle;
@@ -44,7 +44,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFilePolygon()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\PolygonTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\PolygonTest.obj");
             Group g = parser.DefaultGroup;
             var t1 = g[0] as Triangle;
             var t2 = g[1] as Triangle;
@@ -64,7 +64,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFileConvertToGroup()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\TrianglesTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\TrianglesTest.obj");
             var g = parser.ObjToGroup;
             Assert.IsTrue(g.Contains(parser.Groups[0]));
             Assert.IsTrue(g.Contains(parser.Groups[1]));
@@ -73,7 +73,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFileNormalVertex()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\NormalVertexTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\NormalVertexTest.obj");
 
             Assert.AreEqual(parser.Normals[1], new Vector(0, 0, 1));
             Assert.AreEqual(parser.Normals[2], new Vector(0.707, 0, -0.707));
@@ -83,7 +83,7 @@ namespace CSharpTest
         [TestMethod]
         public void TestObjFileNormalFaces()
         {
-            var parser = new ObjFileParser(@"..\..\..\..\..\Scenes\NormalFacesTest.obj");
+            var parser = new ObjFileParser(@"..\..\..\..\..\ObjFiles\NormalFacesTest.obj");
             Group g = parser.DefaultGroup;
             var t1 = g[0] as SmoothTriangle;
             var t2 = g[1] as SmoothTriangle;

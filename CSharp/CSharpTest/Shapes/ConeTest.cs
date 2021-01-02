@@ -103,7 +103,7 @@ namespace CSharpTest
         public void TestConeBounds()
         {
             var shape = new Cone();
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(double.NegativeInfinity, double.NegativeInfinity, double.NegativeInfinity));
             Assert.AreEqual(box.Max, new Point(double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity));
@@ -115,7 +115,7 @@ namespace CSharpTest
             var shape = new Cone();
             shape.Minimum = -5;
             shape.Maximum = 3;
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-5, -5, -5));
             Assert.AreEqual(box.Max, new Point(5, 3, 5));

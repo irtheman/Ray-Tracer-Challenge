@@ -125,7 +125,7 @@ namespace CSharpTest
             right.Transform = Matrix.Translation(2, 3, 4);
 
             var shape = new CSG(CsgOperation.Difference, left, right);
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-1, -1, -1));
             Assert.AreEqual(box.Max, new Point(3, 4, 5));

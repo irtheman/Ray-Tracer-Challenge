@@ -54,7 +54,7 @@ namespace CSharp
         public Color ShadeHit(RTObject obj, Computations comps, int remaining = 5)
         {
             var surface = Color.Black;
-            var shadowed = IsShadowed(comps.OverPoint);
+            var shadowed = IsShadowed(obj, comps, comps.OverPoint);
 
             foreach (var light in Lights)
             {
@@ -66,10 +66,6 @@ namespace CSharp
                                                          comps.EyeVector,
                                                          comps.NormalVector,
                                                          shadowed);
-            }
-            if (Lights.Count > 1)
-            {
-                surface = surface / Lights.Count;
             }
 
             var reflected = ReflectedColor(comps, remaining);
@@ -104,6 +100,33 @@ namespace CSharp
             return result;
         }
 
+        public bool IsShadowed(RTObject obj, Computations comps, Point point)
+        {
+            bool isShadowed = false;
+
+            foreach (var light in Lights)
+            {
+                var v = new Vector(light.Position - point);
+                var distance = v.Magnitude;
+                var direction = v.Normalize;
+
+                var r = new Ray(point, direction);
+                var intersections = Intersect(r);
+
+                var dN = direction.Dot(comps.NormalVector);
+
+                var h = intersections.Hit;
+                if ((h != null) && (h.t < distance) && (obj != h.Object) && (dN <= 0) && (h.Object.HasShadow))
+                {
+                    isShadowed = true;
+                    break;
+                }
+            }
+
+            return isShadowed;
+        }
+
+        // Keeping for the unit test
         public bool IsShadowed(Point point)
         {
             bool isShadowed = false;

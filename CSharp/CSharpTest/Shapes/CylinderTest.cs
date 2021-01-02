@@ -199,7 +199,7 @@ namespace CSharpTest
         public void TestCylinderBounds()
         {
             var shape = new Cylinder();
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-1, double.NegativeInfinity, -1));
             Assert.AreEqual(box.Max, new Point(1, double.PositiveInfinity, 1));
@@ -211,7 +211,7 @@ namespace CSharpTest
             var shape = new Cylinder();
             shape.Minimum = -5;
             shape.Maximum = 3;
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-1, -5, -1));
             Assert.AreEqual(box.Max, new Point(1, 3, 1));

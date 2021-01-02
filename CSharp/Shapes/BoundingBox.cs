@@ -23,22 +23,32 @@ namespace CSharp
 
         public void Add(Point p)
         {
-            if (p.x < Min.x || p.y < Min.y || p.z < Min.z)
+            // Min
+            if (p.x < Min.x)
             {
-                var minx = Math.Min(Min.x, p.x);
-                var miny = Math.Min(Min.y, p.y);
-                var minz = Math.Min(Min.z, p.z);
-
-                Min = new Point(minx, miny, minz);
+                Min.SetX(p.x);
+            }
+            if (p.y < Min.y)
+            {
+                Min.SetY(p.y);
+            }
+            if (p.z < Min.z)
+            {
+                Min.SetZ(p.z);
             }
 
-            if (p.x > Max.x || p.y > Max.y || p.z > Max.z)
+            // Max
+            if (p.x > Max.x)
             {
-                var maxx = Math.Max(Max.x, p.x);
-                var maxy = Math.Max(Max.y, p.y);
-                var maxz = Math.Max(Max.z, p.z);
-
-                Max = new Point(maxx, maxy, maxz);
+                Max.SetX(p.x);
+            }
+            if (p.y > Max.y)
+            {
+                Max.SetY(p.y);
+            }
+            if (p.z > Max.z)
+            {
+                Max.SetZ(p.z);
             }
         }
 
@@ -50,9 +60,9 @@ namespace CSharp
 
         public bool Contains(Point p)
         {
-            return Min.x <= p.x && Max.x >= p.x &&
-                   Min.y <= p.y && Max.y >= p.y &&
-                   Min.z <= p.z && Max.z >= p.z;
+            return Min.x <= p.x && p.x <= Max.x &&
+                   Min.y <= p.y && p.y <= Max.y &&
+                   Min.z <= p.z && p.z <= Max.z;
         }
 
         public bool Contains(BoundingBox bb)
@@ -89,21 +99,17 @@ namespace CSharp
         {
             CheckAxis(ray.Origin.x, ray.Direction.x, Min.x, Max.x, out double xtmin, out double xtmax);
             CheckAxis(ray.Origin.y, ray.Direction.y, Min.y, Max.y, out double ytmin, out double ytmax);
-
-            if ((xtmin > ytmax) || (ytmin > xtmax))
-                return false;
-
             CheckAxis(ray.Origin.z, ray.Direction.z, Min.z, Max.z, out double ztmin, out double ztmax);
 
             var tmin = Math.Max(xtmin, Math.Max(ytmin, ztmin));
             var tmax = Math.Min(xtmax, Math.Min(ytmax, ztmax));
 
-            if (tmin <= tmax)
+            if (tmin > tmax)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         public void SplitBounds(out BoundingBox left, out BoundingBox right)

@@ -11,17 +11,16 @@ namespace CSharp
             t = time;
             Object = obj;
         }
-
-        public Intersection(double time, RTObject obj, double u, double v) : this(time, obj)
+        public Intersection(double time, RTObject obj, double U, double V) : this(time, obj)
         {
-            U = u;
-            V = v;
+            u = U;
+            v = V;
         }
 
         public double t { get; }
         public RTObject Object { get; }
-        public double U { get; }
-        public double V { get; }
+        public double u { get; }
+        public double v { get; }
 
         public Computations PrepareComputations(Ray r, Intersections xs)
         {
@@ -88,21 +87,6 @@ namespace CSharp
                                     n1,
                                     n2,
                                     inside);
-        }
-
-        public override bool Equals(object obj)
-        {
-            var other = obj as Intersection;
-            return ((other != null) &&
-                    t.IsEqual(other.t) &&
-                    Object.Equals(other.Object) &&
-                    U.IsEqual(other.U) &&
-                    V.IsEqual(other.V)) ;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(t, Object, U, V);
         }
     }
 }

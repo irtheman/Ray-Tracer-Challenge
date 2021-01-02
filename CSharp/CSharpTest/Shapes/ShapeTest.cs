@@ -167,7 +167,7 @@ namespace CSharpTest
         public void TestShapeBounds()
         {
             var shape = new TestShape();
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-1, -1, -1));
             Assert.AreEqual(box.Max, new Point(1, 1, 1));
@@ -179,7 +179,7 @@ namespace CSharpTest
             var shape = new Sphere();
             shape.Transform = Matrix.Translation(1, -3, 5) *
                               Matrix.Scaling(0.5, 2, 4);
-            var box = shape.ParentSpaceBounds();
+            var box = shape.ParentSpaceBoundsOf;
 
             Assert.AreEqual(box.Min, new Point(0.5, -5, 1));
             Assert.AreEqual(box.Max, new Point(1.5, -1, 9));

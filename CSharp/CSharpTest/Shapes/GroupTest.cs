@@ -94,7 +94,7 @@ namespace CSharpTest
             shape.Add(s);
             shape.Add(c);
 
-            var box = shape.Bounds;
+            var box = shape.BoundsOf;
 
             Assert.AreEqual(box.Min, new Point(-4.5, -3, -5));
             Assert.AreEqual(box.Max, new Point(4, 7, 4.5));
@@ -140,7 +140,7 @@ namespace CSharpTest
             var s3 = new Sphere();
             g.Add(s3);
 
-            Group left, right;
+            List<RTObject> left, right;
             g.PartitionChildren(out left, out right);
 
             Assert.AreEqual(g[0], s3);

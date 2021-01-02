@@ -1,59 +1,39 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace CSharp
 {
     public class Group : RTObject, IEnumerable<RTObject>
     {
+        private BoundingBox _bounds;
         private List<RTObject> objects;
-        private BoundingBox box;
-
 
         public Group()
         {
             objects = new List<RTObject>();
-            box = null;
+            _bounds = null;
         }
 
-        public long Count => objects.Count;
+        public int Count => objects.Count;
 
-        public override BoundingBox Bounds
+        public override BoundingBox BoundsOf
         {
             get
             {
-                if (box == null)
+                if (_bounds == null)
                 {
-                    box = new BoundingBox();
+                    _bounds = new BoundingBox();
 
                     foreach (var child in objects)
                     {
-                        var cbox = child.ParentSpaceBounds();
-                        box.Add(cbox);
+                        var cbox = child.ParentSpaceBoundsOf;
+                        _bounds.Add(cbox);
                     }
                 }
 
-                return box;
+                return _bounds;
             }
-        }
-
-        public void Add(RTObject obj)
-        {
-            box = null;
-            obj.Parent = this;
-            objects.Add(obj);
-        }
-
-        public void Add(Group obj)
-        {
-            box = null;
-            obj.Parent = this;
-            Add((RTObject)obj);
-        }
-
-        public void Add(IEnumerable<RTObject> list)
-        {
-            foreach (var item in list)
-                Add(item);
         }
 
         public RTObject this[int index]
@@ -64,31 +44,88 @@ namespace CSharp
             }
         }
 
+        public void Add(RTObject obj)
+        {
+            obj.Parent = this;
+            objects.Add(obj);
+            _bounds = null;
+        }
+
         public bool Contains(RTObject obj)
         {
-            var ret = objects.Contains(obj);
+            return objects.Contains(obj);
+        }
 
-            if (!ret)
+        protected override Intersections LocalIntersect(Ray ray)
+        {
+            Intersections results = new Intersections();
+
+            if (BoundsOf.Intersects(ray))
             {
-                foreach (var item in objects)
+                foreach (var obj in objects)
                 {
-                    var group = item as Group;
-                    if (group != null)
-                    {
-                        ret = group.Contains(obj);
-                        if (ret) break;
-                    }
+                    results.Add(obj.Intersect(ray));
                 }
             }
 
-            return ret;
+            return results;
+        }
+
+        protected override Vector LocalNormal(Point p, Intersection hit)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerator<RTObject> GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PartitionChildren(out List<RTObject> left, out List<RTObject> right)
+        {
+            left = new List<RTObject>();
+            right = new List<RTObject>();
+
+            BoundingBox boundsLeft, boundsRight;
+            BoundsOf.SplitBounds(out boundsLeft, out boundsRight);
+
+            List<RTObject> remove = new List<RTObject>();
+            foreach (var child in objects)
+            {
+                if (boundsLeft.Contains(child.ParentSpaceBoundsOf))
+                {
+                    left.Add(child);
+                    remove.Add(child);
+                }
+                else if (boundsRight.Contains(child.ParentSpaceBoundsOf))
+                {
+                    right.Add(child);
+                    remove.Add(child);
+                }
+            }
+
+            foreach (var item in remove)
+            {
+                objects.Remove(item);
+            }
+        }
+
+        public void MakeSubGroup(IEnumerable<RTObject> children)
+        {
+            var g = new Group();
+            foreach (var child in children)
+            {
+                g.Add(child);
+            }
+
+            Add(g);
         }
 
         public override void Divide(int threshold)
         {
             if (threshold <= Count)
             {
-                Group left, right;
+                List<RTObject> left, right;
                 PartitionChildren(out left, out right);
 
                 if (left.Count > 0)
@@ -108,77 +145,26 @@ namespace CSharp
             }
         }
 
-        protected override Intersections LocalIntersect(Ray ray)
-        {
-            var intersections = new Intersections();
-
-            if (Bounds.Intersects(ray))
-            {
-                foreach (var obj in objects)
-                {
-                    intersections.Add(obj.Intersect(ray));
-                }
-            }
-
-            return intersections;
-        }
-
-        protected override Vector LocalNormalAt(Point p, Intersection i)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void PartitionChildren(out Group left, out Group right)
-        {
-            left = new Group();
-            right = new Group();
-
-            BoundingBox boundsLeft, boundsRight;
-            Bounds.SplitBounds(out boundsLeft, out boundsRight);
-
-            foreach (var obj in objects)
-            {
-                if (boundsLeft.Contains(obj.ParentSpaceBounds()))
-                {
-                    left.Add(obj);
-                }
-                else if (boundsRight.Contains(obj.ParentSpaceBounds()))
-                {
-                    right.Add(obj);
-                }
-            }
-
-            foreach (var obj in left)
-            {
-                objects.Remove(obj);
-            }
-
-            foreach (var obj in right)
-            {
-                objects.Remove(obj);
-            }
-
-            box = null;
-        }
-
-        public void MakeSubGroup(IEnumerable<RTObject> lists)
-        {
-            var group = new Group();
-            group.Add(lists);
-
-            Add(group);
-        }
-
-        public IEnumerator<RTObject> GetEnumerator()
-        {
-            foreach (var obj in objects)
-                yield return obj;
-        }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        public override bool Equals(object obj)
+        {
+            var other = obj as Group;
+            return base.Equals(other) &&
+                   objects.Equals(other.objects);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine("Group", base.GetHashCode(), objects);
+        }
+
+        public override string ToString()
+        {
+            return $"Group: {Count}";
+        }
     }
 }
