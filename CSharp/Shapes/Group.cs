@@ -47,14 +47,7 @@ namespace CSharp
         public void Add(RTObject obj)
         {
             obj.Parent = this;
-            if (obj is Group || obj is CSG)
-            {
-                objects.Insert(0, obj);
-            }
-            else
-            {
-                objects.Add(obj);
-            }
+            objects.Add(obj);
             _bounds = null;
         }
 

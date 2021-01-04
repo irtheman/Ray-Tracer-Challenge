@@ -84,9 +84,9 @@ namespace CSharpTest
                 var c = new CSG(op[i], s1, s2);
                 Intersections result = c.FilterIntersections(xs);
 
-                Assert.AreEqual(result.Count, 2);
-                Assert.AreEqual(result[0], xs[x0[i]]);
-                Assert.AreEqual(result[1], xs[x1[i]]);
+                Assert.AreEqual(result.Count, 2, i.ToString());
+                Assert.AreEqual(result[0], xs[x0[i]], i.ToString());
+                Assert.AreEqual(result[1], xs[x1[i]], i.ToString());
             }
         }
 

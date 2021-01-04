@@ -39,7 +39,7 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Plane;
-            return base.Equals(obj);
+            return base.Equals(other);
         }
 
         public override int GetHashCode()
@@ -49,7 +49,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Plane ({ID}): {Material} {Transform}";
+            return $"Plane ({ID})";
         }
     }
 }

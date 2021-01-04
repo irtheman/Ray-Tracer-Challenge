@@ -70,7 +70,11 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Triangle;
-            return base.Equals(obj);
+            return base.Equals(other) ||
+                   ((other != null) &&
+                    P1.Equals(other.P1) &&
+                    P2.Equals(other.P2) &&
+                    P3.Equals(other.P3));
         }
 
         public override int GetHashCode()

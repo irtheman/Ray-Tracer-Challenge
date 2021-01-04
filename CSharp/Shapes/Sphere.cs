@@ -58,7 +58,7 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as Sphere;
-            return base.Equals(obj);
+            return base.Equals(other);
         }
 
         public override int GetHashCode()
@@ -68,7 +68,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Sphere ({ID}): {Material} {Transform}";
+            return $"Sphere ({ID})";
         }
     }
 }

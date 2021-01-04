@@ -34,7 +34,7 @@ namespace ObjFile
 
             int threshold = (int)group.Count / 4;
             if (threshold < 1) threshold = 1;
-            group.Divide(threshold);
+            //group.Divide(1500);
 
             var time = DateTime.Now - dt;
             Console.WriteLine($"Loading: {time.Hours}:{time.Minutes}:{time.Seconds}");

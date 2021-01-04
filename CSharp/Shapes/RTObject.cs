@@ -69,8 +69,10 @@ namespace CSharp
         public override bool Equals(object obj)
         {
             var other = obj as RTObject;
-            return ((other != null) &&
-                    (ID == other.ID));
+            return (other != null) &&
+                   ((ID == other.ID) ||
+                    (Material.Equals(other.Material) &&
+                    Transform.Equals(other.Transform)));
         }
 
         public override int GetHashCode()

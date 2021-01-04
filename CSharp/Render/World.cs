@@ -113,13 +113,16 @@ namespace CSharp
                 var r = new Ray(point, direction);
                 var intersections = Intersect(r);
 
-                var dN = direction.Dot(comps.NormalVector);
-
                 var h = intersections.Hit;
-                if ((h != null) && (h.t < distance) && (obj != h.Object) && (dN <= 0) && (h.Object.HasShadow))
+                if ((h != null) && (h.t < distance) && (h.t > MathHelper.Epsilon))
                 {
-                    isShadowed = true;
-                    break;
+                    var dN = direction.Dot(comps.NormalVector);
+
+                    if (!obj.Equals(h.Object) && h.Object.HasShadow && (dN <= 0))
+                    {
+                        isShadowed = true;
+                        break;
+                    }
                 }
             }
 
