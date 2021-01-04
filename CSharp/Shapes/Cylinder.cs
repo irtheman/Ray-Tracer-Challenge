@@ -118,7 +118,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Cylinder: {Minimum} {Maximum} Closed: {Closed}";
+            return $"Cylinder ({ID}): {Minimum} {Maximum} Closed: {Closed}";
         }
 
         private bool CheckCap(Ray ray, double t)

@@ -135,7 +135,7 @@ namespace CSharp
             {
                 y0 = y1 = y0 + dy / 2.0;
             }
-            else if (greatest.IsEqual(dz))
+            else
             {
                 z0 = z1 = z0 + dz / 2.0;
             }
@@ -149,7 +149,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Min: {Min} Max: {Max}";
+            return $"BB Min: {Min} Max: {Max}";
         }
 
         private void CheckAxis(double origin, double direction, double min, double max, out double tmin, out double tmax)

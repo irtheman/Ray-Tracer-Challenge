@@ -88,5 +88,10 @@ namespace CSharp
                                     n2,
                                     inside);
         }
+
+        public override string ToString()
+        {
+            return $"Intersection: t:{t} u:{u} v:{v}";
+        }
     }
 }

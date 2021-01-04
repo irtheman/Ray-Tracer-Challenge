@@ -123,15 +123,14 @@ namespace CSharp
                 return true;
             }
 
-            // ToDo - Fix this
-            //var group = child as Group;
-            //if (group != null)
-            //{
-            //    if (group.Contains(obj))
-            //    {
-            //        return true;
-            //    }
-            //}
+            var group = child as Group;
+            if (group != null)
+            {
+                if (group.Contains(obj))
+                {
+                    return true;
+                }
+            }
 
             var csg = child as CSG;
             if (csg != null)
@@ -158,7 +157,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"CSG: {Operation}";
+            return $"CSG ({ID}): {Operation}";
         }
     }
 }

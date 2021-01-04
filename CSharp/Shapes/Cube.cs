@@ -78,7 +78,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Cube: {Material} {Transform}";
+            return $"Cube ({ID}): {Material} {Transform}";
         }
     }
 }

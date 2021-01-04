@@ -28,11 +28,14 @@ namespace ObjFile
             var group = parser.ObjToGroup;
             group.Transform = Matrix.Translation(0, withFloor ? parser.Center.y - parser.Min.y : 0, 0)
                               //* Matrix.RotationZ(Math.PI / 2)
-                              * Matrix.RotationX(-Math.PI / 2)
+                              //* Matrix.RotationX(-Math.PI / 2)
                               //* Matrix.RotationY(Math.PI / 2)
                               ;
-            //group.Divide(1000);
-            
+
+            int threshold = (int)group.Count / 4;
+            if (threshold < 1) threshold = 1;
+            group.Divide(threshold);
+
             var time = DateTime.Now - dt;
             Console.WriteLine($"Loading: {time.Hours}:{time.Minutes}:{time.Seconds}");
 

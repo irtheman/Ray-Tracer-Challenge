@@ -55,6 +55,10 @@ namespace CSharp
         {
             var image = new Canvas(HSize, VSize);
 
+            // Debug per pixel
+            //var temp1 = RayForPixel(200, 97);
+            //var temp2 = w.ColorAt(temp1);
+
             Parallel.For(0, VSize, y =>
             { 
                 for (int x = 0; x < HSize; x++)

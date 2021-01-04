@@ -10,12 +10,17 @@ namespace CSharp
         private Matrix transform;
         protected Matrix transformInverse;
 
+        private static long ObjCounter = 0;
+
         protected RTObject()
         {
             Transform = Matrix.Identity;
             Material = new Material();
             HasShadow = true;
+            ID = ObjCounter++;
         }
+
+        public long ID { get; }
 
         public RTObject Parent { get; set; }
 
@@ -65,8 +70,7 @@ namespace CSharp
         {
             var other = obj as RTObject;
             return ((other != null) &&
-                    (Material.Equals(other.Material)) &&
-                    (Transform.Equals(other.Transform)));
+                    (ID == other.ID));
         }
 
         public override int GetHashCode()

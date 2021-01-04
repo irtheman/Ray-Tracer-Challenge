@@ -47,8 +47,37 @@ namespace CSharp
         public void Add(RTObject obj)
         {
             obj.Parent = this;
-            objects.Add(obj);
+            if (obj is Group || obj is CSG)
+            {
+                objects.Insert(0, obj);
+            }
+            else
+            {
+                objects.Add(obj);
+            }
             _bounds = null;
+        }
+
+        public RTObject FindById(int id)
+        {
+            foreach (var obj in objects)
+            {
+                if (obj.ID == id)
+                {
+                    return obj;
+                }
+
+                if (obj is Group temp)
+                {
+                    RTObject found = temp.FindById(id);
+                    if ((found != null) && (found.ID == id))
+                    {
+                        return found;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public bool Contains(RTObject obj)
@@ -72,11 +101,6 @@ namespace CSharp
         }
 
         protected override Vector LocalNormal(Point p, Intersection hit)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IEnumerator<RTObject> GetEnumerator()
         {
             throw new System.NotImplementedException();
         }
@@ -145,6 +169,12 @@ namespace CSharp
             }
         }
 
+        public IEnumerator<RTObject> GetEnumerator()
+        {
+            foreach (var obj in objects)
+                yield return obj;
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -164,7 +194,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Group: {Count}";
+            return $"Group ({ID}): {Count}";
         }
     }
 }

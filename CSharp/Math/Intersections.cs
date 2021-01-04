@@ -100,5 +100,10 @@ namespace CSharp
                 return choice;
             }
         }
+
+        public override string ToString()
+        {
+            return $"Intersections: {Count}";
+        }
     }
 }

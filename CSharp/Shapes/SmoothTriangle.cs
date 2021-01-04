@@ -36,7 +36,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Smooth Triangle: {P1} {P2} {P3} {N1} {N2} {N3}";
+            return $"Smooth Triangle ({ID}): {P1} {P2} {P3} {N1} {N2} {N3}";
         }
     }
 }

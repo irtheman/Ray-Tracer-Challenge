@@ -75,12 +75,12 @@ namespace CSharp
 
         public override int GetHashCode()
         {
-            return HashCode.Combine("Sphere", Material, Transform);
+            return HashCode.Combine("Triangle", Material, Transform);
         }
 
         public override string ToString()
         {
-            return $"Sphere(0, 0): {Material} {Transform}";
+            return $"Triangle ({ID}): {P1} {P2} {P3}";
         }
     }
 }

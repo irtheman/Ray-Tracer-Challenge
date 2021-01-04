@@ -133,7 +133,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Cone: {Minimum} {Maximum} Closed: {Closed}";
+            return $"Cone ({ID}): {Minimum} {Maximum} Closed: {Closed}";
         }
 
         private bool CheckCap(Ray ray, double t)

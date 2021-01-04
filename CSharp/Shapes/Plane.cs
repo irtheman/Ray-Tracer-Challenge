@@ -49,7 +49,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Plane: {Material} {Transform}";
+            return $"Plane ({ID}): {Material} {Transform}";
         }
     }
 }

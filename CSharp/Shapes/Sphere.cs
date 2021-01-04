@@ -68,7 +68,7 @@ namespace CSharp
 
         public override string ToString()
         {
-            return $"Sphere: {Material} {Transform}";
+            return $"Sphere ({ID}): {Material} {Transform}";
         }
     }
 }
