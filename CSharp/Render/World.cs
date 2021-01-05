@@ -8,7 +8,7 @@ namespace CSharp
         public World()
         {
             Objects = new List<RTObject>();
-            Lights = new List<PointLight>();
+            Lights = new List<ILight>();
         }
 
         public static World Default
@@ -36,7 +36,7 @@ namespace CSharp
         }
 
         public List<RTObject> Objects { get; set; }
-        public List<PointLight> Lights { get; set; }
+        public List<ILight> Lights { get; set; }
 
         public Intersections Intersect(Ray ray)
         {
@@ -54,18 +54,27 @@ namespace CSharp
         public Color ShadeHit(RTObject obj, Computations comps, int remaining = 5)
         {
             var surface = Color.Black;
-            var shadowed = IsShadowed(obj, comps, comps.OverPoint);
+            double intensity = 0.0;
+            int count = 0;
 
             foreach (var light in Lights)
             {
+                count++;
+                intensity = light.IntensityAt(obj, comps, this);
+
                 surface = surface +
                           comps.Object.Material.Lighting(
-                                                         obj,
-                                                         light,
-                                                         comps.OverPoint,
-                                                         comps.EyeVector,
-                                                         comps.NormalVector,
-                                                         shadowed);
+                                                          obj,
+                                                          light,
+                                                          comps.OverPoint,
+                                                          comps.EyeVector,
+                                                          comps.NormalVector,
+                                                          intensity);
+            }
+
+            if (count > 0)
+            {
+                surface = surface / count;
             }
 
             var reflected = ReflectedColor(comps, remaining);
@@ -100,29 +109,25 @@ namespace CSharp
             return result;
         }
 
-        public bool IsShadowed(RTObject obj, Computations comps, Point point)
+        public bool IsShadowed(RTObject obj, Computations comps, Point lightPosition, Point point)
         {
             bool isShadowed = false;
 
-            foreach (var light in Lights)
+            var v = new Vector(lightPosition - point);
+            var distance = v.Magnitude;
+            var direction = v.Normalize;
+
+            var r = new Ray(point, direction);
+            var intersections = Intersect(r);
+
+            var h = intersections.Hit;
+            if ((h != null) && (h.t < distance) && (h.t > MathHelper.Epsilon))
             {
-                var v = new Vector(light.Position - point);
-                var distance = v.Magnitude;
-                var direction = v.Normalize;
+                var dN = obj is Triangle ? direction.Dot(comps.NormalVector) : -1;
 
-                var r = new Ray(point, direction);
-                var intersections = Intersect(r);
-
-                var h = intersections.Hit;
-                if ((h != null) && (h.t < distance) && (h.t > MathHelper.Epsilon))
+                if (!obj.Equals(h.Object) && h.Object.HasShadow && (dN <= 0))
                 {
-                    var dN = direction.Dot(comps.NormalVector);
-
-                    if (!obj.Equals(h.Object) && h.Object.HasShadow && (dN <= 0))
-                    {
-                        isShadowed = true;
-                        break;
-                    }
+                    isShadowed = true;
                 }
             }
 
@@ -130,25 +135,21 @@ namespace CSharp
         }
 
         // Keeping for the unit test
-        public bool IsShadowed(Point point)
+        public bool IsShadowed(Point lightPosition, Point point)
         {
             bool isShadowed = false;
 
-            foreach (var light in Lights)
+            var v = new Vector(lightPosition - point);
+            var distance = v.Magnitude;
+            var direction = v.Normalize;
+
+            var r = new Ray(point, direction);
+            var intersections = Intersect(r);
+
+            var h = intersections.Hit;
+            if ((h != null) && (h.t < distance) && (h.Object.HasShadow))
             {
-                var v = new Vector(light.Position - point);
-                var distance = v.Magnitude;
-                var direction = v.Normalize;
-
-                var r = new Ray(point, direction);
-                var intersections = Intersect(r);
-
-                var h = intersections.Hit;
-                if ((h != null) && (h.t < distance) && (h.Object.HasShadow))
-                {
-                    isShadowed = true;
-                    break;
-                }
+                isShadowed = true;
             }
 
             return isShadowed;

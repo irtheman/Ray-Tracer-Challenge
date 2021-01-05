@@ -29,6 +29,17 @@ namespace CSharp
 
             return ret;
         }
+
+        public static Vector operator /(Vector lhs, double rhs)
+        {
+            var ret = new Vector(lhs.x / rhs,
+                                 lhs.y / rhs,
+                                 lhs.z / rhs)
+            { w = lhs.w / rhs };
+
+            return ret;
+        }
+
         public static Vector operator -(Vector rhs)
         {
             return new Vector(-rhs.x,

@@ -339,5 +339,25 @@ namespace CSharpTest
             //Assert.AreEqual(color, new Color(0.93391, 0.69643, 0.69243));
             Assert.AreEqual(color, new Color(1.29608, 0.69643, 0.69243));
         }
+
+        [TestMethod]
+        public void TestWorldIsShadowOcclusionBetweenTwoPoints()
+        {
+            var w = World.Default;
+            var light_position = new Point(-10, -10, -10);
+            Point point;
+
+            point = new Point(-10, -10, 10);
+            Assert.IsFalse(w.IsShadowed(light_position, point));
+
+            point = new Point(10, 10, 10);
+            Assert.IsTrue(w.IsShadowed(light_position, point));
+
+            point = new Point(-20, -20, -20);
+            Assert.IsFalse(w.IsShadowed(light_position, point));
+
+            point = new Point(-5, -5, -5);
+            Assert.IsFalse(w.IsShadowed(light_position, point));
+        }
     }
 }

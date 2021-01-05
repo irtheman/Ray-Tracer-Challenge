@@ -26,48 +26,50 @@ namespace CSharp
         public double RefractiveIndex { get; set; }
         public RTPattern Pattern { get; set; }
 
-        public Color Lighting(RTObject obj, PointLight light, Point position, Vector eyev, Vector normalv, bool inShadow)
+        public Color Lighting(RTObject obj, ILight light, Point position, Vector eyev, Vector normalv, double intensity)
         {
-            Color color;
-            if (Pattern != null)
-            {
-                color = Pattern.PatternAtObject(obj, position);
-            }
-            else
-            {
-                color = Color;
-            }
-
+            Color color = Pattern?.PatternAtObject(obj, position) ?? Color;
             var effectiveColor = color * light.Intensity;
-            var lightV = (new Vector(light.Position - position)).Normalize;
-            var lightDotNormal = lightV.Dot(normalv);
             var ambient = effectiveColor * Ambient;
-            Color diffuse;
-            Color specular;
+            var samples = light.SamplePoints();
 
-            if ((lightDotNormal < 0) || inShadow)
-            {
-                diffuse = Color.Black; // inShadow ? Color.Green : Color.Black;
-                specular = Color.Black; // inShadow ? Color.Green : Color.Black;
-            }
-            else
-            {
-                diffuse = effectiveColor * Diffuse * lightDotNormal;
-                var reflectV = (-lightV).Reflect(normalv);
-                var reflectDotEye = reflectV.Dot(eyev);
+            Color sum = Color.Black;
 
-                if (reflectDotEye <= 0)
+            foreach (var sample in samples)
+            {
+                Color diffuse;
+                Color specular;
+
+                var lightV = (new Vector(sample - position)).Normalize;
+                var lightDotNormal = lightV.Dot(normalv);
+
+                if ((lightDotNormal < 0) || intensity.IsEqual(0.0))
                 {
-                    specular = Color.Black;
+                    diffuse = Color.Black; // inShadow ? Color.Green : Color.Black;
+                    specular = Color.Black; // inShadow ? Color.Green : Color.Black;
                 }
                 else
                 {
-                    var factor = Math.Pow(reflectDotEye, Shininess);
-                    specular = light.Intensity * Specular * factor;
+                    diffuse = effectiveColor * Diffuse * lightDotNormal;
+                    var reflectV = (-lightV).Reflect(normalv);
+                    var reflectDotEye = reflectV.Dot(eyev);
+
+                    if (reflectDotEye <= 0)
+                    {
+                        specular = Color.Black;
+                    }
+                    else
+                    {
+                        var factor = Math.Pow(reflectDotEye, Shininess);
+                        specular = light.Intensity * Specular * factor;
+                    }
                 }
+
+                sum += diffuse;
+                sum += specular;
             }
 
-            return ambient + diffuse + specular;
+            return ambient + ((sum / light.Samples) * intensity);
         }
 
         public override bool Equals(object obj)
