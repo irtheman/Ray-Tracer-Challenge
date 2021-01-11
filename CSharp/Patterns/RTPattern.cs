@@ -33,6 +33,8 @@ namespace CSharp
         }
         public Matrix TransformInverse => transformInverse;
 
+        public abstract Color UVPatternAt(double u, double v, CubeFace face = CubeFace.None);
+
         public abstract Color PatternAt(Point p);
 
         public Color PatternAtObject(RTObject obj, Point worldPoint)

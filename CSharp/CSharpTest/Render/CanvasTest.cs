@@ -97,5 +97,111 @@ namespace CSharpTest
          
             Assert.AreEqual(ppm[ppm.Length - 1], '\n');
         }
+
+        [TestMethod]
+        public void TestCanvasSetPPMFail()
+        {
+            string ppm = @"P32
+1 1
+255
+0 0 0";
+
+            var c = Canvas.SetPPM(ppm);
+            Assert.IsNull(c);
+        }
+
+        [TestMethod]
+        public void TestCanvasSetPPMSize()
+        {
+            string ppm = @"P3
+10 2
+255
+0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
+0 0 0  0 0 0  0 0 0  0 0 0  0 0 0";
+
+            var c = Canvas.SetPPM(ppm);
+
+            Assert.AreEqual(c.Width, 10);
+            Assert.AreEqual(c.Height, 2);
+        }
+
+        [TestMethod]
+        public void TestCanvasPixelData()
+        {
+            string ppm = @"P3
+4 3
+255
+255 127 0  0 127 255  127 255 0  255 255 255
+0 0 0  255 0 0  0 255 0  0 0 255
+255 255 0  0 255 255  255 0 255  127 127 127";
+
+            var c = Canvas.SetPPM(ppm);
+
+            Assert.AreEqual(c[0, 0], new Color(1, 0.498, 0));
+            Assert.AreEqual(c[1, 0], new Color(0, 0.498, 1));
+            Assert.AreEqual(c[2, 0], new Color(0.498, 1, 0));
+            Assert.AreEqual(c[3, 0], new Color(1, 1, 1));
+
+            Assert.AreEqual(c[0, 1], new Color(0, 0, 0));
+            Assert.AreEqual(c[1, 1], new Color(1, 0, 0));
+            Assert.AreEqual(c[2, 1], new Color(0, 1, 0));
+            Assert.AreEqual(c[3, 1], new Color(0, 0, 1));
+
+            Assert.AreEqual(c[0, 2], new Color(1, 1, 0));
+            Assert.AreEqual(c[1, 2], new Color(0, 1, 1));
+            Assert.AreEqual(c[2, 2], new Color(1, 0, 1));
+            Assert.AreEqual(c[3, 2], new Color(0.498, 0.498, 0.498));
+        }
+
+        [TestMethod]
+        public void TestCanvasComment()
+        {
+            string ppm = @"P3
+# this is a comment
+2 1
+# this, too
+255
+# another comment
+255 255 255
+# oh, no, comments in the pixel data!
+255 0 255";
+
+            var c = Canvas.SetPPM(ppm);
+
+            Assert.AreEqual(c[0, 0], new Color(1, 1, 1));
+            Assert.AreEqual(c[1, 0], new Color(1, 0, 1));
+        }
+
+        [TestMethod]
+        public void TestCanvasPixelSpansLines()
+        {
+            string ppm = @"P3
+1 1
+255
+51
+153
+
+204";
+
+            var c = Canvas.SetPPM(ppm);
+
+            Assert.AreEqual(c[0, 0], new Color(0.2, 0.6, 0.8));
+        }
+
+        [TestMethod]
+        public void TestCanvasParsingWithScaleSetting()
+        {
+            string ppm = @"P3
+2 2
+100
+100 100 100  50 50 50
+75 50 25  0 0 0";
+
+            var c = Canvas.SetPPM(ppm);
+
+            Assert.AreEqual(c[0, 1], new Color(0.75, 0.5, 0.25));
+        }
     }
 }

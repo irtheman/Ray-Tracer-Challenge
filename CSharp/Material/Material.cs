@@ -28,7 +28,20 @@ namespace CSharp
 
         public Color Lighting(RTObject obj, ILight light, Point position, Vector eyev, Vector normalv, double intensity)
         {
-            Color color = Pattern?.PatternAtObject(obj, position) ?? Color;
+            Color color;
+            if (Pattern != null)
+            {
+                color = Pattern.PatternAtObject(obj, position);
+            }
+            else if (obj.Parent != null)
+            {
+                color = obj.Parent.Material.Lighting(obj.Parent, light, position, eyev, normalv, intensity);
+            }
+            else
+            {
+                color = Color;
+            }
+
             var effectiveColor = color * light.Intensity;
             var ambient = effectiveColor * Ambient;
             var samples = light.SamplePoints();

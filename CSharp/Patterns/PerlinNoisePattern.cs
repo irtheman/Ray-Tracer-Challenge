@@ -105,5 +105,10 @@ namespace CSharp
 
             return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
         }
+
+        public override Color UVPatternAt(double u, double v, CubeFace face = CubeFace.None)
+        {
+            return Color.Black;
+        }
     }
 }

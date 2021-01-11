@@ -64,6 +64,19 @@ My attempt at the Ray Tracer Challenge. I will be starting with C#. I want to fo
 ### Chapter 16
 ![Chapter 16 CSG](Images/cs_csg.png "CSG Difference")
 
+### Bonus Chapter: Bounding Boxes and Hierarchies
+![Bonus Chapter Bounding Boxes](Images/cs_triangles.png "Huge Rabbit OBJ File")
+
+### Bonus Chapter: Rendering Soft Shadows
+![Bonus Chapter Soft Shadows](Images/cs_arealight_softshadow.png "Area Lighting With 2 Lights")
+![Bonus Chapter Soft Shadows](Images/cs_arealight.png "Area Lighting Book Sample")
+
+### Bonus Chapter: Texture Mapping
+![Bonus Chapter Texture Mapping](Images/cs_uvmapping.png "Checker Pattern Mapping")
+![Bonus Chapter Texture Mapping](Images/cs_cubemapping.png "Cube Mapping")
+![Bonus Chapter Texture Mapping](Images/cs_earth.png "UV Image Mapping")
+![Bonus Chapter Texture Mapping](Images/cs_skybox.png "Skybox Image Mapping")
+
 All of the following is for Ubuntu 20.04.
 
 # .NET Core

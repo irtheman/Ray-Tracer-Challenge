@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace CSharp
@@ -117,6 +115,100 @@ namespace CSharp
             return ppm.ToString();
         }
 
+        public static Canvas SetPPM(string ppm)
+        {
+            int index = 0;
+            ppm = ppm.Replace("\r", string.Empty);
+
+            // Header
+            string s = GetToken(ppm, ref index);
+            if (!s.Equals("P3", StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            int width, height, scale;
+            s = GetToken(ppm, ref index);
+            if (!int.TryParse(s, out width))
+                return null;
+
+            s = GetToken(ppm, ref index);
+            if (!int.TryParse(s, out height))
+                return null;
+
+            s = GetToken(ppm, ref index);
+            if (!int.TryParse(s, out scale))
+                return null;
+
+            var c = new Canvas(width, height);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    c[x, y] = GetColor(scale, ppm, ref index);
+                }
+            }
+
+            return c;
+        }
+
+        private static Color GetColor(int scale, string ppm, ref int i)
+        {
+            int r, g, b;
+
+            var s = GetToken(ppm, ref i);
+            if (!int.TryParse(s, out r))
+                return Color.Black;
+
+            s = GetToken(ppm, ref i);
+            if (!int.TryParse(s, out g))
+                return Color.Black;
+            
+            s = GetToken(ppm, ref i);
+            if (!int.TryParse(s, out b))
+                return Color.Black;
+
+            return new Color(r / (double)scale, g / (double)scale, b / (double)scale);
+        }
+
+        private static string GetToken(string s, ref int i)
+        {
+            SkipWhiteSpace(s, ref i);
+            SkipComment(s, ref i);
+
+            int start = i;
+            int count = 0;
+
+            while ((i < s.Length) && (s[i] != ' ') && (s[i] != '\n'))
+            {
+                i++;
+                count++;
+            }
+
+            if (count > 0)
+            {
+                return s.Substring(start, count);
+            }
+
+            return string.Empty;
+        }
+
+        private static void SkipWhiteSpace(string s, ref int i)
+        {
+            while ((i < s.Length) && ((s[i] == ' ')) || (s[i] == '\n'))
+                i++;
+        }
+
+        private static void SkipComment(string s, ref int i)
+        {
+            while ((i < s.Length) && (s[i] == '#'))
+            {
+                while ((i < s.Length) && (s[i] != '\n'))
+                    i++;
+
+                SkipWhiteSpace(s, ref i);
+            }
+        }
+
         private bool InRange(int row, int column)
         {
             return ((row >= 0) && (row < Height)) &&
@@ -131,7 +223,7 @@ namespace CSharp
             if (column >= Width) column = Width - 1;
         }
 
-        private double Limiters(double color)
+        private static double Limiters(double color)
         {
             if (color < 0.0) return 0.0;
             if (color > 1.0) return 1.0;

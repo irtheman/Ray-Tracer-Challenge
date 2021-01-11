@@ -24,6 +24,11 @@ namespace CSharp
             return (c1 + c2) * 0.5;
         }
 
+        public override Color UVPatternAt(double u, double v, CubeFace face = CubeFace.None)
+        {
+            return Color.Black;
+        }
+
         protected override Color PatternAtShape(RTObject obj, Point localPoint)
         {
             var patternPoint = TransformInverse * localPoint;
