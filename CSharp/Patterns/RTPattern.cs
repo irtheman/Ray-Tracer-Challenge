@@ -43,6 +43,10 @@ namespace CSharp
             return PatternAtShape(obj, localPoint);
         }
 
-        protected abstract Color PatternAtShape(RTObject obj, Point localPoint);
+        protected Color PatternAtShape(RTObject obj, Point localPoint)
+        {
+            var patternPoint = transformInverse * localPoint;
+            return PatternAt(patternPoint);
+        }
     }
 }

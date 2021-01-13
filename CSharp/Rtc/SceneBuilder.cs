@@ -10,16 +10,106 @@ namespace rtc
         private Values yaml;
         private Camera camera;
         private World world;
+        private bool ObjFile;
 
         public SceneBuilder(Values root)
         {
             define = new Dictionary<string, Values>();
             this.yaml = root;
             world = new World();
+            ObjFile = false;
+        }
+
+        public SceneBuilder(string input, int width, int height, string floor, double rX, double rY, double rZ)
+        {
+            bool withFloor = !string.IsNullOrWhiteSpace(floor);
+
+            world = new World();
+            world.Lights.Add(new PointLight(new Point(0, 0, 10), Color.White));
+
+            var parser = new ObjFileParser(input);
+            var obj = parser.ObjToGroup;
+            obj.Transform = Matrix.Translation(0, withFloor ? parser.Center.y - parser.Min.y : 0, 0)
+                            * Matrix.RotationZ(rZ)
+                            * Matrix.RotationX(rX)
+                            * Matrix.RotationY(rY);
+            world.Objects.Add(obj);
+
+            double fov = Math.PI / 3;
+            double fromX, fromY, fromZ;
+            double toX, toY, toZ;
+
+            if (withFloor)
+            {
+                var flr = new Plane();
+                flr.Material.Color = GetObjColor(floor);
+                flr.Material.Diffuse = 0.1;
+                flr.Material.Specular = 0.9;
+                flr.Material.Shininess = 300;
+                flr.Material.Reflective = 0.5;
+
+                world.Objects.Add(flr);
+
+                fromX = 0.0;
+                fromY = 0.1;
+                fromZ = 10;
+                toX = 0.0;
+                toY = 0.5;
+                toZ = 0.0;
+            }
+            else
+            {
+                var hght = Math.Max(parser.Max.x - parser.Min.x, Math.Max(parser.Max.y - parser.Min.y, parser.Max.z - parser.Min.z));
+                var dist = Math.Abs(hght / Math.Sin(fov / 2));
+                var center = parser.Center;
+
+                fromX = center.x;
+                fromY = center.y;
+                fromZ = dist + hght;
+                toX = center.x;
+                toY = center.y;
+                toZ = center.z;
+            }
+
+            camera = new Camera(width, height, fov);
+            camera.Transform = Matrix.ViewTransform(new Point(fromX, fromY, fromZ),
+                                                    new Point(toX, toY, toZ),
+                                                    Vector.VectorY);
+
+            ObjFile = true;
+        }
+
+        private Color GetObjColor(string floor)
+        {
+            switch (floor.ToLower())
+            {
+                case "green":
+                    return Color.Green;
+                case "blue":
+                    return Color.Blue;
+                case "white":
+                    return Color.White;
+                case "black":
+                    return Color.Black;
+                case "brown":
+                    return Color.Brown;
+                case "cyan":
+                    return Color.Cyan;
+                case "Grey":
+                    return Color.Grey;
+                case "purple":
+                    return Color.Purple;
+                case "yellow":
+                    return Color.Yellow;
+                default:
+                    return Color.Red;
+            }
         }
 
         public bool Build()
         {
+            if (ObjFile) return true;
+
             if (!yaml.HasList)
             {
                 return false;

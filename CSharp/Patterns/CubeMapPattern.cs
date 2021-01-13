@@ -101,12 +101,6 @@ namespace CSharp
             }
         }
 
-        protected override Color PatternAtShape(RTObject obj, Point localPoint)
-        {
-            var patternPoint = TransformInverse * localPoint;
-            return PatternAt(patternPoint);
-        }
-
         public static CubeFace FaceFromPoint(Point p)
         {
             var x = Math.Abs(p.x);

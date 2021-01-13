@@ -7,65 +7,74 @@ namespace rtc
     {
         static void Main(string[] args)
         {
-            string file = string.Empty;
-            string output = "Output.ppm";
-
-            // ToDo: Parse 2 types of files
-            // renderObjFile(args)
-            // renderYamlFile(args)
-
-            if (args.Length == 0)
+            CommandLine cl = new CommandLine(args);
+            if ((cl.Count == 0) || cl.Help || (string.IsNullOrWhiteSpace(cl.Input)))
             {
-                Console.WriteLine("rtc <output.ppm> <width:400> <height:200> <yaml file>");
-                Console.WriteLine("rtc <output.ppm> <width:400> <height:200> <obj file> [floor:color] [x:0] [y:0] [z:0]");
+                Console.WriteLine("rtc <yaml file> [-o <output.ppm>]");
+                Console.WriteLine("rtc <obj file> [-o <output.ppm>] [-width <400>] [-height <200>] [-floor <color>] [-rx <0>] [-ry <0>] [-rz <0>]");
                 return;
             }
-            else if (args.Length > 0)
+
+            SceneBuilder scene = null;
+            if (cl.Input.EndsWith(".yml") || cl.Input.EndsWith(".yaml"))
             {
-                file = args[0];
-                if (args.Length == 2)
+                scene = ParseYamlFile(cl);
+            }
+            else if (cl.Input.EndsWith(".obj"))
+            {
+                scene = ParseObjFile(cl);
+            }
+            else
+            {
+                Console.WriteLine("Input file not recognized.");
+            }
+
+            string output = cl.Output;
+
+            if ((scene != null) && scene.Build())
+            {
+                Console.WriteLine("Scene Built!");
+
+                if (scene.Render(output))
                 {
-                    output = args[1];
+                    Console.WriteLine("Scene Rendered!");
+                    Console.WriteLine($"See \"{output}\"");
                 }
                 else
                 {
-                    Console.WriteLine("To many paramters...");
-                    Console.WriteLine("rtc <output file> <yaml file>");
-                    return;
+                    Console.WriteLine("Scene NOT Rendered!");
                 }
             }
+            else
+            {
+                Console.WriteLine("Where is the scene?");
+            }
+
+            Console.ReadLine();
+        }
+
+        private static SceneBuilder ParseObjFile(CommandLine cl)
+        {
+            return new SceneBuilder(cl.Input, cl.Width, cl.Height, cl.Floor, cl.RX, cl.RY, cl.RZ);
+        }
+
+        private static SceneBuilder ParseYamlFile(CommandLine cl)
+        {
+            string file = cl.Input;
 
             var parser = new YamlParser();
             if (parser.Parse(file))
             {
                 Console.WriteLine("Parsed!");
 
-                var scene = new SceneBuilder(parser.Root);
-                if (scene.Build())
-                {
-                    Console.WriteLine("Scene Built!");
-
-                    if (scene.Render(output))
-                    {
-                        Console.WriteLine("Scene Rendered!");
-                        Console.WriteLine($"See \"{output}\"");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Scene NOT Rendered!");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Where is the scene?");
-                }
+                return new SceneBuilder(parser.Root);
             }
             else
             {
                 Console.WriteLine("Oh no!");
             }
 
-            Console.ReadLine();
+            return null;
         }
     }
 }

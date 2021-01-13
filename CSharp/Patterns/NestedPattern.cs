@@ -35,11 +35,5 @@ namespace CSharp
         {
             return Color.Black;
         }
-
-        protected override Color PatternAtShape(RTObject obj, Point localPoint)
-        {
-            var patternPoint = TransformInverse * localPoint;
-            return PatternAt(patternPoint);
-        }
     }
 }

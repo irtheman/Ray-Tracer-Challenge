@@ -45,12 +45,6 @@ namespace CSharp
             return Pattern.PatternAt(new Point(x, y, z));
         }
 
-        protected override Color PatternAtShape(RTObject obj, Point localPoint)
-        {
-            var patternPoint = TransformInverse * localPoint;
-            return PatternAt(patternPoint);
-        }
-
         private static double noise(double x, double y, double z)
         {
             // Find unit cube that contains point
