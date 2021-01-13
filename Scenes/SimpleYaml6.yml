@@ -1,0 +1,25 @@
+- add: camera
+  width: 100
+  height: 100
+  field-of-view: 0.785
+  from: [ 0, 0, -5 ]
+  to: [ 0, 0, 0 ]
+  up: [ 0, 1, 0 ]
+
+- add: light
+  at: [ 10, 10, 10 ]
+  intensity: [ 1, 1, 1 ]
+
+- define: ball
+  value:
+    add: sphere
+      transform:
+        - [ scale, 0.25, 0.25, 0.25 ]
+
+- add: ball
+  transform:
+    - [ translate, -1, 0, 0 ]
+
+- add: ball
+  transform:
+    - [ translate, 1, 0, 0 ]

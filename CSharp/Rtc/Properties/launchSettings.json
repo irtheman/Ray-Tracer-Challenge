@@ -2,7 +2,7 @@
   "profiles": {
     "rtc": {
       "commandName": "Project",
-      "commandLineArgs": "E:\\git\\Ray-Tracer-Challenge\\Scenes\\SimpleYaml.yml E:\\git\\Ray-Tracer-Challenge\\Scenes\\Output.ppm"
+      "commandLineArgs": "E:\\git\\Ray-Tracer-Challenge\\Scenes\\SimpleYaml7.yml Output.ppm"
     }
   }
 }

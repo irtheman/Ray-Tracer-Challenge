@@ -8,7 +8,7 @@ namespace rtc
     {
         public static bool IsEqual(this string str, string other)
         {
-            return str.ToLower().Equals(other.ToLower());
+            return str.Equals(other, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -6,12 +6,14 @@ namespace rtc
 {
     internal class SceneBuilder
     {
+        private Dictionary<string, Values> define;
         private Values yaml;
         private Camera camera;
         private World world;
 
         public SceneBuilder(Values root)
         {
+            define = new Dictionary<string, Values>();
             this.yaml = root;
             world = new World();
         }
@@ -28,6 +30,10 @@ namespace rtc
                 if (item.Key.IsEqual("add"))
                 {
                     BuildAdd(item);
+                }
+                else if (item.Key.IsEqual("define"))
+                {
+                    BuildDefine(item);
                 }
             }
 
@@ -49,9 +55,17 @@ namespace rtc
             return true;
         }
 
-        private void BuildAdd(Values item)
+        private void BuildDefine(Values item)
         {
-            switch(item.String.ToLower())
+            string key = item.String;
+            define.Add(key, item);
+        }
+
+        private RTObject BuildAdd(Values item, Group group = null)
+        {
+            RTObject obj = null;
+
+            switch (item.String.ToLower())
             {
                 case "camera":
                     BuildAddCamera(item);
@@ -61,17 +75,95 @@ namespace rtc
                     BuildAddLight(item);
                     break;
 
+                case "group":
+                    obj = BuildAddGroup(item);
+                    break;
+
                 case "sphere":
-                    BuildAddSphere(item);
+                    obj = BuildAddSphere(item);
+                    break;
+
+                case "plane":
+                    obj = BuildAddPlane(item);
+                    break;
+
+                case "cube":
+                    obj = BuildAddCube(item);
+                    break;
+
+                case "obj":
+                    obj = BuildAddObj(item);
+                    break;
+                
+                default:
+                    Values value = null;
+                    if (define.TryGetValue(item.String, out value))
+                    {
+                        value = value["value"];
+                        obj = BuildAdd(value.List[0]);
+                        BuildShape(obj, item);
+                        obj = null;
+                    }
                     break;
             }
+
+            if (obj != null)
+            {
+                if (group == null)
+                    world.Objects.Add(obj);
+                else
+                    group.Add(obj);
+            }
+
+            return obj;
         }
 
-        private void BuildAddSphere(Values item)
+        private RTObject BuildAddGroup(Values item)
+        {
+            var group = new Group();
+            BuildShape(group, item);
+
+            var children = item["children"];
+
+            foreach (var child in children)
+            {
+                if (item.Key.IsEqual("add"))
+                {
+                    BuildAdd(child, group);
+                }
+            }
+
+            return group;
+        }
+
+        private RTObject BuildAddSphere(Values item)
         {
             var sphere = new Sphere();
             BuildShape(sphere, item);
-            world.Objects.Add(sphere);
+            return sphere;
+        }
+
+        private RTObject BuildAddPlane(Values item)
+        {
+            var plane = new Plane();
+            BuildShape(plane, item);
+            return plane;
+        }
+
+        private RTObject BuildAddCube(Values item)
+        {
+            var cube = new Cube();
+            BuildShape(cube, item);
+            return cube;
+        }
+
+        private RTObject BuildAddObj(Values item)
+        {
+            var file = item["file"];
+            var parser = new ObjFileParser(file.String);
+            var obj = parser.ObjToGroup;
+            BuildShape(obj, item);
+            return obj;
         }
 
         private void BuildShape(RTObject shape, Values item)
@@ -118,7 +210,15 @@ namespace rtc
 
             foreach (var item in transform)
             {
-                stack.Push(ConvertToTransform(item));
+                var m = ConvertToTransform(item);
+                if (m == null)
+                {
+                    var key = item.String;
+                    var i = define[key];
+                    m = BuildTransform(i.List[0]);
+                }
+
+                stack.Push(m);
             }
 
             Matrix results = stack.Pop();
@@ -130,9 +230,31 @@ namespace rtc
             return results;
         }
 
-        private Material BuildMaterial(Values material)
+        private Material BuildMaterial(Values material, Material mat = null)
         {
-            var m = new Material();
+            Material m = mat;
+
+            if (!string.IsNullOrWhiteSpace(material.String))
+            {
+                string key = material.String;
+                var mt = define[key];
+
+                var extend = mt["extend"];
+                if (!extend.IsEmpty)
+                {
+                    m = BuildMaterial(extend);
+                }
+
+                var value = mt["value"];
+                if (!value.IsEmpty)
+                {
+                    m = BuildMaterial(value, m);
+                }
+            }
+            else if (m == null)
+            {
+                m = new Material();
+            }
 
             foreach (var item in material)
             {
@@ -195,6 +317,10 @@ namespace rtc
                     p = new StripePattern(a, b);
                     break;
 
+                case "checkers":
+                    p = new CheckersPattern(a, b);
+                    break;
+
                 //BlendedPattern
                 //CheckersPattern
                 //GradientPattern
@@ -203,6 +329,11 @@ namespace rtc
                 //RadialGradientPattern
                 //RingPattern
                 //SolidColorPattern
+                //CubeMapPattern3D
+                //CheckersPattern3D
+                //UVImage
+                //UVAlignCheck
+                //TextureMap
             }
 
             if (!transform.IsEmpty)
@@ -215,7 +346,7 @@ namespace rtc
 
         private Matrix ConvertToTransform(Values item)
         {
-            Matrix result = Matrix.Identity;
+            Matrix result = null;
             double x, y, z;
 
             switch (item[0].String.ToLower())

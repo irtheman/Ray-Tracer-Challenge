@@ -27,6 +27,17 @@ namespace CSharp
             return true;
         }
 
+        public bool ParseYaml(string yml)
+        {
+            yml = yml.Replace("\r", string.Empty);
+            var lines = yml.Split('\n');
+            int index = 0;
+
+            ParseYaml(yaml, 2, lines, ref index);
+
+            return true;
+        }
+
         public Values Root => yaml;
 
         private void ParseYaml(Values top, int tab, string[] lines, ref int index)
@@ -92,6 +103,11 @@ namespace CSharp
                 }
                 else
                 {
+                    if (value.StartsWith('-'))
+                    {
+                        value = value.Substring(1);
+                    }
+
                     current.Add(key, value);
                 }
             }
