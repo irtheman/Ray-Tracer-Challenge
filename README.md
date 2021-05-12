@@ -347,3 +347,90 @@ Simply running pytest, there are multiple ways, in the same folder will return t
 pytest --pyargs <package>
 python3 -m pytest --pyargs <package>
 ```
+
+# Java
+## Installing Java
+Installing Java in Ubuntu is pretty simple:
+First, download Oracle JDK 15 (jdk-15.0.1_linux-x64_bin.tar.gz for example)
+```
+sudo mkdir -p /usr/java/oracle
+sudo mkdir -p /usr/java/lib
+cd /usr/java/oracle
+sudo cp /data/setups/jdk-15.0.1_linux-x64_bin.tar.gz jdk-15.0.1_linux-x64_bin.tar.gz
+sudo tar -xzvf jdk-15.0.1_linux-x64_bin.tar.gz
+```
+
+Next, we have to set up the environment variables:
+```
+sudo nano /etc/profile
+```
+and add the following to the profile:
+```
+JAVA_HOME=/usr/java/oracle/jdk-15.0.1
+CLASSPATH=/usr/java/lib
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+export JAVA_HOME
+export CLASSPATH
+export PATH
+```
+
+When the changes are complete, run the following to reload the profile. A reboot works as well...
+```
+. /etc/profile
+```
+
+## Installing Maven
+Maven seems to be popular so the decision was made to try it.
+```
+sudo apt update
+sudo apt install maven
+mvn -version
+```
+
+## Installing JUnit 5
+Download the latest NUnit jar file. It was decided to use junit-platform-console-standalone because Visual Studio Code is often used.
+https://search.maven.org/artifact/org.junit.platform/junit-platform-console-standalone/1.7.0/jar
+The jar file was copied to /usr/java/lib.
+Visual Studio Code's Setting.json had to be configured with the following:
+```
+"java.home": "/usr/java/oracle/jdk-15.0.1",
+"java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "/usr/java/lib/junit-platform-console-standalone-1.7.0.jar"
+]
+```
+
+The mavin pom.xml needs the following changes as well:
+```
+<dependencies>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>5.7.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.7.0</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+... and ...
+
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.22.2</version>
+        </plugin>
+        <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.22.2</version>
+        </plugin>        
+```
+
+Simply run commands like:
+```
+mvn test
+mvn clean compile test
+```

@@ -5,6 +5,9 @@ namespace CSharp
 {
     public class Camera
     {
+        private Matrix transform;
+        private Matrix inverseTransform;
+
         public Camera(int hsize, int vsize, double fieldOfView)
         {
             HSize = hsize;
@@ -35,7 +38,19 @@ namespace CSharp
         public double HalfHeight { get; }
         public double FOV { get; }
         public double PixelSize { get; }
-        public Matrix Transform { get; set; }
+        public Matrix Transform
+        {
+            get
+            {
+                return transform;
+            }
+
+            set
+            {
+                transform = value;
+                inverseTransform = value.Inverse;
+            }
+        }
 
         public Ray RayForPixel(int x, int y)
         {
@@ -43,9 +58,8 @@ namespace CSharp
             var yOffset = (y + 0.5) * PixelSize;
             var worldX = HalfWidth - xOffset;
             var worldY = HalfHeight - yOffset;
-            var inverse = Transform.Inverse;
-            var pixel = inverse * new Point(worldX, worldY, -1);
-            var origin = inverse * Point.Zero;
+            var pixel = inverseTransform * new Point(worldX, worldY, -1);
+            var origin = inverseTransform * Point.Zero;
             var direction = (new Vector(pixel - origin)).Normalize;
 
             return new Ray(origin, direction);
